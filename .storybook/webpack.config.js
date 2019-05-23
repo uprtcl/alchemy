@@ -15,6 +15,37 @@ module.exports = ({ config }) => {
       },
     ],
   });
+  config.module.rules.push({
+        test: /\.scss$/,
+        use: [
+          { // creates style nodes from JS strings
+            loader: "style-loader"
+          },
+          { // translates CSS into CommonJS (css-loader) and automatically generates TypeScript types
+            loader: 'typings-for-css-modules-loader',
+            options: {
+              camelCase: true,
+              modules: true,
+              namedExport: true,
+              localIdentName: '[name]__[local]___[hash:base64:5]',
+              importLoaders: 2,
+              sourceMap: true
+            }
+          },
+          { // compiles Sass to CSS
+            loader: "sass-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          { // Load global scss files in every other scss file without an @import needed
+            loader: 'sass-resources-loader',
+            options: {
+              resources: ['./src/assets/styles/global-variables.scss']
+            },
+          },
+        ]
+      });
   config.resolve.extensions.push('.ts', '.tsx');
   config.resolve.alias = {
     arc: path.resolve(basePath, 'src/arc'),
