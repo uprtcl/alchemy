@@ -8,8 +8,8 @@
   "actions": [
     {
       "id": "deployNew",
-      "label": "Deploy a new bonding curve with specified parameters, complete with new bonded token",
-      "description": "Details can be found <a target=\"_blank\" href=\"https://github.com/dOrgTech/BC-DAO\">here</a>.",
+      "label": "Deploy Bonding Curve",
+      "description": "Deploy a new bonding curve with specified parameters, complete with new bonded token. Details can be found <a target=\"_blank\" href=\"https://github.com/dOrgTech/BC-DAO\">here</a>.",
       "notes": "https://github.com/dOrgTech/BC-DAO",
       "fields": [
         {
@@ -99,6 +99,133 @@
           }
         ],
         "name": "deployBancor",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    },
+    {
+      "id": "buy",
+      "label": "Buy Tokens",
+      "description": "Buy bondedTokens with collateralTokens",
+      "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L248",
+      "fields": [
+        {
+          "decimals": 18,
+          "label": "Tokens to buy",
+          "name": "numTokens",
+          "unit": "USD",
+          "placeholder": "Amount in BondedTokens (1500)"
+        },
+        {
+          "decimals": 18,
+          "label": "Max total price",
+          "name": "maxPrice",
+          "unit": "USD",
+          "placeholder": "Amount in CollateralTokens (1500)"
+        },
+        {
+          "label": "Purchase recipient",
+          "name": "recipient",
+          "unit": "USD",
+          "placeholder": "Address (0x0000…)"
+        }
+      ],
+      "abi": {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "numTokens",
+            "type": "uint256"
+          },
+          {
+            "name": "maxPrice",
+            "type": "uint256"
+          },
+          {
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    },
+    {
+      "id": "sell",
+      "label": "Sell Tokens",
+      "description": "Sell bonded tokens for collateral",
+      "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L252",
+      "fields": [
+        {
+          "decimals": 18,
+          "label": "Tokens to sell",
+          "name": "numTokens",
+          "unit": "USD",
+          "placeholder": "Amount in BondedTokens (1500)"
+        },
+        {
+          "decimals": 18,
+          "label": "Min total price",
+          "name": "minPrice",
+          "unit": "USD",
+          "placeholder": "Amount in CollateralTokens (1500)"
+        },
+        {
+          "label": "Reward recipient",
+          "name": "recipient",
+          "unit": "USD",
+          "placeholder": "Address (0x0000…)"
+        }
+      ],
+      "abi": {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "numTokens",
+            "type": "uint256"
+          },
+          {
+            "name": "minPrice",
+            "type": "uint256"
+          },
+          {
+            "name": "recipient",
+            "type": "address"
+          }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    },
+    {
+      "id": "changeBeneficiary",
+      "label": "Change Curve Beneficiary",
+      "description": "Change Curve Beneficiary",
+      "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
+      "fields": [
+        {
+          "label": "New beneficiary adddress",
+          "name": "beneficiary",
+          "placeholder": "Address (0x0000…)"
+        }
+      ],
+      "abi": {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "beneficiary",
+            "type": "address"
+          }
+        ],
+        "name": "setBeneficiary",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
