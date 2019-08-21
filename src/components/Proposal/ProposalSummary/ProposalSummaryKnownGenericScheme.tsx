@@ -30,6 +30,9 @@ export default class ProposalSummary extends React.Component<IProps> {
     else if (genericSchemeInfo.specs.name === "BondingCurve") {
       return <ProposalSummaryDutchX {...this.props} />;
     }
+    else if (genericSchemeInfo.specs.name === "BondingCurveFactory") {
+      return <ProposalSummaryDutchX {...this.props} />;
+    }
     const proposalSummaryClass = classNames({
       [css.detailView]: detailView,
       [css.transactionModal]: transactionModal,
