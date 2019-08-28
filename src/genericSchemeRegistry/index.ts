@@ -4,17 +4,21 @@
 import BN = require("bn.js");
 const Web3 = require("web3");
 const dutchXInfo = require("./schemes/DutchX.json");
+const bondingCurveInfo = require("./schemes/BondingCurveMultiProxy.json");
+const bondingCurveFactoryInfo = require("./schemes/BondingCurveFactory.json");
 const gpInfo = require("./schemes/GenesisProtocol.json");
 
 const KNOWNSCHEMES = [
+  bondingCurveInfo,
+  bondingCurveFactoryInfo,
   dutchXInfo,
-  gpInfo,
+  gpInfo
 ];
 
-const SCHEMEADDRESSES: {[network: string]: { [address: string]: any}} = {
+const SCHEMEADDRESSES: { [network: string]: { [address: string]: any } } = {
   main: {},
   rinkeby: {},
-  private: {},
+  private: {}
 };
 
 for (const schemeInfo of KNOWNSCHEMES) {
@@ -27,7 +31,7 @@ for (const schemeInfo of KNOWNSCHEMES) {
 interface IABISpec {
   constant: boolean;
   name: string;
-  inputs: { name: string; type: string}[];
+  inputs: { name: string; type: string }[];
   outputs: any[];
   payable: boolean;
   stateMutability: string;
@@ -45,7 +49,7 @@ export interface IActionFieldOptions {
   placeholder?: string;
 }
 
-export  class ActionField {
+export class ActionField {
   public decimals?: number;
   public defaultValue?: any;
   public name: string;
@@ -75,7 +79,9 @@ export  class ActionField {
     }
 
     if (this.decimals) {
-      return (new BN(userValue).mul(new BN(10).pow(new BN(this.decimals)))).toString();
+      return new BN(userValue)
+        .mul(new BN(10).pow(new BN(this.decimals)))
+        .toString();
     }
     return userValue;
   }
@@ -105,7 +111,9 @@ export class Action implements IActionSpec {
 
   constructor(options: IActionSpec) {
     if (this.fields && this.abi.inputs.length !== this.fields.length) {
-      throw Error("Error parsing action: the number if abi.inputs should equal the number of fields");
+      throw Error(
+        "Error parsing action: the number if abi.inputs should equal the number of fields"
+      );
     }
     this.description = options.description;
     this.id = options.id;
@@ -117,12 +125,14 @@ export class Action implements IActionSpec {
 
   public getFields(): ActionField[] {
     const result: ActionField[] = [];
-    for (let i = 0; i <  this.abi.inputs.length; i++) {
-      result.push(new ActionField({
-        name: this.abi.inputs[i].name,
-        type: this.abi.inputs[i].type,
-        ...this.fields[i],
-      }));
+    for (let i = 0; i < this.abi.inputs.length; i++) {
+      result.push(
+        new ActionField({
+          name: this.abi.inputs[i].name,
+          type: this.abi.inputs[i].type,
+          ...this.fields[i]
+        })
+      );
     }
     return result;
   }
@@ -139,7 +149,7 @@ export class GenericSchemeInfo {
     this.specs = info;
   }
   public actions() {
-    return this.specs.actions.map((spec) => new Action(spec));
+    return this.specs.actions.map(spec => new Action(spec));
   }
   public action(id: string) {
     for (const action of this.specs.actions) {
@@ -158,7 +168,7 @@ export class GenericSchemeInfo {
     return;
   }
   public encodeABI(action: IActionSpec, values: any[]) {
-    return (new Web3()).eth.abi.encodeFunctionCall(action.abi, values);
+    return new Web3().eth.abi.encodeFunctionCall(action.abi, values);
   }
 
   /*
@@ -166,11 +176,15 @@ export class GenericSchemeInfo {
    * returns: an object containing the action, and the decoded values.
    * It returns 'undefined' if the action could not be found
    */
-  public decodeCallData(callData: string): { action: IActionSpec; values: any[]} {
+  public decodeCallData(
+    callData: string
+  ): { action: IActionSpec; values: any[] } {
     const web3 = new Web3();
-    let action: undefined|IActionSpec;
+    let action: undefined | IActionSpec;
     for (const act of this.actions()) {
-      const encodedFunctionSignature = web3.eth.abi.encodeFunctionSignature(act.abi);
+      const encodedFunctionSignature = web3.eth.abi.encodeFunctionSignature(
+        act.abi
+      );
       if (callData.startsWith(encodedFunctionSignature)) {
         action = act;
         break;
@@ -180,17 +194,21 @@ export class GenericSchemeInfo {
       throw Error("No action matching these callData could be found");
     }
     // we've found our function, now we can decode the parameters
-    const decodedParams = web3.eth.abi
-      .decodeParameters(action.abi.inputs, "0x" + callData.slice(2 + 8));
-    const values =  [];
+    const decodedParams = web3.eth.abi.decodeParameters(
+      action.abi.inputs,
+      "0x" + callData.slice(2 + 8)
+    );
+    const values = [];
     for (const inputSpec of action.abi.inputs) {
       values.push(decodedParams[inputSpec.name]);
     }
 
     if (action) {
-      return { action,  values};
+      return { action, values };
     } else {
-      throw Error("Could not find a known action that corresponds with these callData");
+      throw Error(
+        "Could not find a known action that corresponds with these callData"
+      );
     }
   }
 }
@@ -202,7 +220,10 @@ export class GenericSchemeRegistry {
    * @param  address an ethereum address
    * @return an object [specs to be written..]
    */
-  public getSchemeInfo(address: string, network?: "main"|"rinkeby"|"private"|undefined): GenericSchemeInfo {
+  public getSchemeInfo(
+    address: string,
+    network?: "main" | "rinkeby" | "private" | undefined
+  ): GenericSchemeInfo {
     if (!network) {
       switch (process.env.NODE_ENV) {
         case "production":
@@ -223,5 +244,4 @@ export class GenericSchemeRegistry {
       return new GenericSchemeInfo(spec);
     }
   }
-
 }
