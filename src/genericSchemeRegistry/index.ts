@@ -4,7 +4,7 @@
 import BN = require("bn.js");
 const Web3 = require("web3");
 const dutchXInfo = require("./schemes/DutchX.json");
-const bondingCurveInfo = require("./schemes/BondingCurveMultiProxy.json");
+const bondingCurveInfo = require("./schemes/BondingCurve.json");
 const bondingCurveFactoryInfo = require("./schemes/BondingCurveFactory.json");
 const gpInfo = require("./schemes/GenesisProtocol.json");
 

@@ -13,47 +13,9 @@
       "notes": "https://github.com/dOrgTech/BC-DAO",
       "fields": [
         {
-          "name": "beneficiary",
-          "label": "Beneficiary address",
-          "placeholder": "Address (0x0000…)"
-        },
-        {
-          "name": "owner",
-          "label": "Owner address",
-          "placeholder": "Address (0x0000…)"
-        },
-        {
-          "name": "buyCurveParams",
-          "label": "Buy curve reserveRatio",
-          "placeholder": "Ratio in ppm (1-1000000)",
-          "decimals": 18
-        },
-        {
-          "name": "sellCurveParams",
-          "label": "Sell curve reserveRatio",
-          "placeholder": "Ratio in ppm (1-1000000)",
-          "decimals": 18
-        },
-        {
-          "name": "collateralToken",
-          "label": "Collateral token address",
-          "placeholder": "Address (0x0000…)"
-        },
-        {
-          "name": "splitOnPay",
-          "defaultValue": 50,
-          "label": "Income split to beneficiary",
-          "decimals": 18
-        },
-        {
-          "name": "bondedTokenName",
-          "label": "Bonded token name",
-          "placeholder": "Bonded Token"
-        },
-        {
-          "name": "bondedTokenSymbol",
-          "label": "Bonded token symbol",
-          "placeholder": "BND"
+          "name": "deployParams",
+          "label": "Deployment Parameters",
+          "placeholder": "[...]"
         }
       ],
       "abi": {

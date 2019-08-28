@@ -3,7 +3,7 @@
   "addresses": {
     "main": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
     "rinkeby": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
-    "private": ["0x170df3710EB11DD005f50E5a27F1bB69EdDFbD84"]
+    "private": ["0x88B10BEC118457afEb1Ced3ff18092FB79F4816d"]
   },
   "actions": [
     {
@@ -12,11 +12,6 @@
       "description": "Buy bondedTokens with collateralTokens",
       "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L248",
       "fields": [
-        {
-          "label": "Bonding Curve Address",
-          "name": "bondingCurve",
-          "placeholder": "Address (0x0000…)"
-        },
         {
           "decimals": 18,
           "label": "Tokens to buy",
@@ -40,10 +35,6 @@
       "abi": {
         "constant": false,
         "inputs": [
-          {
-            "name": "bondingCurve",
-            "type": "address"
-          },
           {
             "name": "numTokens",
             "type": "uint256"
@@ -71,11 +62,6 @@
       "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L252",
       "fields": [
         {
-          "label": "Bonding Curve Address",
-          "name": "bondingCurve",
-          "placeholder": "Address (0x0000…)"
-        },
-        {
           "decimals": 18,
           "label": "Tokens to sell",
           "name": "numTokens",
@@ -99,10 +85,6 @@
       "abi": {
         "constant": false,
         "inputs": [
-          {
-            "name": "bondingCurve",
-            "type": "address"
-          },
           {
             "name": "numTokens",
             "type": "uint256"
@@ -130,11 +112,6 @@
       "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L252",
       "fields": [
         {
-          "label": "Bonding Curve Address",
-          "name": "bondingCurve",
-          "placeholder": "Address (0x0000…)"
-        },
-        {
           "decimals": 18,
           "label": "Tokens to pay",
           "name": "amount",
@@ -145,10 +122,6 @@
       "abi": {
         "constant": false,
         "inputs": [
-          {
-            "name": "bondingCurve",
-            "type": "address"
-          },
           {
             "name": "amount",
             "type": "uint256"
@@ -199,11 +172,6 @@
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
       "fields": [
         {
-          "label": "Bonding Curve Address",
-          "name": "bondingCurve",
-          "placeholder": "Address (0x0000…)"
-        },
-        {
           "label": "New beneficiary adddress",
           "name": "beneficiary",
           "placeholder": "Address (0x0000…)"
@@ -212,10 +180,6 @@
       "abi": {
         "constant": false,
         "inputs": [
-          {
-            "name": "bondingCurve",
-            "type": "address"
-          },
           {
             "name": "beneficiary",
             "type": "address"
