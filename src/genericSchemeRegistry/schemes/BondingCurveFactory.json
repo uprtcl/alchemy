@@ -3,7 +3,7 @@
   "addresses": {
     "main": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
     "rinkeby": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
-    "private": ["0xeC9603B10CA347c1665B9c75346F0524A35C7b94"]
+    "private": ["0x8716C9b92f177C991AeD6c339598177D71b64d8a"]
   },
   "actions": [
     {
@@ -13,51 +13,80 @@
       "notes": "https://github.com/dOrgTech/BC-DAO",
       "fields": [
         {
-          "name": "deployParams",
-          "label": "Deployment Parameters",
-          "placeholder": "[...]"
+          "name": "owner",
+          "label": "Owner",
+          "placeholder": "Address (0x0000…)"
+        },
+        {
+          "name": "beneficiary",
+          "label": "Beneficiary",
+          "placeholder": "Address (0x0000…)"
+        },
+        {
+          "name": "collateralToken",
+          "label": "Collateral Token",
+          "placeholder": "Address (0x0000…)"
+        },
+        {
+          "name": "buyCurveParams",
+          "label": "Buy Curve Param",
+          "placeholder": "..."
+        },
+        {
+          "name": "sellCurveParams",
+          "label": "Sell Curve Param",
+          "placeholder": "..."
+        },
+        {
+          "name": "splitOnPay",
+          "label": "Split on Pay",
+          "placeholder": "Percentage 0-100%"
+        },
+        {
+          "name": "bondedTokenName",
+          "label": "Bonded Token Name",
+          "placeholder": "..."
+        },
+        {
+          "name": "bondedTokenSymbol",
+          "label": "Bonded Token Symbol",
+          "placeholder": "..."
         }
       ],
       "abi": {
         "constant": false,
         "inputs": [
           {
-            "components": [
-              {
-                "name": "beneficiary",
-                "type": "address"
-              },
-              {
-                "name": "owner",
-                "type": "address"
-              },
-              {
-                "name": "buyCurveParams",
-                "type": "uint32"
-              },
-              {
-                "name": "sellCurveParams",
-                "type": "uint32"
-              },
-              {
-                "name": "collateralToken",
-                "type": "address"
-              },
-              {
-                "name": "splitOnPay",
-                "type": "uint256"
-              },
-              {
-                "name": "bondedTokenName",
-                "type": "string"
-              },
-              {
-                "name": "bondedTokenSymbol",
-                "type": "string"
-              }
-            ],
-            "name": "deployParams",
-            "type": "tuple"
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "name": "collateralToken",
+            "type": "address"
+          },
+          {
+            "name": "buyCurveParams",
+            "type": "uint32"
+          },
+          {
+            "name": "sellCurveParams",
+            "type": "uint32"
+          },
+          {
+            "name": "splitOnPay",
+            "type": "uint256"
+          },
+          {
+            "name": "bondedTokenName",
+            "type": "string"
+          },
+          {
+            "name": "bondedTokenSymbol",
+            "type": "string"
           }
         ],
         "name": "deployBancor",
