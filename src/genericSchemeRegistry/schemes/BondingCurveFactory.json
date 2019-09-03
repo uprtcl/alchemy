@@ -1,9 +1,9 @@
 {
-  "name": "BondingCurveFactory",
+  "name": "Bonding Curve Factory",
   "addresses": {
     "main": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
     "rinkeby": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
-    "private": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"]
+    "private": ["0xE7e11928Ea5f103C224Cb1Ee862F9CC617729570"]
   },
   "actions": [
     {
@@ -23,27 +23,27 @@
           "placeholder": "Address (0x0000…)"
         },
         {
-          "name": "buyCurveParams",
-          "label": "Buy curve reserveRatio",
-          "placeholder": "Ratio in ppm (1-1000000)",
-          "decimals": 18
-        },
-        {
-          "name": "sellCurveParams",
-          "label": "Sell curve reserveRatio",
-          "placeholder": "Ratio in ppm (1-1000000)",
-          "decimals": 18
-        },
-        {
           "name": "collateralToken",
           "label": "Collateral token address",
           "placeholder": "Address (0x0000…)"
         },
         {
+          "name": "buyCurveParams",
+          "label": "Buy curve reserveRatio",
+          "placeholder": "Ratio in ppm (1-1000000)",
+          "decimals": 0
+        },
+        {
+          "name": "sellCurveParams",
+          "label": "Sell curve reserveRatio",
+          "placeholder": "Ratio in ppm (1-1000000)",
+          "decimals": 0
+        },
+        {
           "name": "splitOnPay",
-          "defaultValue": 50,
           "label": "Income split to beneficiary",
-          "decimals": 18
+          "placeholder": "Percentage to beneficiary (1-100)",
+          "decimals": 0
         },
         {
           "name": "bondedTokenName",
@@ -59,46 +59,16 @@
       "abi": {
         "constant": false,
         "inputs": [
-          {
-            "components": [
-              {
-                "name": "beneficiary",
-                "type": "address"
-              },
-              {
-                "name": "owner",
-                "type": "address"
-              },
-              {
-                "name": "buyCurveParams",
-                "type": "uint32"
-              },
-              {
-                "name": "sellCurveParams",
-                "type": "uint32"
-              },
-              {
-                "name": "collateralToken",
-                "type": "address"
-              },
-              {
-                "name": "splitOnPay",
-                "type": "uint256"
-              },
-              {
-                "name": "bondedTokenName",
-                "type": "string"
-              },
-              {
-                "name": "bondedTokenSymbol",
-                "type": "string"
-              }
-            ],
-            "name": "deployParams",
-            "type": "tuple"
-          }
+          { "name": "beneficiary", "type": "address" },
+          { "name": "owner", "type": "address" },
+          { "name": "collateralToken", "type": "address" },
+          { "name": "buyCurveParams", "type": "uint256" },
+          { "name": "sellCurveParams", "type": "uint256" },
+          { "name": "splitOnPay", "type": "uint256" },
+          { "name": "bondedTokenName", "type": "string" },
+          { "name": "bondedTokenSymbol", "type": "string" }
         ],
-        "name": "deployBancor",
+        "name": "deployStatic",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
