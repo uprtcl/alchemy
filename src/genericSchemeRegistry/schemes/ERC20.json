@@ -1,0 +1,48 @@
+{
+  "name": "ERC20 Token",
+  "addresses": {
+    "main": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
+    "rinkeby": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
+    "private": ["0x58cb9d5c09609a68e9a7152ac5252f48c1b10e11"]
+  },
+  "actions": [
+    {
+      "id": "approve",
+      "label": "Approve Tokens",
+      "description": "Approve specified contract to spend tokens",
+      "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L248",
+      "fields": [
+        {
+          "label": "Spender",
+          "name": "spender",
+          "placeholder": "Address (0x0000…)"
+        },
+        {
+          "decimals": 18,
+          "label": "Value",
+          "name": "value",
+          "unit": "Tokens",
+          "placeholder": "Amount in ERC20 Tokens (1500)"
+        }
+      ],
+      "abi": {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    }
+  ]
+}

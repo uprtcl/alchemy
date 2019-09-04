@@ -140,7 +140,7 @@
       }
     },
     {
-      "id": "changeBeneficiary",
+      "id": "setBeneficiary",
       "label": "Change Curve Beneficiary",
       "description": "Change Curve Beneficiary",
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
@@ -160,6 +160,87 @@
           }
         ],
         "name": "setBeneficiary",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    },
+    {
+      "id": "setBuyCurve",
+      "label": "Change Curve Beneficiary",
+      "description": "Change Curve Beneficiary",
+      "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
+      "fields": [
+        {
+          "label": "New buy curve adddress",
+          "name": "buyCurve",
+          "placeholder": "Address (0x0000…)"
+        }
+      ],
+      "abi": {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "buyCurve",
+            "type": "address"
+          }
+        ],
+        "name": "setBuyCurve",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    },
+    {
+      "id": "setSellCurve",
+      "label": "Change Curve Beneficiary",
+      "description": "Change Curve Beneficiary",
+      "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
+      "fields": [
+        {
+          "label": "New sell curve adddress",
+          "name": "sellCurve",
+          "placeholder": "Address (0x0000…)"
+        }
+      ],
+      "abi": {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "sellCurve",
+            "type": "address"
+          }
+        ],
+        "name": "setSellCurve",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    },
+    {
+      "id": "setSplitOnPay",
+      "label": "Change Curve Beneficiary",
+      "description": "The 'Split On Pay' determines the percentage of incoming funds that are sent to the beneficiary. The remainder is distributed among the dividend holders",
+      "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
+      "fields": [
+        {
+          "label": "New split on pay",
+          "name": "splitOnPay",
+          "placeholder": "Address (0x0000…)"
+        }
+      ],
+      "abi": {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "splitOnPay",
+            "type": "uint256"
+          }
+        ],
+        "name": "setSplitOnPay",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",

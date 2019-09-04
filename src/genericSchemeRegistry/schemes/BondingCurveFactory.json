@@ -3,11 +3,11 @@
   "addresses": {
     "main": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
     "rinkeby": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
-    "private": ["0xE7e11928Ea5f103C224Cb1Ee862F9CC617729570"]
+    "private": ["0xB0f6EC177Ab867E372479C0bfdBB0068bb5E1554"]
   },
   "actions": [
     {
-      "id": "deployNew",
+      "id": "deployBancor",
       "label": "Deploy Bonding Curve",
       "description": "Deploy a new bonding curve with specified parameters, complete with new bonded token. Details can be found <a target=\"_blank\" href=\"https://github.com/dOrgTech/BC-DAO\">here</a>.",
       "notes": "https://github.com/dOrgTech/BC-DAO",
@@ -42,7 +42,7 @@
         {
           "name": "splitOnPay",
           "label": "Income split to beneficiary",
-          "placeholder": "Percentage to beneficiary (1-100)",
+          "placeholder": "Percentage to beneficiary (0-100)",
           "decimals": 0
         },
         {
@@ -62,13 +62,13 @@
           { "name": "beneficiary", "type": "address" },
           { "name": "owner", "type": "address" },
           { "name": "collateralToken", "type": "address" },
-          { "name": "buyCurveParams", "type": "uint256" },
-          { "name": "sellCurveParams", "type": "uint256" },
+          { "name": "buyCurveParams", "type": "uint32" },
+          { "name": "sellCurveParams", "type": "uint32" },
           { "name": "splitOnPay", "type": "uint256" },
           { "name": "bondedTokenName", "type": "string" },
           { "name": "bondedTokenSymbol", "type": "string" }
         ],
-        "name": "deployStatic",
+        "name": "deployBancor",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
