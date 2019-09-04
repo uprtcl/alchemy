@@ -7,7 +7,7 @@
   },
   "actions": [
     {
-      "id": "deployBancor",
+      "id": "deployStatic",
       "label": "Deploy Bonding Curve",
       "description": "Deploy a new bonding curve with specified parameters, complete with new bonded token. Details can be found <a target=\"_blank\" href=\"https://github.com/dOrgTech/BC-DAO\">here</a>.",
       "notes": "https://github.com/dOrgTech/BC-DAO",
@@ -62,13 +62,13 @@
           { "name": "beneficiary", "type": "address" },
           { "name": "owner", "type": "address" },
           { "name": "collateralToken", "type": "address" },
-          { "name": "buyCurveParams", "type": "uint32" },
-          { "name": "sellCurveParams", "type": "uint32" },
+          { "name": "buyCurveParams", "type": "uint256" },
+          { "name": "sellCurveParams", "type": "uint256" },
           { "name": "splitOnPay", "type": "uint256" },
           { "name": "bondedTokenName", "type": "string" },
           { "name": "bondedTokenSymbol", "type": "string" }
         ],
-        "name": "deployBancor",
+        "name": "deployStatic",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
