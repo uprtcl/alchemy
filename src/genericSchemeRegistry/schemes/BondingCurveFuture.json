@@ -316,7 +316,7 @@
     },
     {
       "id": "setBuyCurve",
-      "label": "Change Curve Beneficiary",
+      "label": "Change Buy Curve",
       "description": "Change Curve Beneficiary",
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
       "fields": [
@@ -352,7 +352,7 @@
     },
     {
       "id": "setSellCurve",
-      "label": "Change Curve Beneficiary",
+      "label": "Change Sell Curve",
       "description": "Change Curve Beneficiary",
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
       "fields": [
@@ -388,7 +388,7 @@
     },
     {
       "id": "setSplitOnPay",
-      "label": "Change Curve Beneficiary",
+      "label": "Change Payment Split",
       "description": "The 'Split On Pay' determines the percentage of incoming funds that are sent to the beneficiary. The remainder is distributed among the dividend holders",
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
       "fields": [
