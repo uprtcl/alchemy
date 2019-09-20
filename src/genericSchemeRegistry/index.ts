@@ -6,7 +6,7 @@ const Web3 = require("web3");
 const dutchXInfo = require("./schemes/DutchX.json");
 const bondingCurveInfo = require("./schemes/BondingCurve.json");
 const bondingCurveFactoryInfo = require("./schemes/BondingCurveFactory.json");
-const bondingCurveFutureInfo = require("./schemes/BondingCurveFuture.json");
+const continuousFundraisingInfo = require("./schemes/ContinuousFundraising.json");
 const erc20Info = require("./schemes/ERC20.json");
 const gpInfo = require("./schemes/GenesisProtocol.json");
 
@@ -14,7 +14,7 @@ const KNOWNSCHEMES = [
   bondingCurveInfo,
   bondingCurveFactoryInfo,
   erc20Info,
-  bondingCurveFutureInfo,
+  continuousFundraisingInfo,
   dutchXInfo,
   gpInfo
 ];

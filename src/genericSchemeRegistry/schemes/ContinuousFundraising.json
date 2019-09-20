@@ -1,9 +1,9 @@
 {
-  "name": "Bonding Curve Future",
+  "name": "Continuous Fundraising",
   "addresses": {
     "main": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
     "rinkeby": ["0x54F2560b05888b9f898E5e16aD98135B6e0813F5"],
-    "private": ["0xEea6eFa87e6190930862348EBF7713745Fff7E3D"]
+    "private": ["0x308CC725450ddaE0AE49233a3c31b17638d85Aec"]
   },
   "actions": [
     {
@@ -13,54 +13,60 @@
       "notes": "https://github.com/dOrgTech/BC-DAO",
       "fields": [
         {
-          "name": "beneficiary",
-          "label": "Beneficiary address",
+          "name": "factory",
+          "label": "Factory Address",
           "placeholder": "Address (0x0000…)"
         },
         {
           "name": "owner",
-          "label": "Owner address",
+          "label": "Owner Address",
+          "placeholder": "Address (0x0000…)"
+        },
+        {
+          "name": "beneficiary",
+          "label": "Beneficiary Address",
           "placeholder": "Address (0x0000…)"
         },
         {
           "name": "collateralToken",
-          "label": "Collateral token address",
+          "label": "Collateral Token Address",
           "placeholder": "Address (0x0000…)"
         },
         {
           "name": "buyCurveParams",
-          "label": "Buy curve reserveRatio",
-          "placeholder": "Ratio in ppm (1-1000000)",
+          "label": "Buy Curve Parameter",
+          "placeholder": "Reserve Ratio in ppm (1-1000000)",
           "decimals": 0
         },
         {
           "name": "sellCurveParams",
-          "label": "Sell curve reserveRatio",
-          "placeholder": "Ratio in ppm (1-1000000)",
+          "label": "Sell Curve Parameter",
+          "placeholder": "Reserve Ratio in ppm (1-1000000)",
           "decimals": 0
         },
         {
           "name": "splitOnPay",
-          "label": "Income split to beneficiary",
+          "label": "Income Split To Beneficiary",
           "placeholder": "Percentage to beneficiary (0-100)",
           "decimals": 0
         },
         {
           "name": "bondedTokenName",
-          "label": "Bonded token name",
+          "label": "Bonded Token Name",
           "placeholder": "Bonded Token"
         },
         {
           "name": "bondedTokenSymbol",
-          "label": "Bonded token symbol",
+          "label": "Bonded Token Symbol",
           "placeholder": "BND"
         }
       ],
       "abi": {
         "constant": false,
         "inputs": [
-          { "name": "beneficiary", "type": "address" },
+          { "name": "factory", "type": "address" },
           { "name": "owner", "type": "address" },
+          { "name": "beneficiary", "type": "address" },
           { "name": "collateralToken", "type": "address" },
           { "name": "buyCurveParams", "type": "uint32" },
           { "name": "sellCurveParams", "type": "uint32" },
@@ -78,30 +84,30 @@
     {
       "id": "buy",
       "label": "Buy Tokens",
-      "description": "Buy bondedTokens with collateralTokens",
+      "description": "Buy bondedTokens with collateral, from any curve.",
       "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L248",
       "fields": [
         {
           "label": "Bonding Curve Address",
-          "name": "curveAddress",
+          "name": "bondingCurve",
           "placeholder": "Address (0x0000…)"
         },
         {
           "decimals": 18,
-          "label": "Tokens to buy",
+          "label": "Tokens to Buy",
           "name": "numTokens",
           "unit": "USD",
           "placeholder": "Amount in BondedTokens (1500)"
         },
         {
           "decimals": 18,
-          "label": "Max total price",
+          "label": "Max Total Price",
           "name": "maxPrice",
           "unit": "USD",
           "placeholder": "Amount in CollateralTokens (1500)"
         },
         {
-          "label": "Purchase recipient",
+          "label": "Purchase Recipient",
           "name": "recipient",
           "unit": "USD",
           "placeholder": "Address (0x0000…)"
@@ -111,7 +117,7 @@
         "constant": false,
         "inputs": [
           {
-            "name": "curveAddress",
+            "name": "bondingCurve",
             "type": "address"
           },
           {
@@ -137,30 +143,30 @@
     {
       "id": "sell",
       "label": "Sell Tokens",
-      "description": "Sell bonded tokens for collateral",
+      "description": "Sell bonded tokens for collateral, from any curve.",
       "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L252",
       "fields": [
         {
           "label": "Bonding Curve Address",
-          "name": "curveAddress",
+          "name": "bondingCurve",
           "placeholder": "Address (0x0000…)"
         },
         {
           "decimals": 18,
-          "label": "Tokens to sell",
+          "label": "Tokens to Sell",
           "name": "numTokens",
           "unit": "USD",
           "placeholder": "Amount in BondedTokens (1500)"
         },
         {
           "decimals": 18,
-          "label": "Min total price",
+          "label": "Min Total Price",
           "name": "minPrice",
           "unit": "USD",
           "placeholder": "Amount in CollateralTokens (1500)"
         },
         {
-          "label": "Reward recipient",
+          "label": "Reward Recipient",
           "name": "recipient",
           "unit": "USD",
           "placeholder": "Address (0x0000…)"
@@ -170,7 +176,7 @@
         "constant": false,
         "inputs": [
           {
-            "name": "curveAddress",
+            "name": "bondingCurve",
             "type": "address"
           },
           {
@@ -196,17 +202,17 @@
     {
       "id": "pay",
       "label": "Pay Tokens",
-      "description": "Send a payment to a DAO via it's bonding curve",
+      "description": "Send a payment to a DAO via it's bonding curve.",
       "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L252",
       "fields": [
         {
           "label": "Bonding Curve Address",
-          "name": "curveAddress",
+          "name": "bondingCurve",
           "placeholder": "Address (0x0000…)"
         },
         {
           "decimals": 18,
-          "label": "Tokens to pay",
+          "label": "Tokens to Pay",
           "name": "amount",
           "unit": "USD",
           "placeholder": "Amount in CollateralTokens (1500)"
@@ -216,7 +222,7 @@
         "constant": false,
         "inputs": [
           {
-            "name": "curveAddress",
+            "name": "bondingCurve",
             "type": "address"
           },
           {
@@ -232,65 +238,18 @@
       }
     },
     {
-      "id": "approve",
-      "label": "ERC20 Approve",
-      "description": "Approve specified contract to spend tokens",
-      "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L248",
-      "fields": [
-        {
-          "label": "Token Address",
-          "name": "tokenAddress",
-          "placeholder": "Address (0x0000…)"
-        },
-        {
-          "label": "Spender",
-          "name": "spender",
-          "placeholder": "Address (0x0000…)"
-        },
-        {
-          "decimals": 18,
-          "label": "Value",
-          "name": "value",
-          "unit": "Tokens",
-          "placeholder": "Amount in ERC20 Tokens (1500)"
-        }
-      ],
-      "abi": {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "tokenAddress",
-            "type": "address"
-          },
-          {
-            "name": "spender",
-            "type": "address"
-          },
-          {
-            "name": "value",
-            "type": "uint256"
-          }
-        ],
-        "name": "approve",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }
-    },
-    {
       "id": "setBeneficiary",
       "label": "Change Curve Beneficiary",
-      "description": "Change Curve Beneficiary",
+      "description": "Change curve beneficiary for a curve owned by this DAO.",
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
       "fields": [
         {
           "label": "Bonding Curve Address",
-          "name": "curveAddress",
+          "name": "bondingCurve",
           "placeholder": "Address (0x0000…)"
         },
         {
-          "label": "New beneficiary adddress",
+          "label": "New Beneficiary Address",
           "name": "beneficiary",
           "placeholder": "Address (0x0000…)"
         }
@@ -299,7 +258,7 @@
         "constant": false,
         "inputs": [
           {
-            "name": "curveAddress",
+            "name": "bondingCurve",
             "type": "address"
           },
           {
@@ -317,16 +276,16 @@
     {
       "id": "setBuyCurve",
       "label": "Change Buy Curve",
-      "description": "Change Curve Beneficiary",
+      "description": "Change buy curve implementation for a curve owned by this DAO.",
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
       "fields": [
         {
           "label": "Bonding Curve Address",
-          "name": "curveAddress",
+          "name": "bondingCurve",
           "placeholder": "Address (0x0000…)"
         },
         {
-          "label": "New buy curve adddress",
+          "label": "New Buy Curve Address",
           "name": "buyCurve",
           "placeholder": "Address (0x0000…)"
         }
@@ -335,7 +294,7 @@
         "constant": false,
         "inputs": [
           {
-            "name": "curveAddress",
+            "name": "bondingCurve",
             "type": "address"
           },
           {
@@ -353,16 +312,16 @@
     {
       "id": "setSellCurve",
       "label": "Change Sell Curve",
-      "description": "Change Curve Beneficiary",
+      "description": "Change sell curve implementation for a curve owned by this DAO.",
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
       "fields": [
         {
           "label": "Bonding Curve Address",
-          "name": "curveAddress",
+          "name": "bondingCurve",
           "placeholder": "Address (0x0000…)"
         },
         {
-          "label": "New sell curve adddress",
+          "label": "New Sell Curve Address",
           "name": "sellCurve",
           "placeholder": "Address (0x0000…)"
         }
@@ -371,7 +330,7 @@
         "constant": false,
         "inputs": [
           {
-            "name": "curveAddress",
+            "name": "bondingCurve",
             "type": "address"
           },
           {
@@ -389,16 +348,16 @@
     {
       "id": "setSplitOnPay",
       "label": "Change Payment Split",
-      "description": "The 'Split On Pay' determines the percentage of incoming funds that are sent to the beneficiary. The remainder is distributed among the dividend holders",
+      "description": "Change the 'Split On Pay' parameter for a curve owned by this DAO. The 'Split On Pay' determines the percentage of incoming funds that are sent to the beneficiary. The remainder is distributed among the dividend holders.",
       "notes": "https://github.com/gnosis/dx-contracts/blob/master/contracts/base/EthOracle.sol",
       "fields": [
         {
           "label": "Bonding Curve Address",
-          "name": "curveAddress",
+          "name": "bondingCurve",
           "placeholder": "Address (0x0000…)"
         },
         {
-          "label": "New split on pay",
+          "label": "New Split On Pay",
           "name": "splitOnPay",
           "placeholder": "Address (0x0000…)"
         }
@@ -407,7 +366,7 @@
         "constant": false,
         "inputs": [
           {
-            "name": "curveAddress",
+            "name": "bondingCurve",
             "type": "address"
           },
           {

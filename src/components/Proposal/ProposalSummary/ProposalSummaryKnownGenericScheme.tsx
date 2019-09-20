@@ -36,7 +36,7 @@ export default class ProposalSummary extends React.Component<IProps> {
       return <ProposalSummaryDutchX {...this.props} />;
     } else if (genericSchemeInfo.specs.name === "ERC20 Token") {
       return <ProposalSummaryDutchX {...this.props} />;
-    } else if (genericSchemeInfo.specs.name === "BondingCurveFactoryFuture") {
+    } else if (genericSchemeInfo.specs.name === "Continuous Fundraising") {
       return <ProposalSummaryDutchX {...this.props} />;
     }
     const proposalSummaryClass = classNames({

@@ -9,7 +9,7 @@
     {
       "id": "buy",
       "label": "Buy Tokens",
-      "description": "Buy bondedTokens with collateralTokens",
+      "description": "Buy bondedTokens with collateral from any curve",
       "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L248",
       "fields": [
         {
@@ -59,7 +59,7 @@
     {
       "id": "sell",
       "label": "Sell Tokens",
-      "description": "Sell bonded tokens for collateral",
+      "description": "Sell bonded tokens for collateral for any curve",
       "notes": "https://github.com/gnosis/dx-contracts/blob/c9a9bd0d73f96eed65dca5c5a947451adb8e80b6/contracts/DutchExchange.sol#L252",
       "fields": [
         {
