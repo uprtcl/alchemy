@@ -6,6 +6,8 @@ import * as React from "react";
 import { IProfileState } from "reducers/profilesReducer";
 import * as css from "./ProposalSummary.scss";
 import ProposalSummaryDutchX from "./ProposalSummaryDutchX";
+import ProposalSummaryIdentityRegistry from "./ProposalSummaryIdentityRegistry";
+
 
 interface IProps {
   beneficiaryProfile?: IProfileState;
@@ -26,7 +28,9 @@ export default class ProposalSummary extends React.Component<IProps> {
     const { proposal, detailView, transactionModal, genericSchemeInfo } = this.props;
     if (genericSchemeInfo.specs.name === "DutchX") {
       return <ProposalSummaryDutchX {...this.props} />;
-    }
+  } else if (genericSchemeInfo.specs.name === "IdentityRegistry") {
+      return <ProposalSummaryIdentityRegistry {...this.props} />
+  }
     const proposalSummaryClass = classNames({
       [css.detailView]: detailView,
       [css.transactionModal]: transactionModal,
