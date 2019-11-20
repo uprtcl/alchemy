@@ -9,7 +9,7 @@ const gpInfo = require("./schemes/GenesisProtocol.json");
 const ensRegistryInfo = require("./schemes/ENSRegistry.json");
 const ensPublicResolverInfo = require("./schemes/ENSPublicResolver.json");
 const registryLookupInfo = require("./schemes/RegistryLookup.json");
-const IdentityRegistryInfo = require("./schemes/IdentityRegistry.json");
+const IdentityRegistryInfo = require("@dorgtech/id-dao-client");
 
 
 const KNOWNSCHEMES = [
