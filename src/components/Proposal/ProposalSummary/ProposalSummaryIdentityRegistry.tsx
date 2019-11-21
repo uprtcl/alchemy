@@ -45,12 +45,12 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
               <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
               {action.label}
             </span>
-            // { detailView ?
-            //   <div className={css.summaryDetails}>
+            { detailView ?
+              <div className={css.summaryDetails}>
             //     { action.fields[0].label}: <a href={linkToEtherScan(decodedCallData.values[0])} target="_blank" rel="noopener noreferrer">{decodedCallData.values[0]}</a>
-            //   </div>
-            //   : ""
-            // }
+              </div>
+              : ""
+            }
           </div>
         );
       case "update":
@@ -60,12 +60,12 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
               <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
               {action.label}
             </span>
-            // { detailView ?
-            //   <div className={css.summaryDetails}>
+            { detailView ?
+              <div className={css.summaryDetails}>
             //     New oracle address: <a href={linkToEtherScan(decodedCallData.values[0])} target="_blank" rel="noopener noreferrer">{decodedCallData.values[0]}</a>
-            //   </div>
-            //   : ""
-            // }
+              </div>
+              : ""
+            }
           </div>
         );
       case "remove":
@@ -75,12 +75,12 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
               <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
               {action.label}
             </span>
-            // { detailView ?
-            //   <div className={css.summaryDetails}>
+            { detailView ?
+              <div className={css.summaryDetails}>
             //     New owner address: <a href={linkToEtherScan(decodedCallData.values[0])} target="_blank" rel="noopener noreferrer">{decodedCallData.values[0]}</a>
-            //   </div>
-            //   : ""
-            // }
+              </div>
+              : ""
+            }
           </div>
         );
       default:
