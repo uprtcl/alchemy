@@ -9,16 +9,19 @@ const gpInfo = require("./schemes/GenesisProtocol.json");
 const ensRegistryInfo = require("./schemes/ENSRegistry.json");
 const ensPublicResolverInfo = require("./schemes/ENSPublicResolver.json");
 const registryLookupInfo = require("./schemes/RegistryLookup.json");
-const IdentityRegistryInfo = require("@dorgtech/id-dao-client"); // TODO: Do we have to import the GenericActions specifically? 
+import { genericActions as IdentityRegistryInfo } from "@dorgtech/id-dao-client";
 
+// TODO: REMOVE ME! This is for testing.
+IdentityRegistryInfo.addresses = {...dutchXInfo.addresses};
 
 const KNOWNSCHEMES = [
-  dutchXInfo,
+  IdentityRegistryInfo,
+  // TODO: REMOVE ME! This is for testing.
+  // dutchXInfo,
   ensRegistryInfo,
   ensPublicResolverInfo,
   gpInfo,
   registryLookupInfo,
-  IdentityRegistryInfo,
 ];
 
 const SCHEMEADDRESSES: {[network: string]: { [address: string]: any}} = {
@@ -256,5 +259,4 @@ export class GenericSchemeRegistry {
       return new GenericSchemeInfo(spec);
     }
   }
-
 }
