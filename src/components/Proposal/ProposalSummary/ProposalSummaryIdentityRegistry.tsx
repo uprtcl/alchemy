@@ -1,8 +1,9 @@
+import * as React from "react";
 import { IProposalState } from "@daostack/client";
+import { setIpfsEndpoint, getIdentity, IdentityDefinitionForm } from "@dorgtech/id-dao-client";
 import * as classNames from "classnames";
 import { GenericSchemeInfo } from "genericSchemeRegistry";
-import { linkToEtherScan } from "lib/util";
-import * as React from "react";
+import { getArcSettings } from "arc";
 import * as css from "./ProposalSummary.scss";
 
 interface IProps {
@@ -12,10 +13,28 @@ interface IProps {
   transactionModal?: boolean;
 }
 
-export default class ProposalSummaryIdentityRegistry extends React.Component<IProps, null> {
+interface State {
+  action: any;
+  identity: IdentityDefinitionForm;
+  id: string;
+  sig: string;
+}
 
-  public render(): RenderOutput {
-    const { proposal, detailView, genericSchemeInfo, transactionModal } = this.props;
+export default class ProposalSummaryIdentityRegistry extends React.Component<IProps, State> {
+
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      action: {},
+      identity: new IdentityDefinitionForm(),
+      id: "",
+      sig: ""
+    }
+  }
+  async componentDidMount() {
+    setIpfsEndpoint(getArcSettings().ipfsProvider);
+
+    const { proposal, genericSchemeInfo } = this.props;
     let decodedCallData: any;
     try {
       decodedCallData = genericSchemeInfo.decodeCallData(proposal.genericScheme.callData);
@@ -28,6 +47,32 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
     }
     const action = decodedCallData.action;
 
+    this.setState({
+      action
+    });
+
+    switch (action.id) {
+      case "add":
+        const [id, metadata, sig] = decodedCallData.values;
+        const identity = await getIdentity({ hash: metadata });
+        const form = new IdentityDefinitionForm();
+        form.data = identity;
+        await form.validate();
+
+        this.setState({
+          id,
+          sig,
+          identity: form
+        });
+      case "update":
+      case "remove":
+    }
+  }
+
+  public render(): RenderOutput {
+    const { detailView, transactionModal } = this.props;
+    const { action, id, sig, identity } = this.state;
+
     const proposalSummaryClass = classNames({
       [css.detailView]: detailView,
       [css.transactionModal]: transactionModal,
@@ -37,6 +82,19 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
 
     switch (action.id) {
       case "add":
+
+        // Show address
+        // fetch metadata from IPFS
+        // Render Metadata
+        // Big red sign if metadata.address !== params.address
+
+        // render name
+        // render address
+        // render twitter
+        // render github
+        // render image
+        // render video
+
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
@@ -45,7 +103,9 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
             </span>
             { detailView ?
               <div className={css.summaryDetails}>
-            //     { action.fields[0].label}: <a href={linkToEtherScan(decodedCallData.values[0])} target="_blank" rel="noopener noreferrer">{decodedCallData.values[0]}</a>
+                {id}
+                {sig}
+                {JSON.stringify(identity.data, null, 2)}
               </div>
               : ""
             }
@@ -60,7 +120,7 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
             </span>
             { detailView ?
               <div className={css.summaryDetails}>
-            //     New oracle address: <a href={linkToEtherScan(decodedCallData.values[0])} target="_blank" rel="noopener noreferrer">{decodedCallData.values[0]}</a>
+                
               </div>
               : ""
             }
@@ -75,7 +135,7 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
             </span>
             { detailView ?
               <div className={css.summaryDetails}>
-            //     New owner address: <a href={linkToEtherScan(decodedCallData.values[0])} target="_blank" rel="noopener noreferrer">{decodedCallData.values[0]}</a>
+                
               </div>
               : ""
             }

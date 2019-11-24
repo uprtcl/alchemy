@@ -12,12 +12,12 @@ const registryLookupInfo = require("./schemes/RegistryLookup.json");
 import { genericActions as IdentityRegistryInfo } from "@dorgtech/id-dao-client";
 
 // TODO: REMOVE ME! This is for testing.
-IdentityRegistryInfo.addresses = {...dutchXInfo.addresses};
+// IdentityRegistryInfo.addresses = {...dutchXInfo.addresses};
 
 const KNOWNSCHEMES = [
-  IdentityRegistryInfo,
+  // IdentityRegistryInfo,
   // TODO: REMOVE ME! This is for testing.
-  // dutchXInfo,
+  dutchXInfo,
   ensRegistryInfo,
   ensPublicResolverInfo,
   gpInfo,
@@ -110,6 +110,10 @@ export class ActionField {
       case "keccak256": {
         const web3 = new Web3();
         return web3.utils.keccak256(userValue);
+      }
+      case "asciiToHex": {
+        const web3 = new Web3();
+        return web3.utils.asciiToHex(userValue);
       }
     }
 
