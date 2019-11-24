@@ -12,12 +12,12 @@ const registryLookupInfo = require("./schemes/RegistryLookup.json");
 import { genericActions as IdentityRegistryInfo } from "@dorgtech/id-dao-client";
 
 // TODO: REMOVE ME! This is for testing.
-// IdentityRegistryInfo.addresses = {...dutchXInfo.addresses};
+IdentityRegistryInfo.addresses = {...dutchXInfo.addresses};
 
 const KNOWNSCHEMES = [
-  // IdentityRegistryInfo,
+  IdentityRegistryInfo,
   // TODO: REMOVE ME! This is for testing.
-  dutchXInfo,
+  // dutchXInfo,
   ensRegistryInfo,
   ensPublicResolverInfo,
   gpInfo,
