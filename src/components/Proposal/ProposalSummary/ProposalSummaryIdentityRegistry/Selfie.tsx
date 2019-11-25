@@ -44,7 +44,9 @@ export default class Selfie extends React.Component<IProps, IState> {
       <>
       {img === "" ?
         <></> :
-        <img src={img} alt={"selfie"} />
+        <div className={idCss.selfie}>
+          <img src={img} alt={"selfie"} />
+        </div>
       }
       {error === "" ?
         <></> :
