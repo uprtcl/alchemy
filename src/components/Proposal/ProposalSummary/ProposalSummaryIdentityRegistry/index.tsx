@@ -1,16 +1,18 @@
 import * as React from "react";
 import Web3 = require("web3");
-import { TwitterTweetEmbed } from "react-twitter-embed";
-import Gist from "react-gist";
 import { IProposalState } from "@daostack/client";
 import { setIpfsEndpoint, getIdentity, IdentityDefinitionForm, isHuman } from "@dorgtech/id-dao-client";
 import * as classNames from "classnames";
 import { GenericSchemeInfo } from "genericSchemeRegistry";
-import { getArcSettings } from "arc";
-import Selfie from "./Selfie";
-import Video from "./Video";
+// import { getArcSettings } from "arc";
+import IdentityDefinitionView from "./IdentityDefinitionView";
 import * as css from "../ProposalSummary.scss";
 import * as idCss from "./IdentityDefinition.scss";
+
+const hexToAscii = (hex: string) => {
+  const web3 = new Web3();
+  return web3.utils.hexToAscii(hex);
+}
 
 interface IProps {
   genericSchemeInfo: GenericSchemeInfo;
@@ -39,7 +41,9 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
   }
 
   async componentDidMount() {
-    setIpfsEndpoint(getArcSettings().ipfsProvider);
+    // const ipfsProv = getArcSettings().ipfsProvider;
+    // TODO: edit setIpfsEndpoint to take the full struct
+    setIpfsEndpoint("localhost");
 
     const { proposal, genericSchemeInfo } = this.props;
     let decodedCallData: any;
@@ -72,8 +76,7 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
       case "add": {
         const [id, metadata] = decodedCallData.values;
         try {
-          const web3 = new Web3();
-          const hash = web3.utils.hexToAscii(metadata);
+          const hash = hexToAscii(metadata);
           const identity = await getIdentity({ hash });
           const form = new IdentityDefinitionForm();
           form.data = identity;
@@ -162,7 +165,7 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
 
   public render(): RenderOutput {
     const { detailView, transactionModal } = this.props;
-    const { decodedCallData, identity, error } = this.state;
+    const { decodedCallData, identity, updatedIdentity, error } = this.state;
     const action = decodedCallData.action;
 
     const proposalSummaryClass = classNames({
@@ -194,123 +197,18 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
     }
 
     switch (action.id) {
-      case "add":
-
-        // Show address
-        // fetch metadata from IPFS
-        // Render Metadata
-        // Big red sign if metadata.address !== params.address
-
-        // render twitter
-        // render github
-        // render image
-        // render video
-
+      case "add": {
         const [callAddress, callHash, callSig] = decodedCallData.values;
-        const id = identity.data;
-
-        const extractTweetId = (url: string) => {
-          const lastSlash = url.lastIndexOf('/');
-          return url.substr(lastSlash + 1);
-        }
-
-        const extractGistId = (url: string) => {
-          const lastSlash = url.lastIndexOf('/');
-          return url.substr(lastSlash + 1);
-        }
 
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
+              <img src="/assets/images/Icon/v-small-line.svg"/>&nbsp;
               {action.label}
             </span>
             { detailView ?
               <div className={css.summaryDetails}>
-                <div className={idCss.identityProp}>
-                  Name
-                </div>
-                <div className={idCss.identityError}>
-                  {identity.$.name.error}
-                </div>
-                <div className={idCss.identityValue}>
-                  {id.name}
-                </div>
-                <div className={idCss.identityProp}>
-                  Address
-                </div>
-                <div className={idCss.identityError}>
-                  {identity.$.address.error}
-                </div>
-                <div className={idCss.identityValue}>
-                  {id.address}
-                </div>
-                <div className={idCss.identityProp}>
-                  Selfie
-                </div>
-                <div className={idCss.identityError}>
-                  {identity.$.uploads.$.selfie.error}
-                </div>
-                {identity.$.uploads.$.selfie.hasError === false ?
-                  (id.uploads.selfie ?
-                    <Selfie source={id.uploads.selfie} /> :
-                    <></>
-                  ) :
-                  <></>
-                }
-                <div className={idCss.identityProp}>
-                  Video
-                </div>
-                <div className={idCss.identityError}>
-                  {identity.$.uploads.$.video.error}
-                </div>
-                {identity.$.uploads.$.video.hasError === false ?
-                  (id.uploads.video ?
-                    <Video source={id.uploads.video} /> :
-                    <></>
-                  ) :
-                  <></>
-                }
-                <div className={idCss.identityProp}>
-                  Twitter
-                </div>
-                <div className={idCss.identityError}>
-                  {identity.$.socialPosts.$.twitter.error}
-                </div>
-                {identity.$.socialPosts.$.twitter.error === undefined ?
-                  (id.socialPosts.twitter ?
-                    <>
-                      <a target="_blank" href={id.socialPosts.twitter}>View</a>
-                      <TwitterTweetEmbed tweetId={extractTweetId(id.socialPosts.twitter)} />
-                    </> :
-                    <></>
-                  ) :
-                  <></>
-                }
-                <div className={idCss.identityProp}>
-                  GitHub
-                </div>
-                <div className={idCss.identityError}>
-                  {identity.$.socialPosts.$.github.error}
-                </div>
-                {identity.$.socialPosts.$.github.error === undefined ?
-                  (id.socialPosts.github ?
-                    <>
-                      <a target="_blank" href={id.socialPosts.github}>View</a>
-                      <Gist id={extractGistId(id.socialPosts.github)} />
-                    </> :
-                    <></>
-                  ) :
-                  <></>
-                }
-                <div className={idCss.identityProp}>
-                  [Expert] Identity Definition JSON
-                </div>
-                <div className={idCss.identityValue}>
-                  <p>
-                    {JSON.stringify(identity.data, null, 2)}
-                  </p>
-                </div>
+                <IdentityDefinitionView identity={identity} rootHash={hexToAscii(callHash)}/>
                 <div className={idCss.identityProp}>
                   [Expert] Contract Call Values
                 </div>
@@ -328,7 +226,10 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
             }
           </div>
         );
-      case "update":
+      }
+      case "update": {
+        const [callAddress, callHash, callSig] = decodedCallData.values;
+
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
@@ -337,27 +238,50 @@ export default class ProposalSummaryIdentityRegistry extends React.Component<IPr
             </span>
             { detailView ?
               <div className={css.summaryDetails}>
-                
+                <IdentityDefinitionView identity={updatedIdentity} rootHash={hexToAscii(callHash)}/>
+                <IdentityDefinitionView identity={identity} rootHash={"TODO"}/>
+                <div className={idCss.identityProp}>
+                  [Expert] Contract Call Values
+                </div>
+                <div className={idCss.identityValue}>
+                  {`id: address - ${callAddress}`}
+                </div>
+                <div className={idCss.identityValue}>
+                  {`metadata: bytes - ${callHash}`}
+                </div>
+                <div className={idCss.identityValue}>
+                  {`sig: bytes - ${callSig}`}
+                </div>
               </div>
               : ""
             }
           </div>
         );
-      case "remove":
+      }
+      case "remove": {
+        const [callAddress] = decodedCallData.values;
+
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
+              <img src="/assets/images/Icon/x-small-line.svg"/>&nbsp;
               {action.label}
             </span>
             { detailView ?
               <div className={css.summaryDetails}>
-                
+                <IdentityDefinitionView identity={identity} rootHash={"TODO"}/>
+                <div className={idCss.identityProp}>
+                  [Expert] Contract Call Values
+                </div>
+                <div className={idCss.identityValue}>
+                  {`id: address - ${callAddress}`}
+                </div>
               </div>
               : ""
             }
           </div>
         );
+      }
       default:
         return "";
     }
