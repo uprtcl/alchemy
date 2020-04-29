@@ -100,7 +100,7 @@ function DaoWiki(props: IProps) {
         const state = proposal.staticState as IProposalState;
         return state.title === "Set home perspective";
       };
-  
+
       const homeProposalExists = proposals.some(checkProposals);
       renderWikiComponent(web3Provider, dispatcher, homeProposalExists);
     }
@@ -138,7 +138,7 @@ function DaoWiki(props: IProps) {
         description: "This will allow DAO to have Wiki functionality",
         parametersHash: "0x00000000000000000000000000000000000000000",
         scheme: schemeRegistrar.staticState.address,
-        schemeToRegister: "0xe40E400abE5732F1c367925be32C3DFb94557DDC", // kovan
+        schemeToRegister: "0x0F6b62C1702Ad7790940c2CB3F433b61a1195E3b", // rinkeby
       };
       await createProposal(proposalValues);
     }
