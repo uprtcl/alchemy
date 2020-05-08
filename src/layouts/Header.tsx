@@ -14,8 +14,7 @@ import TrainingTooltip from "components/Shared/TrainingTooltip";
 import { parse } from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Link, matchPath, NavLink, RouteComponentProps } from "react-router-dom";
-import { Breadcrumbs } from "react-breadcrumbs-dynamic";
+import { Link, matchPath, RouteComponentProps } from "react-router-dom";
 import { of } from "rxjs";
 import Toggle from "react-toggle";
 import { RefObject } from "react";
@@ -164,8 +163,6 @@ class Header extends React.Component<IProps, null> {
     }
   }
 
-  private breadCrumbCompare = (a: any, b: any): number => a.weight ? a.weight - b.weight : a.to.length - b.to.length;
-
   public render(): RenderOutput {
     const {
       currentAccountProfile,
@@ -187,20 +184,19 @@ class Header extends React.Component<IProps, null> {
               <img src="/assets/images/Icon/Close.svg"/> :
               <img src="/assets/images/Icon/Menu.svg"/>}
           </div>
-          <TrainingTooltip overlay="View your personal feed" placement="bottomRight">
+          <TrainingTooltip overlay="Go to DXdao" placement="bottomRight">
             <div className={css.menu}>
-              <Link to="/">
-                <img src="/assets/images/alchemy-logo-white.svg"/>
+              <Link to={"/dao/"+process.env.DAO_AVATAR_ADDRESS}>
+                <img src="/assets/images/DXD.svg"/>
               </Link>
             </div>
           </TrainingTooltip>
-          <div className={css.topInfo}>
-            <Breadcrumbs
-              separator={<b> &gt;   </b>}
-              item={NavLink}
-              finalItem={"b"}
-              compare={this.breadCrumbCompare}
-            />
+          <div className={css.headerOptions}>
+            <Link to={"/dao/"+process.env.DAO_AVATAR_ADDRESS+"/history"}>History</Link>
+            <span>|</span>
+            <Link to={"/dao/"+process.env.DAO_AVATAR_ADDRESS+"/members"}>Members</Link>
+            <span>|</span>
+            <Link to={"/dao/"+process.env.DAO_AVATAR_ADDRESS+"/schemes"}>Proposals</Link>
           </div>
           <TrainingTooltip placement="left" overlay={"Show / hide tooltips on hover"} alwaysAvailable>
             <div className={css.toggleButton} ref={this.toggleDiv}>

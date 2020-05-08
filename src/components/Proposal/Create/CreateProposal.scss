@@ -8,6 +8,7 @@
 }
 
 .createProposalWrapper {
+  width: 930px;
   border-radius: 15px 15px 0 0;
   background-color: $white;
   position: fixed;
@@ -15,7 +16,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: $shadow-3;
-  height: calc(100% - 100px);
+  height: calc(100% - 105px);
 
   .header {
     background-color: $navy;
@@ -369,14 +370,14 @@
 }
 
 .containerNoSidebar {
-  width: 562px;
+  width: calc(100% - 60px);
   overflow-y: auto;
   height: calc(100% - 90px);
   padding: 20px 30px 30px 30px;
 }
 
 .containerWithSidebar {
-  width: 735px;
+  width: 930px;
   display: flex;
   flex-direction: row;
   content: "";
@@ -385,7 +386,7 @@
   height: calc(100% - 40px);
 
   .sidebar {
-    width: 199px;
+    width: 0px;
     height: inherit;
     overflow-x: hidden;
     overflow-y: auto;
@@ -434,7 +435,7 @@
 
   .contentWrapper {
     padding: 20px 30px 30px 30px;
-    width: 535px;
+    width: 930px;
     float: left;
     border-left: 1px solid #e9eef4;
     overflow: auto;

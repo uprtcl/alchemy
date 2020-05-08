@@ -36,6 +36,7 @@ body {
 .sidebarWrapper {
   position: relative;
   width: 125px;
+  display: none;
 }
 
 .withDAO .sidebarWrapper {
@@ -45,7 +46,7 @@ body {
 .contentWrapper {
   position: relative;
   max-width: $max-width;
-  margin: 0 auto;
+  margin: 0 auto !important;
 }
 
 .background {
@@ -102,6 +103,17 @@ body {
   transition: opacity 1000ms ease-in;
 }
 
+.headerOptions {    
+  position: absolute;
+  margin-left: 70px;
+  padding-top: 15px;
+}
+
+.headerOptions a {    
+  margin: 0px 5px;
+  color: white;
+}
+
 .header {
   width: 100%;
   position: fixed;
@@ -125,6 +137,7 @@ body {
       background-size: 20px 20px;
     }
   }
+  
 
   .logoContainer {
     margin: 0 auto;
