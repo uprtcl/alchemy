@@ -13,8 +13,6 @@ const baseConfig = require('./webpack.base.config.js');
 const config = merge(baseConfig, {
   mode: 'production',
 
-  devtool: 'source-map',
-
   entry: {
     // the entry point of our app
     app: __dirname + '/src/index.tsx',
@@ -101,7 +99,7 @@ plugins: [
       DISQUS_SITE: 'daostack-alchemy',
       ARC_GRAPHQLHTTPPROVIDER: "",
       ARC_GRAPHQLWSPROVIDER : "",
-      ARC_WEB3PROVIDER : "",
+      ARC_WEB3PROVIDER : "https://mainnet.eth.cloud.ava.do",
       ARC_WEB3PROVIDERREAD : "",
       ARC_IPFSPROVIDER: "",
       ARC_IPFSPROVIDER_HOST : "",
@@ -110,6 +108,7 @@ plugins: [
       ARC_IPFSPROVIDER_API_PATH : "",
       INFURA_ID : "",
       MIXPANEL_TOKEN: "",
+      DAO_AVATAR_ADDRESS: "0x519b70055af55a007110b4ff99b0ea33071c720a"
     }),
 
     new CopyWebpackPlugin([

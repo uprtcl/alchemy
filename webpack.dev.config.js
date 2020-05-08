@@ -104,6 +104,7 @@ module.exports = merge(baseConfig, {
       ARC_IPFSPROVIDER_API_PATH : "",
       INFURA_ID : "",
       MIXPANEL_TOKEN: "eac39430f2d26472411099a0407ad610",
+      DAO_AVATAR_ADDRESS: "0x86e9fe552e75e4fc51f46e4efc128628ecd5ada7"
     })
   ]
 });
