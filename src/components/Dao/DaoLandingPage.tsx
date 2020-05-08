@@ -6,7 +6,6 @@ import Analytics from "lib/analytics";
 import { Link } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { DiscussionEmbed } from "disqus-react";
-import ModalPopup from "components/Shared/ModalPopup";
 
 type IExternalProps = {
   daoState: IDAOState;
@@ -43,14 +42,6 @@ export default class DaoLandingPage extends React.Component<IProps, IStateProps>
     });
   }
 
-  private showLandingPageContent = () => {
-    this.setState({ showingEditPagePopup: true });
-  }
-
-  private hideLandingPageContent = () => {
-    this.setState({ showingEditPagePopup: false });
-  }
-
   public render() {
     const daoState = this.props.daoState;
 
@@ -62,44 +53,25 @@ export default class DaoLandingPage extends React.Component<IProps, IStateProps>
         <div className={css.infoContainer}>
           <div className={css.titleContainer}>
             <div className={css.row}>
-              <div className={css.headerText}>{daoState.name}</div>
-              <div className={css.editButton}>
-                <button onClick={this.showLandingPageContent}>Edit Home Page</button>
-              </div>
+              <div className={css.headerText}>DXdao Voting Dapp</div>
             </div>
           </div>
 
-          <div className={css.welcome}>Welcome to {daoState.name}, a decentralized organization built on DAOstack.</div>
-
-          <div className={css.visitProposals}>Visit the <Link to={`/dao/${daoState.id}/schemes/`}>Proposals page</Link> to
-          make a proposal to the DAO or vote on existing proposals.</div>
+          <div className={css.welcome}>Welcome to DXdao voting dapp, a decentralized organization built focused on DEFI.</div>
+          
+          <div className={css.visitProposals}>Visit the <Link to={`/dao/${daoState.id}/schemes/`}>Proposals section</Link> vote or make a new proposal.</div>
+          
+          <div className={css.visitProposals}>Visit the <Link to={`/dao/${daoState.id}/schemes/`}>History section</Link> To see past proposals information and result.</div>
+          
+          <div className={css.visitProposals}>Visit the <Link to={`/dao/${daoState.id}/schemes/`}>Members section</Link> To see all DXdao members.</div>
         </div>
 
         <div className={css.wallContainer}>
-          <div className={css.headerText}>Discuss {daoState.name}</div>
+          <div className={css.headerText}>Discuss DXdao</div>
           <DiscussionEmbed shortname={process.env.DISQUS_SITE} config={this.disqusConfig} />
         </div>
 
-        { this.state.showingEditPagePopup ?
-          <ModalPopup
-            closeHandler={this.hideLandingPageContent}
-            width="60%"
-            header={
-              <div className={css.modalHeader}>
-                <div className={css.title}>Edit Home Page</div>
-                <div className={css.closeButton} onClick={this.hideLandingPageContent}><img src={" /assets/images/Icon/close-grey.svg"} />
-                </div>
-              </div>
-            }
-            body={
-              <div className={css.modalBody}>
-                <div>Editing the content on this DAO’s home page will soon be possible via proposal. Stay tuned!</div>
-                <div>For now, if you need a change made to a DAO’s home page content, please contact us at <a href="https://support@daostack.zendesk.com" target="_blank" rel="noopener noreferrer">support@daostack.zendesk.com</a></div>
-              </div>
-            }
-          />
-          : ""
-        }
+        
       </div>
     );
   }
