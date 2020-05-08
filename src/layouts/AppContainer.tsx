@@ -3,7 +3,6 @@ import { setCurrentAccount } from "actions/web3Actions";
 import AccountProfilePage from "components/Account/AccountProfilePage";
 import Notification, { NotificationViewStatus } from "components/Notification/Notification";
 import DaoContainer from "components/Dao/DaoContainer";
-import Analytics from "lib/analytics";
 import Header from "layouts/Header";
 import SidebarMenu from "layouts/SidebarMenu";
 import { IRootState } from "reducers";
@@ -98,11 +97,6 @@ class AppContainer extends React.Component<IProps, IState> {
   }
 
   public async componentDidMount (): Promise<void> {
-    this.unlisten = this.props.history.listen((location) => {
-      Analytics.register({
-        URL: process.env.BASE_URL + location.pathname,
-      });
-    });
 
     /**
      * Heads up that there is a chance this cached account may differ from an account
