@@ -2,7 +2,6 @@ import { initializeArc } from "arc";
 import Loading from "components/Shared/Loading";
 import AppContainer from "layouts/AppContainer";
 import { sleep } from "lib/util";
-import Error404 from "components/Errors/Error404";
 import ErrorUncaught from "components/Errors/ErrorUncaught";
 import * as React from "react";
 import ReactGA from "react-ga";
@@ -27,19 +26,6 @@ export class App extends React.Component<{}, {
     };
   }
 
-
-  private getPdfHtml = (filename: string): any => {
-    window.location.href = `${window.location.protocol}//${window.location.host}/assets/${filename}`;
-    return null;
-  }
-
-  private CookiePolicy = () => {
-    return this.getPdfHtml("cookie_policy.pdf");
-  }
-
-  private PrivacyPolicy = () => {
-    return this.getPdfHtml("privacy_policy.pdf");
-  }
 
   public async componentDidMount (): Promise<void> {
     // Do this here because we need to have initialized Arc first.  This will
@@ -117,17 +103,9 @@ export class App extends React.Component<{}, {
           <ThroughProvider>
             <ConnectedRouter history={history}>
               <Switch>
-                <Route path="/cookie-policy" component={this.CookiePolicy}/>
-                <Route path="/privacy-policy" component={this.PrivacyPolicy}/>
-                <Route path="/" exact component={AppContainer}/>
                 <Route path="/dao" component={AppContainer}/>
-                <Route path="/daos" component={AppContainer}/>
-                <Route path="/feed" component={AppContainer}/>
                 <Route path="/profile" component={AppContainer}/>
-                <Route path="/redemptions" component={AppContainer}/>
-                <Route path="/daos/create" component={AppContainer} />
-                <Route component={Error404} />
-                <Redirect from="/*" to="/Error404" />
+                <Redirect from="/" to={"/dao/"+process.env.DAO_AVATAR_ADDRESS} />
               </Switch>
             </ConnectedRouter>
           </ThroughProvider>
