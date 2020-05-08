@@ -16,7 +16,6 @@ import { combineLatest, of } from "rxjs";
 import { Modal } from "react-router-modal";
 import classNames from "classnames";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { DiscussionEmbed } from "disqus-react";
 import { connect } from "react-redux";
 import { IDAOState, IProposalState, ICompetitionSuggestionState, Address, CompetitionVote, IProposalOutcome,
   CompetitionSuggestion, Proposal, Scheme } from "@daostack/arc.js";
@@ -83,8 +82,6 @@ class CompetitionDetails extends React.Component<IProps, IStateProps> {
       status: this.getCompetitionState(),
     };
   }
-
-  private disqusConfig = { url: "", identifier: "", title: "" };
 
   private getCompetitionState = (): CompetitionStatus => {
     const competition = this.props.proposalState.competition;
@@ -261,10 +258,6 @@ class CompetitionDetails extends React.Component<IProps, IStateProps> {
           || (isAddress(competition.admin) && (this.props.currentAccountAddress !== competition.admin))
           ;
 
-    this.disqusConfig.title = proposalState.title;
-    this.disqusConfig.url = process.env.BASE_URL + this.props.history.location.pathname;
-    this.disqusConfig.identifier = `competition-${proposalState.id}`;
-
     return <React.Fragment>
       <BreadcrumbsItem weight={1} to={`/dao/${daoState.address}/scheme/${proposalState.scheme.id}/crx`}>{schemeName(proposalState.scheme, proposalState.scheme.address)}</BreadcrumbsItem>
       <BreadcrumbsItem weight={2} to={`/dao/${daoState.address}/crx/proposal/${proposalState.id}`}>{humanProposalTitle(proposalState, 40)}</BreadcrumbsItem>
@@ -364,13 +357,6 @@ class CompetitionDetails extends React.Component<IProps, IStateProps> {
         }
 
         { ((inVoting && !voting) || (isOver && !overWithWinners)) ? this.noWinnersHtml() : "" }
-
-        <div className={css.discussionContainer}>
-          <div className={css.title}>Discussion</div>
-          <div className={css.disqus}>
-            <DiscussionEmbed shortname={process.env.DISQUS_SITE} config={this.disqusConfig}/>
-          </div>
-        </div>
 
       </div>
 

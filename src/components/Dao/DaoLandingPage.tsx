@@ -5,7 +5,6 @@ import { Page } from "pages";
 import Analytics from "lib/analytics";
 import { Link } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import { DiscussionEmbed } from "disqus-react";
 
 type IExternalProps = {
   daoState: IDAOState;
@@ -19,8 +18,6 @@ type IProps = IExternalProps;
 
 export default class DaoLandingPage extends React.Component<IProps, IStateProps> {
 
-  private disqusConfig: any;
-
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -29,11 +26,6 @@ export default class DaoLandingPage extends React.Component<IProps, IStateProps>
   }
 
   public componentDidMount() {
-    this.disqusConfig = {
-      url: process.env.BASE_URL + "/dao/" + this.props.daoState.address + "/discussion",
-      identifier: this.props.daoState.address,
-      title: "Discuss " + this.props.daoState.name,
-    };
 
     Analytics.track("Page View", {
       "Page Name": Page.DAOLanding,
@@ -65,12 +57,6 @@ export default class DaoLandingPage extends React.Component<IProps, IStateProps>
           
           <div className={css.visitProposals}>Visit the <Link to={`/dao/${daoState.id}/schemes/`}>Members section</Link> To see all DXdao members.</div>
         </div>
-
-        <div className={css.wallContainer}>
-          <div className={css.headerText}>Discuss DXdao</div>
-          <DiscussionEmbed shortname={process.env.DISQUS_SITE} config={this.disqusConfig} />
-        </div>
-
         
       </div>
     );

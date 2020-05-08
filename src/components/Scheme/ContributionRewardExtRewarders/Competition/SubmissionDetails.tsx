@@ -13,7 +13,6 @@ import { IProfilesState } from "reducers/profilesReducer";
 import { combineLatest, of } from "rxjs";
 import Tooltip from "rc-tooltip";
 import TagsSelector from "components/Proposal/Create/SchemeForms/TagsSelector";
-import { DiscussionEmbed } from "disqus-react";
 import { RouteComponentProps } from "react-router-dom";
 import { getSubmission, getSubmissionVoterHasVoted, getCompetitionVotes, CompetitionStatus } from "./utils";
 import * as css from "./Competitions.scss";
@@ -56,8 +55,6 @@ class SubmissionDetails extends React.Component<IProps, null> {
     this.props.handleRedeem();
   }
 
-  private disqusConfig = { url: "", identifier: "", title: "" };
-
   public render(): RenderOutput {
 
     const competition = this.props.proposalState.competition;
@@ -74,10 +71,6 @@ class SubmissionDetails extends React.Component<IProps, null> {
     const inVotingPeriod = status.inVotingPeriod;
     const canRedeem = isWinner && competitionIsOver && !isRedeemed && (submission.beneficiary === this.props.currentAccountAddress);
     const tags = submission.tags;
-
-    this.disqusConfig.title = submission.title;
-    this.disqusConfig.url = process.env.BASE_URL + this.props.history.location.pathname;
-    this.disqusConfig.identifier = submission.id;
 
     return (
       <div className={css.submissionDetails}>
@@ -146,17 +139,6 @@ class SubmissionDetails extends React.Component<IProps, null> {
         }
 
         <div className={css.createdOn}>Created: <div className={css.datetime}>{formatFriendlyDateForLocalTimezone(competition.createdAt)}</div></div>
-
-        {
-        // eslint-disable-next-line no-constant-condition
-          (false) ? <div className={css.discussionContainer}>
-            <div className={css.title}>Discussion</div>
-            <div className={css.disqus}>
-              <DiscussionEmbed shortname={process.env.DISQUS_SITE} config={this.disqusConfig}/>
-            </div>
-          </div>
-            : ""
-        }
 
       </div>
     );

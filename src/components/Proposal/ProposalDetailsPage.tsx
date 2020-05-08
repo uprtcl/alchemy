@@ -4,7 +4,6 @@ import AccountPopup from "components/Account/AccountPopup";
 import AccountProfileName from "components/Account/AccountProfileName";
 import ProposalCountdown from "components/Shared/ProposalCountdown";
 import FollowButton from "components/Shared/FollowButton";
-import { DiscussionEmbed } from "disqus-react";
 import { humanProposalTitle, ensureHttps } from "lib/util";
 import { schemeName } from "lib/schemeUtils";
 import Analytics from "lib/analytics";
@@ -69,11 +68,6 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
     });
   }
 
-  /**
-   * Define these here rather than in `render` to minimize rerendering, particularly
-   * of the disqus component
-   **/
-  private disqusConfig = { url: "", identifier: "", title: "" };
   private proposalClass = classNames({
     [css.proposal]: true,
     clearfix: true,
@@ -134,16 +128,11 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
       daoState,
       expired,
       member,
-      proposalId,
       proposal,
       rewards,
       stakes,
       votes,
     } = this.props;
-
-    this.disqusConfig.title = proposal.title;
-    this.disqusConfig.url = process.env.BASE_URL + this.props.location.pathname;
-    this.disqusConfig.identifier = proposalId;
 
     const tags = proposal.tags;
     let currentAccountVote = 0;
@@ -359,11 +348,6 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
             </div>
 
           </div>
-        </div>
-
-        <h3 className={css.discussionTitle}>Discussion</h3>
-        <div className={css.disqus}>
-          <DiscussionEmbed shortname={process.env.DISQUS_SITE} config={this.disqusConfig}/>
         </div>
 
         {this.state.showVotersModal ?
