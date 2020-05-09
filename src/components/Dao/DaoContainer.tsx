@@ -44,7 +44,7 @@ const mapStateToProps = (state: IRootState, ownProps: IExternalProps): IExternal
     ...ownProps,
     currentAccountAddress: state.web3.currentAccountAddress,
     currentAccountProfile: state.profiles[state.web3.currentAccountAddress],
-    daoAvatarAddress: ownProps.match.params.daoAvatarAddress,
+    daoAvatarAddress: process.env.DAO_AVATAR_ADDRESS,
   };
 };
 
@@ -80,7 +80,7 @@ class DaoContainer extends React.Component<IProps, null> {
   private schemeRoute = (routeProps: any) => <SchemeContainer {...routeProps} daoState={this.props.data[0]} currentAccountAddress={this.props.currentAccountAddress} />;
   private daoSchemesRoute = (routeProps: any) => <DaoSchemesPage {...routeProps} daoState={this.props.data[0]} />;
   private daoLandingRoute = (_routeProps: any) => <DaoLandingPage daoState={this.props.data[0]} />;
-  private modalRoute = (route: any) => `/dao/${route.params.daoAvatarAddress}/scheme/${route.params.schemeId}/`;
+  private modalRoute = (route: any) => `/dao/scheme/${route.params.schemeId}/`;
 
   public render(): RenderOutput {
     const daoState = this.props.data[0];
@@ -106,31 +106,31 @@ class DaoContainer extends React.Component<IProps, null> {
             </div>
           </div>
           <Switch>
-            <Route exact path="/dao/:daoAvatarAddress"
+            <Route exact path="/dao"
               render={this.daoLandingRoute} />
-            <Route exact path="/dao/:daoAvatarAddress/history"
+            <Route exact path="/dao/history"
               render={this.daoHistoryRoute} />
-            <Route exact path="/dao/:daoAvatarAddress/members"
+            <Route exact path="/dao/members"
               render={this.daoMembersRoute} />
 
-            <Route exact path="/dao/:daoAvatarAddress/proposal/:proposalId"
+            <Route exact path="/dao/proposal/:proposalId"
               render={this.daoProposalRoute}
             />
 
-            <Route path="/dao/:daoAvatarAddress/crx/proposal/:proposalId"
+            <Route path="/dao/crx/proposal/:proposalId"
               render={this.daoCrxProposalRoute} />
 
-            <Route path="/dao/:daoAvatarAddress/scheme/:schemeId"
+            <Route path="/dao/scheme/:schemeId"
               render={this.schemeRoute} />
 
-            <Route exact path="/dao/:daoAvatarAddress/schemes"
+            <Route exact path="/dao/schemes"
               render={this.daoSchemesRoute} />
 
-            <Route path="/dao/:daoAvatarAddress" render={this.daoLandingRoute} />
+            <Route path="/dao" render={this.daoLandingRoute} />
           </Switch>
 
           <ModalRoute
-            path="/dao/:daoAvatarAddress/scheme/:schemeId/proposals/create"
+            path="/dao/scheme/:schemeId/proposals/create"
             parentPath={this.modalRoute}
             component={CreateProposalPage}
           />
@@ -148,8 +148,7 @@ const SubscribedDaoContainer = withSubscription({
   checkForUpdate: ["daoAvatarAddress"],
   createObservable: (props: IExternalProps) => {
     const arc = getArc();
-    const daoAddress = props.match.params.daoAvatarAddress;
-    const dao = arc.dao(daoAddress);
+    const dao = arc.dao(process.env.DAO_AVATAR_ADDRESS);
     const observable = combineLatest(
       dao.state({ subscribe: true, fetchAllData: true }), // DAO state
       dao.members()

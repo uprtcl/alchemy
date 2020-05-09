@@ -4,17 +4,15 @@ import AccountProfilePage from "components/Account/AccountProfilePage";
 import Notification, { NotificationViewStatus } from "components/Notification/Notification";
 import DaoContainer from "components/Dao/DaoContainer";
 import Header from "layouts/Header";
-import SidebarMenu from "layouts/SidebarMenu";
 import { IRootState } from "reducers";
 import { dismissNotification, INotificationsState, NotificationStatus, showNotification, INotification } from "reducers/notifications";
 import { getCachedAccount, cacheWeb3Info, logout, pollForAccountChanges } from "arc";
 import { pollSubgraphUpdating } from "lib/subgraphHelpers";
 import ErrorUncaught from "components/Errors/ErrorUncaught";
-import { parse } from "query-string";
 import * as React from "react";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { connect } from "react-redux";
-import { matchPath, Link, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Link, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { ModalContainer } from "react-router-modal";
 import { History } from "history";
 import classNames from "classnames";
@@ -29,22 +27,14 @@ interface IExternalProps extends RouteComponentProps<any> {
 
 interface IStateProps {
   currentAccountAddress: string;
-  daoAvatarAddress: string;
   sortedNotifications: INotificationsState;
   threeBox: any;
 }
 
 const mapStateToProps = (state: IRootState, ownProps: IExternalProps): IStateProps & IExternalProps => {
-  const match = matchPath(ownProps.location.pathname, {
-    path: "/dao/:daoAvatarAddress",
-    strict: false,
-  });
-  const queryValues = parse(ownProps.location.search);
-
   return {
     ...ownProps,
     currentAccountAddress: state.web3.currentAccountAddress,
-    daoAvatarAddress: match && match.params ? (match.params as any).daoAvatarAddress : queryValues.daoAvatarAddress,
     sortedNotifications: sortedNotifications()(state),
     threeBox: state.profiles.threeBox,
   };
@@ -145,7 +135,6 @@ class AppContainer extends React.Component<IProps, IState> {
 
   private dismissNotif = (id: string) => () => this.props.dismissNotification(id);
   private headerHtml = ( props: any ): any => <Header {...props} />;
-  private sidebarHtml = ( props: any ): any => <SidebarMenu {...props} />;
 
   private notificationHtml = (notif: INotification): any => {
     return <div key={notif.id}>
@@ -175,7 +164,6 @@ class AppContainer extends React.Component<IProps, IState> {
   public render(): RenderOutput {
 
     const {
-      daoAvatarAddress,
       sortedNotifications,
     } = this.props;
 
@@ -190,19 +178,15 @@ class AppContainer extends React.Component<IProps, IState> {
       const hasAcceptedCookies = !!localStorage.getItem(AppContainer.hasAcceptedCookiesKey);
 
       return (
-        <div className={classNames({[css.outer]: true, [css.withDAO]: !!daoAvatarAddress})}>
+        <div className={classNames({[css.outer]: true, [css.withDAO]: false})}>
           <BreadcrumbsItem to="/">Alchemy</BreadcrumbsItem>
 
           <div className={css.container}>
             <Route path="/" render={this.headerHtml} />
 
-            <div className={css.sidebarWrapper}>
-              <Route path="/" render={this.sidebarHtml} />
-            </div>
-
             <div className={css.contentWrapper}>
               <Switch>
-                <Route path="/dao/:daoAvatarAddress" component={DaoContainer} />
+                <Route path="/dao" component={DaoContainer} />
                 <Route path="/profile/:accountAddress" component={AccountProfilePage} />
                 <Route path="/" component={DaoContainer} />
               </Switch>

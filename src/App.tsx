@@ -105,7 +105,7 @@ export class App extends React.Component<{}, {
               <Switch>
                 <Route path="/dao" component={AppContainer}/>
                 <Route path="/profile" component={AppContainer}/>
-                <Redirect from="/" to={"/dao/"+process.env.DAO_AVATAR_ADDRESS} />
+                <Redirect from="/" to="/dao" />
               </Switch>
             </ConnectedRouter>
           </ThroughProvider>

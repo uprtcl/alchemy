@@ -61,19 +61,18 @@ class DaoSchemesPage extends React.Component<IProps, null> {
   }
 
   public handleNewProposal = (schemeId: string) => async (): Promise<void> => {
-    const { showNotification, daoState } = this.props;
-    const daoAvatarAddress = daoState.address;
+    const { showNotification } = this.props;
 
     if (!await enableWalletProvider({ showNotification })) { return; }
 
-    this.props.history.push(`/dao/${daoAvatarAddress}/scheme/${schemeId}/proposals/create/`);
+    this.props.history.push(`/dao/scheme/${schemeId}/proposals/create/`);
   };
 
   public render() {
     const { data } = this.props;
     const dao = this.props.daoState;
     const allSchemes = data[0];
-
+    
     const contributionReward = allSchemes.filter((scheme: Scheme) => scheme.staticState.name === "ContributionReward");
     const knownSchemes = allSchemes.filter((scheme: Scheme) => scheme.staticState.name !== "ContributionReward" && KNOWN_SCHEME_NAMES.indexOf(scheme.staticState.name) >= 0);
     const unknownSchemes = allSchemes.filter((scheme: Scheme) => KNOWN_SCHEME_NAMES.indexOf(scheme.staticState.name) === -1 );
@@ -105,7 +104,7 @@ class DaoSchemesPage extends React.Component<IProps, null> {
 
     return (
       <div className={css.wrapper}>
-        <BreadcrumbsItem to={"/dao/" + dao.address}>{dao.name}</BreadcrumbsItem>
+        <BreadcrumbsItem to={"/dao"}>{dao.name}</BreadcrumbsItem>
 
         <Sticky enabled top={50} innerZ={10000}>
           <h1>Proposal Plugins</h1>
@@ -147,8 +146,7 @@ const SubscribedDaoSchemesPage = withSubscription({
   checkForUpdate: [],
   createObservable: (props: IExternalProps) => {
     const arc = getArc();
-    const dao = props.daoState.dao;
-
+    const dao = arc.dao(process.env.DAO_AVATAR_ADDRESS);
     return combineLatest(
       dao.schemes({ where: { isRegistered: true } }, { fetchAllData: true, subscribe: true }),
       // Find the SchemeManager scheme if this dao has one

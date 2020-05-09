@@ -4,7 +4,6 @@ import { enableWalletProvider, getAccountIsEnabled, getArc, logout, getWeb3Provi
 import AccountBalances from "components/Account/AccountBalances";
 import AccountImage from "components/Account/AccountImage";
 import AccountProfileName from "components/Account/AccountProfileName";
-import RedemptionsButton from "components/Redemptions/RedemptionsButton";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
 import { copyToClipboard } from "lib/util";
 import { IRootState } from "reducers";
@@ -15,7 +14,6 @@ import { parse } from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath, RouteComponentProps } from "react-router-dom";
-import { of } from "rxjs";
 import Toggle from "react-toggle";
 import { RefObject } from "react";
 import classNames from "classnames";
@@ -170,7 +168,7 @@ class Header extends React.Component<IProps, null> {
     } = this.props;
     const dao = this.props.data;
 
-    const daoAvatarAddress = dao ? dao.address : null;
+    const daoAvatarAddress = process.env.DAO_AVATAR_ADDRESS;
     const accountIsEnabled = getAccountIsEnabled();
     const web3ProviderInfo = getWeb3ProviderInfo();
     const web3Provider = getWeb3Provider();
@@ -186,17 +184,17 @@ class Header extends React.Component<IProps, null> {
           </div>
           <TrainingTooltip overlay="Go to DXdao" placement="bottomRight">
             <div className={css.menu}>
-              <Link to={"/dao/"+process.env.DAO_AVATAR_ADDRESS}>
+              <Link to={"/dao"}>
                 <img src="/assets/images/DXD.svg"/>
               </Link>
             </div>
           </TrainingTooltip>
           <div className={css.headerOptions}>
-            <Link to={"/dao/"+process.env.DAO_AVATAR_ADDRESS+"/history"}>History</Link>
+            <Link to={"/dao/history"}>History</Link>
             <span>|</span>
-            <Link to={"/dao/"+process.env.DAO_AVATAR_ADDRESS+"/members"}>Members</Link>
+            <Link to={"/dao/members"}>Members</Link>
             <span>|</span>
-            <Link to={"/dao/"+process.env.DAO_AVATAR_ADDRESS+"/schemes"}>Proposals</Link>
+            <Link to={"/dao/schemes"}>Proposals</Link>
           </div>
           <TrainingTooltip placement="left" overlay={"Show / hide tooltips on hover"} alwaysAvailable>
             <div className={css.toggleButton} ref={this.toggleDiv}>
@@ -206,11 +204,6 @@ class Header extends React.Component<IProps, null> {
                 icons={{ checked: <img src='/assets/images/Icon/checked.svg'/>, unchecked: <img src='/assets/images/Icon/unchecked.svg'/> }}/>
             </div>
           </TrainingTooltip>
-          {
-            this.props.showRedemptionsButton ? <div className={css.redemptionsButton}>
-              <RedemptionsButton currentAccountAddress={currentAccountAddress} />
-            </div> : ""
-          }
           <div className={css.accountInfo}>
             { currentAccountAddress ?
               <span>
@@ -295,13 +288,9 @@ const SubscribedHeader = withSubscription({
   errorComponent: (props) => <div>{props.error.message}</div>,
   checkForUpdate: ["daoAvatarAddress"],
   createObservable: (props: IProps) => {
-    if (props.daoAvatarAddress) {
-      const arc = getArc();
-      // subscribe if only to get DAO reputation supply updates
-      return arc.dao(props.daoAvatarAddress).state({ subscribe: true });
-    } else {
-      return of(null);
-    }
+    const arc = getArc();
+    // subscribe if only to get DAO reputation supply updates
+    return arc.dao(process.env.DAO_AVATAR_ADDRESS).state({ subscribe: true });
   },
 });
 
