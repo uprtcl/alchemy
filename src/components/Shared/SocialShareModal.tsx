@@ -68,10 +68,10 @@ export default class SocialShareModal extends React.Component<IProps, IState> {
         width={318}
         closeHandler={this.props.closeHandler}
         header={<React.Fragment>
-          <div className={css.icon}><img src={"/assets/images/Icon//share-blue.svg"} /></div>
+          <div className={css.icon}><img src={"assets/images/Icon//share-blue.svg"} /></div>
           <div className={css.headerTitle}>Share</div>
           <Tooltip overlay="Close" placement="left">
-            <div className={css.closeButton} onClick={this.props.closeHandler}><img src={"/assets/images/Icon/close-grey.svg"} /></div>
+            <div className={css.closeButton} onClick={this.props.closeHandler}><img src={"assets/images/Icon/close-grey.svg"} /></div>
           </Tooltip>
         </React.Fragment>}
         body={<div className={css.link}>
@@ -84,14 +84,14 @@ export default class SocialShareModal extends React.Component<IProps, IState> {
             <div className={css.url}>{this.props.url}</div>
           </Tooltip>
           <Tooltip overlay="Copy Link" placement="right">
-            <div onClick={this.copyUrl} className={css.copyButton}><img src={"/assets/images/Icon/Copy-blue.svg"}/></div>
+            <div onClick={this.copyUrl} className={css.copyButton}><img src={"assets/images/Icon/Copy-blue.svg"}/></div>
           </Tooltip>
         </div>}
         footer={<div className={css.socialSitesList}>
-          <div onClick={this.selectTwitter} className={css.socialSite}><div className={css.icon}><img src={"/assets/images/Icon/social/twitter.svg"}/></div><div className={css.name}>Twitter</div></div>
-          <div onClick={this.selectReddit} className={css.socialSite}><div className={css.icon}><img src={"/assets/images/Icon/social/reddit.svg"}/></div><div className={css.name}>Reddit</div></div>
-          <div onClick={this.selectFacebook} className={css.socialSite}><div className={css.icon}><img src={"/assets/images/Icon/social/facebook.svg"}/></div><div className={css.name}>Facebook</div></div>
-          <div onClick={this.selectTelegram} className={css.socialSite}><div className={css.icon}><img src={"/assets/images/Icon/social/telegram.svg"}/></div><div className={css.name}>Telegram</div></div>
+          <div onClick={this.selectTwitter} className={css.socialSite}><div className={css.icon}><img src={"assets/images/Icon/social/twitter.svg"}/></div><div className={css.name}>Twitter</div></div>
+          <div onClick={this.selectReddit} className={css.socialSite}><div className={css.icon}><img src={"assets/images/Icon/social/reddit.svg"}/></div><div className={css.name}>Reddit</div></div>
+          <div onClick={this.selectFacebook} className={css.socialSite}><div className={css.icon}><img src={"assets/images/Icon/social/facebook.svg"}/></div><div className={css.name}>Facebook</div></div>
+          <div onClick={this.selectTelegram} className={css.socialSite}><div className={css.icon}><img src={"assets/images/Icon/social/telegram.svg"}/></div><div className={css.name}>Telegram</div></div>
         </div>}
       />
     );

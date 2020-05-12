@@ -411,7 +411,7 @@ class CreateKnownSchemeProposal extends React.Component<IProps, IState> {
                   <label htmlFor="descriptionInput">
                     <div className={css.requiredMarker}>*</div>
                       Description
-                    <img className={css.infoTooltip} src="/assets/images/Icon/Info.svg"/>
+                    <img className={css.infoTooltip} src="assets/images/Icon/Info.svg"/>
                     <ErrorMessage name="description">{(msg) => <span className={css.errorMessage}>{msg}</span>}</ErrorMessage>
                   </label>
                   <Field
@@ -470,7 +470,7 @@ class CreateKnownSchemeProposal extends React.Component<IProps, IState> {
                   <div className={css.createProposalActions}>
                     <TrainingTooltip overlay="Export proposal" placement="top">
                       <button id="export-proposal" className={css.exportProposal} type="button" onClick={() => this.exportFormValues(values)}>
-                        <img src="/assets/images/Icon/share-blue.svg" />
+                        <img src="assets/images/Icon/share-blue.svg" />
                       </button>
                     </TrainingTooltip>
                     <button className={css.exitProposalCreation} type="button" onClick={handleClose}>

@@ -146,7 +146,7 @@ export default class ProposalCountdown extends React.Component<IProps, IState> {
         }
         {proposal.stage === IProposalStage.QuietEndingPeriod && !countDown.complete ?
           <strong className={css.overTime}>
-            <img src="/assets/images/Icon/Overtime.svg" /> OVERTIME
+            <img src="assets/images/Icon/Overtime.svg" /> OVERTIME
           </strong>
           : " "
         }

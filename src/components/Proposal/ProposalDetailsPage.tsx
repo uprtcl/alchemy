@@ -229,7 +229,7 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
 
             {url ?
               <a href={url} className={css.attachmentLink} target="_blank" rel="noopener noreferrer">
-                <img src="/assets/images/Icon/Attachment.svg" />
+                <img src="assets/images/Icon/Attachment.svg" />
             Attachment &gt;
               </a>
               : " "

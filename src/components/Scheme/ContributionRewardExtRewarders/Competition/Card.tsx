@@ -98,10 +98,10 @@ class CompetitionCard extends React.Component<IProps, IStateProps> {
       </div>
       <div className={css.rewards}>
         <div className={css.winnerIcon}>
-          { overWithWinners ? <img src="/assets/images/Icon/winner.svg"></img> : "" }
+          { overWithWinners ? <img src="assets/images/Icon/winner.svg"></img> : "" }
         </div>
         <div className={css.transferType}><RewardsString proposal={proposalState} dao={daoState} /></div>
-        <img src="/assets/images/Icon/Transfer.svg" />
+        <img src="assets/images/Icon/Transfer.svg" />
         { overWithWinners ?
           <div className={css.winners}>{numWinningSubmissions} winners</div> :
           <div className={css.winners}>{competition.numberOfWinners} anticipated winners</div>

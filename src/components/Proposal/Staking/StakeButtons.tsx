@@ -206,13 +206,13 @@ class StakeButtons extends React.Component<IProps, IState> {
 
     const passButton = (
       <button className={passButtonClass} onClick={disableStakePass ? null : this.showPreStakeModal(1)} data-test-id="stakePass">
-        <img className={css.stakeIcon} src="/assets/images/Icon/v.svg"/> Pass
+        <img className={css.stakeIcon} src="assets/images/Icon/v.svg"/> Pass
       </button>
     );
 
     const failButton = (
       <button className={failButtonClass} onClick={disableStakeFail ? null : this.showPreStakeModal(2)}>
-        <img className={css.stakeIcon} src="/assets/images/Icon/x.svg"/> Fail
+        <img className={css.stakeIcon} src="assets/images/Icon/x.svg"/> Fail
       </button>
     );
 

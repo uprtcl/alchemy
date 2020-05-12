@@ -146,14 +146,14 @@ class SchemeProposalsPage extends React.Component<IProps, null> {
         { proposalsQueued.length === 0 && proposalsPreBoosted.length === 0 && proposalsBoosted.length === 0
           ?
           <div className={css.noDecisions}>
-            <img className={css.relax} src="/assets/images/yogaman.svg"/>
+            <img className={css.relax} src="assets/images/yogaman.svg"/>
             <div className={css.proposalsHeader}>
               No upcoming proposals
             </div>
             <p>You can be the first one to create a {schemeFriendlyName} proposal today! :)</p>
             <div className={css.cta}>
               <Link to={"/dao"}>
-                <img className={css.relax} src="/assets/images/lt.svg"/> Back to plugins
+                <img className={css.relax} src="assets/images/lt.svg"/> Back to plugins
               </Link>
               <a className={classNames({
                 [css.blueButton]: true,
@@ -175,7 +175,7 @@ class SchemeProposalsPage extends React.Component<IProps, null> {
                 {proposalsBoosted.length === 0
                   ?
                   <div>
-                    <img src="/assets/images/yoga.svg"/>
+                    <img src="assets/images/yoga.svg"/>
                   </div>
                   : " "
                 }
@@ -193,7 +193,7 @@ class SchemeProposalsPage extends React.Component<IProps, null> {
                 {proposalsPreBoosted.length === 0
                   ?
                   <div>
-                    <img src="/assets/images/yoga.svg"/>
+                    <img src="assets/images/yoga.svg"/>
                   </div>
                   : " "
                 }
@@ -210,7 +210,7 @@ class SchemeProposalsPage extends React.Component<IProps, null> {
                 {proposalsQueued.length === 0
                   ?
                   <div>
-                    <img src="/assets/images/yoga.svg"/>
+                    <img src="assets/images/yoga.svg"/>
                   </div>
                   : " "
                 }

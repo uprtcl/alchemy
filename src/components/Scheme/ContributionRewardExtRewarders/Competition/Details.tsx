@@ -207,7 +207,7 @@ class CompetitionDetails extends React.Component<IProps, IStateProps> {
               [css.selected]: isSelected(),
               [css.winnerIcon]: true })}
             onClick={this.openSubmissionDetailsModal(submission)}>
-              {submission.isWinner ? <img src="/assets/images/Icon/winner.svg"></img> : ""}
+              {submission.isWinner ? <img src="assets/images/Icon/winner.svg"></img> : ""}
             </div> : "" }
           <div className={classNames({[css.cell]: true, [css.selected]: isSelected(), [css.title]: true})}
             onClick={this.openSubmissionDetailsModal(submission)}>
@@ -226,7 +226,7 @@ class CompetitionDetails extends React.Component<IProps, IStateProps> {
             <div className={css.votedUp}
               onClick={this.openSubmissionDetailsModal(submission)}>
               <Tooltip placement="top" trigger={voted ? ["hover"] : []} overlay={"You voted for this submission"}>
-                {voted ? <img src="/assets/images/Icon/vote/for-fill-green.svg"></img> : <img src="/assets/images/Icon/vote/for-gray.svg"></img>}
+                {voted ? <img src="assets/images/Icon/vote/for-fill-green.svg"></img> : <img src="assets/images/Icon/vote/for-gray.svg"></img>}
               </Tooltip>
             </div>
           </div>
@@ -311,10 +311,10 @@ class CompetitionDetails extends React.Component<IProps, IStateProps> {
           </div>
           <div className={css.rightSection}>
             <div className={css.header}>
-              <div className={css.isWinner}><img src="/assets/images/Icon/winner.svg"></img></div>
+              <div className={css.isWinner}><img src="assets/images/Icon/winner.svg"></img></div>
               <div className={css.results}>
                 <RewardsString proposal={proposalState} dao={daoState} />
-                <img className={css.transferIcon} src="/assets/images/Icon/Transfer.svg" />
+                <img className={css.transferIcon} src="assets/images/Icon/Transfer.svg" />
                 <div className={css.winners}>{competition.numberOfWinners} anticipated winner(s)</div>
               </div>
             </div>

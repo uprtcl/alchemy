@@ -175,14 +175,14 @@ class ProposalHistoryRow extends React.Component<IProps, IState> {
         </td>
         <td onClick={this.gotoProposal} className={closeReasonClass}>
           <div className={css.decisionPassed}>
-            <img src="/assets/images/Icon/vote/for.svg"/>
+            <img src="assets/images/Icon/vote/for.svg"/>
             <span>Passed</span>
             <div className={css.decisionReason}>
               <span>{closeReason}</span>
             </div>
           </div>
           <div className={css.decisionFailed}>
-            <img src="/assets/images/Icon/vote/against.svg"/>
+            <img src="assets/images/Icon/vote/against.svg"/>
             <span>Failed</span>
             <div className={css.decisionReason}>
               <span>{closeReason}</span>
@@ -192,13 +192,13 @@ class ProposalHistoryRow extends React.Component<IProps, IState> {
         <td onClick={this.gotoProposal} className={myActionsClass}>
           <div className={css.myVote}>
             <span>{formatTokens(currentAccountVoteAmount, "Rep")}</span>
-            <img className={css.passVote} src="/assets/images/Icon/vote/for-fill.svg"/>
-            <img className={css.failVote} src="/assets/images/Icon/vote/against-fill.svg"/>
+            <img className={css.passVote} src="assets/images/Icon/vote/for-fill.svg"/>
+            <img className={css.failVote} src="assets/images/Icon/vote/against-fill.svg"/>
           </div>
           <div className={css.myStake}>
             <span>{formatTokens(currentAccountStakeAmount, "GEN")}</span>
-            <img className={css.forStake} src="/assets/images/Icon/v-small-fill.svg"/>
-            <img className={css.againstStake} src="/assets/images/Icon/x-small-fill.svg"/>
+            <img className={css.forStake} src="assets/images/Icon/v-small-fill.svg"/>
+            <img className={css.againstStake} src="assets/images/Icon/x-small-fill.svg"/>
           </div>
         </td>
       </tr>

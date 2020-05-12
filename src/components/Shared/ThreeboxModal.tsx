@@ -51,9 +51,9 @@ class ThreeboxModal extends React.Component<IProps, IState> {
           <div className={css.body}>
             <h1>We&apos;re using 3Box to save your personal data</h1>
             <div className={css.images}>
-              <img src="/assets/images/alchemy-logo-blue.svg" />
+              <img src="assets/images/alchemy-logo-blue.svg" />
               <span>+</span>
-              <img src="/assets/images/narwhal-blue.svg" />
+              <img src="assets/images/narwhal-blue.svg" />
             </div>
             <div>
               You&apos;ll need you to sign two messages to allow us to save the data in your 3Box account.

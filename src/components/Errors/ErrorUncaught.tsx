@@ -22,9 +22,9 @@ export default class ErrorUncaught extends React.PureComponent<IExternalProps> {
           <div>
             <div className={appCss.menu}>
               { this.props.goHome ?
-                <Link to="/"><img onClick={this.props.goHome} src="/assets/images/alchemy-logo-white.svg"/></Link>
+                <Link to="/"><img onClick={this.props.goHome} src="assets/images/alchemy-logo-white.svg"/></Link>
                 :
-                <img src="/assets/images/alchemy-logo-white.svg"/>
+                <img src="assets/images/alchemy-logo-white.svg"/>
               }
             </div>
             <div className={appCss.topInfo}>Alchemy</div>
@@ -32,7 +32,7 @@ export default class ErrorUncaught extends React.PureComponent<IExternalProps> {
         </nav>
         <div className={css.content}>
           <div className={css.banner}>
-            <img className={css.stars} src="/assets/images/Errors/stars-error.svg" />
+            <img className={css.stars} src="assets/images/Errors/stars-error.svg" />
           </div>
           <div className={css.title}>Something went wrong…</div>
           <div className={css.description}>{this.props.errorMessage}</div>

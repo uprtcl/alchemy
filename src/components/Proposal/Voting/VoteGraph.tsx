@@ -41,8 +41,8 @@ export default class VoteGraph extends React.Component<IProps, null> {
 
     return (
       <div className={containerClass}>
-        <img className={css.yesWinning} src="/assets/images/Icon/vote/for.svg" />
-        <img className={css.noWinning} src="/assets/images/Icon/vote/against.svg" />
+        <img className={css.yesWinning} src="assets/images/Icon/vote/for.svg" />
+        <img className={css.noWinning} src="assets/images/Icon/vote/against.svg" />
         <svg className={css.yesVotesCircle} viewBox="0 0 33.83098862 33.83098862" width={size} height={size} xmlns="http://www.w3.org/2000/svg">
           <circle stroke="#efefef" strokeWidth="2" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
           {displayYesPercentage ?

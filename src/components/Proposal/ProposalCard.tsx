@@ -173,7 +173,7 @@ export default class ProposalCard extends React.Component<IProps, null> {
 
                 <div onClick={this.stopClick} className={css.contextMenu} data-test-id="proposalContextMenu">
                   <div className={css.menuIcon}>
-                    <img src="/assets/images/Icon/Context-menu.svg"/>
+                    <img src="assets/images/Icon/Context-menu.svg"/>
                   </div>
                   <TrackVisibility partialVisibility={false} offset={-116}>{({ isVisible }) =>
                     <div className={classNames({[css.menu]: true, [css.leftMenu]: !isVisible })}>

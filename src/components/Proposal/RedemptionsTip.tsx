@@ -20,7 +20,7 @@ export default (props: IProps) => {
   const { canRewardNone, canRewardOnlySome, currentAccountAddress, contributionRewards, dao, gpRewards, id, proposal } = props;
 
   const messageDiv = (canRewardNone || canRewardOnlySome) ? <div className={css.message}>
-    <img className={css.icon} src="/assets/images/Icon/Alert-yellow-b.svg" />
+    <img className={css.icon} src="assets/images/Icon/Alert-yellow-b.svg" />
     {canRewardNone ? <div className={css.text}>At this time, none of these rewards can be redeemed -- {dao.name} does not hold all the necessary assets.</div> : ""}
     {canRewardOnlySome ? <div className={css.text}>At this time, only some of these rewards can be redeemed -- {dao.name} does not hold all the necessary assets.</div> : ""}
   </div> : <span></span>;

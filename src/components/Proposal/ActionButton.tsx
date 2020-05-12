@@ -232,23 +232,23 @@ class ActionButton extends React.Component<IProps, IState> {
 
         { proposalState.stage === IProposalStage.Queued && proposalState.upstakeNeededToPreBoost.ltn(0) ?
           <button className={css.preboostButton} onClick={this.handleClickExecute("Pre-Boost")} data-test-id="buttonBoost">
-            <img src="/assets/images/Icon/boost.svg"/>
+            <img src="assets/images/Icon/boost.svg"/>
             { /* space after <span> is there on purpose */ }
             <span> Pre-Boost</span>
           </button> :
           proposalState.stage === IProposalStage.PreBoosted && expired && proposalState.downStakeNeededToQueue.lten(0) ?
             <button className={css.unboostButton} onClick={this.handleClickExecute("Un-boost")} data-test-id="buttonBoost">
-              <img src="/assets/images/Icon/boost.svg"/>
+              <img src="assets/images/Icon/boost.svg"/>
               <span> Un-Boost</span>
             </button> :
             proposalState.stage === IProposalStage.PreBoosted && expired ?
               <button className={css.boostButton} onClick={this.handleClickExecute("Boost")} data-test-id="buttonBoost">
-                <img src="/assets/images/Icon/boost.svg"/>
+                <img src="assets/images/Icon/boost.svg"/>
                 <span> Boost</span>
               </button> :
               (proposalState.stage === IProposalStage.Boosted || proposalState.stage === IProposalStage.QuietEndingPeriod) && expired ?
                 <button className={css.executeButton} onClick={this.handleClickExecute("Execute")}>
-                  <img src="/assets/images/Icon/execute.svg"/>
+                  <img src="assets/images/Icon/execute.svg"/>
                   { /* space after <span> is there on purpose */ }
                   <span> Execute</span>
                 </button>
@@ -262,7 +262,7 @@ class ActionButton extends React.Component<IProps, IState> {
                         onClick={this.handleClickRedeem}
                         data-test-id="button-redeem"
                       >
-                        <img src="/assets/images/Icon/redeem.svg" />
+                        <img src="assets/images/Icon/redeem.svg" />
                         {
                           (((beneficiaryNumUnredeemedCrRewards > 0) && (currentAccountAddress !== proposalState.contributionReward.beneficiary)) &&
                            (currentAccountNumUnredeemedGpRewards === 0)) ?

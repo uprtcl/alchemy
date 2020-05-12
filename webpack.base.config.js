@@ -19,6 +19,7 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
 
     alias: {
+      assets: resolve("src/assets"),
       arc: resolve("src/arc"),
       actions: resolve("src/actions"),
       components: resolve("src/components"),

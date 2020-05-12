@@ -106,8 +106,8 @@ class VotersModal extends React.Component<IProps, null> {
           <div className={css.summary}>
             <div className={voteUpClass}>
               <span className={css.reputation}>
-                <img className={css.upvote} src="/assets/images/Icon/vote/for-gray.svg"/>
-                <img className={css.upvoted} src="/assets/images/Icon/vote/for-fill.svg"/>
+                <img className={css.upvote} src="assets/images/Icon/vote/for-gray.svg"/>
+                <img className={css.upvoted} src="assets/images/Icon/vote/for-fill.svg"/>
                 <span className={css.reputationTitle}>For</span>
                 <br/>
                 <p><Reputation daoName={dao.name} totalReputation={proposal.totalRepWhenCreated} reputation={proposal.votesFor} hideSymbol /> Rep</p>
@@ -118,8 +118,8 @@ class VotersModal extends React.Component<IProps, null> {
             </div>
             <div className={voteDownClass}>
               <span className={css.reputation}>
-                <img className={css.downvote} src="/assets/images/Icon/vote/against-gray.svg"/>
-                <img className={css.downvoted} src="/assets/images/Icon/vote/against-fill.svg"/>
+                <img className={css.downvote} src="assets/images/Icon/vote/against-gray.svg"/>
+                <img className={css.downvoted} src="assets/images/Icon/vote/against-fill.svg"/>
                 <span className={css.reputationTitle}>Against</span>
                 <br />
                 <p><Reputation daoName={dao.name} totalReputation={proposal.totalRepWhenCreated} reputation={proposal.votesAgainst} hideSymbol /> Rep</p>

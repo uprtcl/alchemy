@@ -208,7 +208,7 @@ class AppContainer extends React.Component<IProps, IState> {
               <div className={css.cookieDisclaimer}>
                 <div className={css.body}>Alchemy stores cookies on your device to enhance platform experience and analyze platform usage. Please read the&nbsp;
                   <Link to="/cookie-policy" target="_blank" rel="noopener noreferrer">Cookie Policy</Link> for more information.</div>
-                <div className={css.accept}><a href="#" onClick={this.handleAccept} className={css.blueButton} data-test-id="acceptCookiesButton"><img src="/assets/images/Icon/v-white-thick.svg"></img>I Accept</a></div>
+                <div className={css.accept}><a href="#" onClick={this.handleAccept} className={css.blueButton} data-test-id="acceptCookiesButton"><img src="assets/images/Icon/v-white-thick.svg"></img>I Accept</a></div>
               </div>
             </div>
           }

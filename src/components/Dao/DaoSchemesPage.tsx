@@ -126,7 +126,7 @@ class DaoSchemesPage extends React.Component<IProps, null> {
         </Sticky>
         {(allKnownSchemes.length + unknownSchemes.length) === 0
           ? <div>
-            <img src="/assets/images/meditate.svg" />
+            <img src="assets/images/meditate.svg" />
             <div>
               No plugins registered
             </div>

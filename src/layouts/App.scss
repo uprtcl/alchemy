@@ -2,13 +2,13 @@ $header-height: 100px;
 
 @font-face {
   font-family: "AccordBold";
-  src: url("/assets/fonts/Accord-Bold.ttf");
+  src: url("assets/fonts/Accord-Bold.ttf");
   font-weight: regular;
 }
 
 @font-face {
   font-family: "GaramondProDisplay";
-  src: url("/assets/fonts/GaramondPremrPro-Disp.woff");
+  src: url("assets/fonts/GaramondPremrPro-Disp.woff");
 }
 
 body {
@@ -132,7 +132,7 @@ body {
     }
 
     .react-toggle-thumb {
-      background-image: url(/assets/images/Icon/info-i.svg);
+      background-image: url("~assets/images/Icon/info-i.svg");
       background-color: transparent !important;
       background-size: 20px 20px;
     }

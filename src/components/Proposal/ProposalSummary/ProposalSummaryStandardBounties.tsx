@@ -45,7 +45,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -78,7 +78,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -99,7 +99,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -130,7 +130,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -151,7 +151,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -172,7 +172,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -219,7 +219,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -240,7 +240,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -261,7 +261,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <ul className={css.summaryDetails}>
@@ -295,7 +295,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>
@@ -326,7 +326,7 @@ export default class ProposalSummaryStandardBounties extends React.Component<IPr
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
+              <img src="assets/images/Icon/edit-sm.svg" className={css.iconPadding}/> {action.label}
             </span>
             { detailView &&
               <div className={css.summaryDetails}>

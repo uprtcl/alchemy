@@ -42,7 +42,7 @@ export default class ProposalSummaryDutchX extends React.Component<IProps, null>
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
+              <img src="assets/images/Icon/edit-sm.svg"/>&nbsp;
               {action.label}
             </span>
             { detailView ?
@@ -57,7 +57,7 @@ export default class ProposalSummaryDutchX extends React.Component<IProps, null>
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
+              <img src="assets/images/Icon/edit-sm.svg"/>&nbsp;
               {action.label}
             </span>
             { detailView ?
@@ -72,7 +72,7 @@ export default class ProposalSummaryDutchX extends React.Component<IProps, null>
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
+              <img src="assets/images/Icon/edit-sm.svg"/>&nbsp;
               {action.label}
             </span>
             { detailView ?
@@ -106,7 +106,7 @@ export default class ProposalSummaryDutchX extends React.Component<IProps, null>
         return (
           <div className={proposalSummaryClass}>
             <span className={css.summaryTitle}>
-              <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
+              <img src="assets/images/Icon/edit-sm.svg"/>&nbsp;
               { field.label }: {formatTokens(new BN(value), field.unit, field.decimals)}
             </span>
           </div>

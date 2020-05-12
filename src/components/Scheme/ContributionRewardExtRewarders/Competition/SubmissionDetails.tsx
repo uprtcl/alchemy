@@ -75,9 +75,9 @@ class SubmissionDetails extends React.Component<IProps, null> {
     return (
       <div className={css.submissionDetails}>
         <div className={css.header}>
-          <div className={css.closeButton}><img onClick={this.props.handleClose} src="/assets/images/Icon/x-grey.svg"/></div>
+          <div className={css.closeButton}><img onClick={this.props.handleClose} src="assets/images/Icon/x-grey.svg"/></div>
           <div className={css.reputationVoted}>
-            <img src="/assets/images/Icon/vote/for-gray.svg"/>
+            <img src="assets/images/Icon/vote/for-gray.svg"/>
             { formatTokens(submission.totalVotes) } Rep { /* <Reputation daoName={daoState.name} totalReputation={daoState.reputationTotalSupply} reputation={submission.totalVotes} hideSymbol /> */}
           </div>
           { (canRedeem || !competitionIsOver) ?
@@ -89,7 +89,7 @@ class SubmissionDetails extends React.Component<IProps, null> {
                       href="#!"
                       onClick={hasRedeemedProposal ? this.handleRedeem : undefined}
                       data-test-id="redeemSuggestion"
-                    ><img src="/assets/images/Icon/redeem.svg"/>Redeem</a>
+                    ><img src="assets/images/Icon/redeem.svg"/>Redeem</a>
                   </Tooltip> :
                   !competitionIsOver ?
                     <Tooltip overlay={!inVotingPeriod ? "Voting has not yet begun" :
@@ -99,13 +99,13 @@ class SubmissionDetails extends React.Component<IProps, null> {
                         href="#!"
                         onClick={canVote ? this.handleVote : undefined}
                         data-test-id="voteSuggestion"
-                      >Vote<img src="/assets/images/Icon/vote/for-btn-selected-w.svg"/></a>
+                      >Vote<img src="assets/images/Icon/vote/for-btn-selected-w.svg"/></a>
                     </Tooltip> : ""
               }
             </div> : ""
           }
 
-          {(competitionIsOver && isWinner) ? <div className={css.winnerIcon} ><img src="/assets/images/Icon/winner.svg"></img></div> : ""}
+          {(competitionIsOver && isWinner) ? <div className={css.winnerIcon} ><img src="assets/images/Icon/winner.svg"></img></div> : ""}
         </div>
 
         <div className={css.title}>{submission.title}</div>
@@ -132,7 +132,7 @@ class SubmissionDetails extends React.Component<IProps, null> {
 
         {submission.url ?
           <a href={ensureHttps(submission.url)} className={css.attachmentLink} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/images/Icon/Attachment.svg" />
+            <img src="assets/images/Icon/Attachment.svg" />
             Attachment&nbsp;&gt;
           </a>
           : ""

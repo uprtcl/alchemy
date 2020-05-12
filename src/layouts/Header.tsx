@@ -179,13 +179,13 @@ class Header extends React.Component<IProps, null> {
         <nav className={css.header}>
           <div className={css.menuToggle} onClick={this.handleToggleMenu}>
             {this.props.menuOpen ?
-              <img src="/assets/images/Icon/Close.svg"/> :
-              <img src="/assets/images/Icon/Menu.svg"/>}
+              <img src="assets/images/Icon/Close.svg"/> :
+              <img src="assets/images/Icon/Menu.svg"/>}
           </div>
           <TrainingTooltip overlay="Go to DXdao" placement="bottomRight">
             <div className={css.menu}>
               <Link to={"/dao"}>
-                <img src="/assets/images/DXD.svg"/>
+                <img src="assets/images/DXD.svg"/>
               </Link>
             </div>
           </TrainingTooltip>
@@ -201,7 +201,7 @@ class Header extends React.Component<IProps, null> {
               <Toggle
                 defaultChecked={trainingTooltipsOn}
                 onChange={this.handleTrainingTooltipsEnabled}
-                icons={{ checked: <img src='/assets/images/Icon/checked.svg'/>, unchecked: <img src='/assets/images/Icon/unchecked.svg'/> }}/>
+                icons={{ checked: <img src='assets/images/Icon/checked.svg'/>, unchecked: <img src='assets/images/Icon/unchecked.svg'/> }}/>
             </div>
           </TrainingTooltip>
           <div className={css.accountInfo}>
@@ -230,7 +230,7 @@ class Header extends React.Component<IProps, null> {
                     </div>
                     <div className={css.copyAddress} style={{cursor: "pointer"}} onClick={this.copyAddress}>
                       <span>{currentAccountAddress ? currentAccountAddress.slice(0, 40) : "No account known"}</span>
-                      <img src="/assets/images/Icon/Copy-blue.svg"/>
+                      <img src="assets/images/Icon/Copy-blue.svg"/>
                     </div>
                     <div className={css.fullProfile}>
                       <Link className={css.profileLink} to={"/profile/" + currentAccountAddress + (daoAvatarAddress ? "?daoAvatarAddress=" + daoAvatarAddress : "")}>
@@ -250,9 +250,9 @@ class Header extends React.Component<IProps, null> {
                           <div className={css.providerconfig}><ProviderConfigButton provider={web3Provider} providerName={web3ProviderInfo.name}></ProviderConfigButton></div>
                           : ""
                         }
-                        <div className={css.web3ProviderLogInOut} onClick={this.handleClickLogout}><div className={css.text}>Log out</div> <img src="/assets/images/Icon/logout.svg"/></div>
+                        <div className={css.web3ProviderLogInOut} onClick={this.handleClickLogout}><div className={css.text}>Log out</div> <img src="assets/images/Icon/logout.svg"/></div>
                       </div> :
-                      <div className={css.web3ProviderLogInOut} onClick={this.handleConnect}><div className={css.text}>Connect</div> <img src="/assets/images/Icon/login.svg"/></div> }
+                      <div className={css.web3ProviderLogInOut} onClick={this.handleConnect}><div className={css.text}>Connect</div> <img src="assets/images/Icon/login.svg"/></div> }
                   </div>
                 </div>
               </span> : <span></span>
@@ -261,7 +261,7 @@ class Header extends React.Component<IProps, null> {
               <div className={css.web3ProviderLogin}>
                 <TrainingTooltip placement="bottomLeft" overlay={"Click here to connect your wallet provider"}>
                   <button onClick={this.handleClickLogin} data-test-id="loginButton">
-                    Log in <img src="/assets/images/Icon/login-white.svg"/>
+                    Log in <img src="assets/images/Icon/login-white.svg"/>
                   </button>
                 </TrainingTooltip>
               </div>
@@ -269,7 +269,7 @@ class Header extends React.Component<IProps, null> {
                 <div className={css.web3ProviderLogin}>
                   <TrainingTooltip placement="bottomLeft" overlay={"Click here to connect your wallet provider"}>
                     <button onClick={this.handleConnect} data-test-id="connectButton">
-                      <span className={css.connectButtonText}>Connect</span><img src="/assets/images/Icon/login-white.svg"/>
+                      <span className={css.connectButtonText}>Connect</span><img src="assets/images/Icon/login-white.svg"/>
                     </button>
                   </TrainingTooltip>
                 </div>

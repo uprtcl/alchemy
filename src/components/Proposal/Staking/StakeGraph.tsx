@@ -43,13 +43,13 @@ export default class StakeGraph extends React.Component<IProps, null> {
         <div className={css.stakeGraph}>
           <div className={css.leftColumn}>
             <div className={css.stakesFor}>
-              <img className={css.defaultIcon} src="/assets/images/Icon/v-small-line.svg"/>
-              <img className={css.detailIcon} src="/assets/images/Icon/v-small.svg"/>
+              <img className={css.defaultIcon} src="assets/images/Icon/v-small-line.svg"/>
+              <img className={css.detailIcon} src="assets/images/Icon/v-small.svg"/>
               {formatTokens(proposal.stakesFor)}
             </div>
             <div className={css.stakesAgainst}>
-              <img className={css.defaultIcon} src="/assets/images/Icon/x-small-line.svg"/>
-              <img className={css.detailIcon} src="/assets/images/Icon/x-small.svg"/>
+              <img className={css.defaultIcon} src="assets/images/Icon/x-small-line.svg"/>
+              <img className={css.detailIcon} src="assets/images/Icon/x-small.svg"/>
               {formatTokens(proposal.stakesAgainst)}
             </div>
           </div>

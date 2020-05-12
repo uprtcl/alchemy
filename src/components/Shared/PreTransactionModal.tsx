@@ -177,7 +177,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
     switch (actionType) {
       case ActionTypes.VoteUp:
         actionTypeClass = css.voteUp;
-        icon = <img src="/assets/images/Icon/vote/for-fill-green.svg" />;
+        icon = <img src="assets/images/Icon/vote/for-fill-green.svg" />;
         transactionType = <span><strong className={css.passVote}>For</strong> vote</span>;
         rulesHeader = "RULES FOR YES VOTES";
         rules = <div>
@@ -186,7 +186,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
           <p>If you vote Against and the proposal fails you will be given a portion of whatever GEN have been staked on the proposal.</p>
           <p>You will not receive reputation or GEN for voting on a boosted proposal.</p>
           <div className={css.notification}>
-            <img src="/assets/images/Icon/Alert-yellow.svg"/> You will not receive reputation or GEN for voting on a boosted proposal.
+            <img src="assets/images/Icon/Alert-yellow.svg"/> You will not receive reputation or GEN for voting on a boosted proposal.
           </div>
           <a className={css.genesisProtocolLink} href="https://docs.google.com/document/d/1LMe0S4ZFWELws1-kd-6tlFmXnlnX9kfVXUNzmcmXs6U/edit?usp=drivesdk" target="_blank" rel="noopener noreferrer">View the Genesis Protocol &gt;</a>
           <div className={css.passFailConditions}>
@@ -201,7 +201,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
         break;
       case ActionTypes.VoteDown:
         actionTypeClass = css.voteDown;
-        icon = <img src="/assets/images/Icon/vote/against.svg" />;
+        icon = <img src="assets/images/Icon/vote/against.svg" />;
         transactionType = <span><strong className={css.failVote}>Against</strong> vote</span>;
         rulesHeader = "RULES FOR NO VOTES";
         rules = <div>
@@ -210,7 +210,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
           <p>If you vote for something to fail and it does, you will be given a portion of whatever GEN have been staked on the proposal.</p>
           <p>You will not receive reputation or GEN for voting on a boosted proposal.</p>
           <div className={css.notification}>
-            <img src="/assets/images/Icon/Alert-yellow.svg"/> You will not receive reputation or GEN for voting on a boosted proposal.
+            <img src="assets/images/Icon/Alert-yellow.svg"/> You will not receive reputation or GEN for voting on a boosted proposal.
           </div>
           <a className={css.genesisProtocolLink} href="https://docs.google.com/document/d/1LMe0S4ZFWELws1-kd-6tlFmXnlnX9kfVXUNzmcmXs6U/edit?usp=drivesdk" target="_blank" rel="noopener noreferrer">View the Genesis Protocol &gt;</a>
           <div className={css.passFailConditions}>
@@ -225,7 +225,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
         break;
       case ActionTypes.StakePass:
         actionTypeClass = css.stakePass;
-        icon = <img src="/assets/images/Icon/v-white.svg"/>;
+        icon = <img src="assets/images/Icon/v-white.svg"/>;
         transactionType = <span><strong className={css.passVote}>Pass</strong> prediction</span>;
 
         // passIncentive = <span>YOU GAIN GEN AND REPUTATION</span>;
@@ -236,7 +236,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
           <p>When you predict correctly, you receive some reputation from other voters who didn&apos;t vote correctly on the proposal.</p>
           <p>When you predict incorrectly you simply lose all the GEN you have staked.</p>
           <div className={css.notification}>
-            <img src="/assets/images/Icon/Alert-yellow.svg"/> You will not receive reputation or GEN for voting on a boosted proposal.
+            <img src="assets/images/Icon/Alert-yellow.svg"/> You will not receive reputation or GEN for voting on a boosted proposal.
           </div>
           <a className={css.genesisProtocolLink} href="https://docs.google.com/document/d/1LMe0S4ZFWELws1-kd-6tlFmXnlnX9kfVXUNzmcmXs6U/edit?usp=drivesdk" target="_blank" rel="noopener noreferrer">View the Genesis Protocol &gt;</a>
           <div className={css.passFailConditions}>
@@ -251,7 +251,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
         break;
       case ActionTypes.StakeFail:
         actionTypeClass = css.stakeFail;
-        icon = <img src="/assets/images/Icon/x-white.svg"/>;
+        icon = <img src="assets/images/Icon/x-white.svg"/>;
         transactionType = <span><strong className={css.failVote}>Fail</strong> prediction</span>;
         // passIncentive = <span>LOSE YOUR STAKE</span>;
         // failIncentive = <span>YOU GAIN GEN AND REPUTATION</span>;
@@ -261,7 +261,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
           <p>When you predict correctly, you receive some reputation from other voters who didn&apos;t vote correctly on the proposal.</p>
           <p>When you predict incorrectly you simply lose all the GEN you have staked.</p>
           <div className={css.notification}>
-            <img src="/assets/images/Icon/Alert-yellow.svg"/> You will not receive reputation or GEN for voting on a boosted proposal.
+            <img src="assets/images/Icon/Alert-yellow.svg"/> You will not receive reputation or GEN for voting on a boosted proposal.
           </div>
           <a className={css.genesisProtocolLink} href="https://docs.google.com/document/d/1LMe0S4ZFWELws1-kd-6tlFmXnlnX9kfVXUNzmcmXs6U/edit?usp=drivesdk" target="_blank" rel="noopener noreferrer">View the Genesis Protocol &gt;</a>
           <div className={css.passFailConditions}>
@@ -275,7 +275,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
         </div>;
         break;
       case ActionTypes.Redeem:
-        icon = <img src="/assets/images/Tx/Redemption.svg"/>;
+        icon = <img src="assets/images/Tx/Redemption.svg"/>;
         transactionType = <span>Redeem proposal</span>;
 
         Analytics.track("Open Redeem Popup", {
@@ -289,7 +289,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
         });
         break;
       case ActionTypes.Execute:
-        icon = <img src="/assets/images/Tx/Redemption.svg"/>;
+        icon = <img src="assets/images/Tx/Redemption.svg"/>;
         transactionType = <span>Execute proposal</span>;
         break;
     }
@@ -397,11 +397,11 @@ class PreTransactionModal extends React.Component<IProps, IState> {
                     </div>
                     <div className={css.graphInfo}>
                       <div>
-                        <img src="/assets/images/Icon/vote/for.svg"/>
+                        <img src="assets/images/Icon/vote/for.svg"/>
                          For <Reputation daoName={dao.name} totalReputation={proposal.totalRepWhenCreated} reputation={reputationFor} />
                       </div>
                       <div>
-                        <img src="/assets/images/Icon/vote/against.svg"/>
+                        <img src="assets/images/Icon/vote/against.svg"/>
                          Against <Reputation daoName={dao.name} totalReputation={proposal.totalRepWhenCreated} reputation={reputationAgainst} />
                       </div>
                     </div>

@@ -33,21 +33,21 @@ export default class BoostAmount extends React.Component<IProps, null> {
           proposal.stage === IProposalStage.Queued && !expired && proposal.upstakeNeededToPreBoost.gten(0) ?
             <span className={css.boostedAmount}>
               <b>
-                {detailView ? <img src="/assets/images/Icon/Boost-slate.svg" /> : ""}
+                {detailView ? <img src="assets/images/Icon/Boost-slate.svg" /> : ""}
                 &gt; {formatTokens(proposal.upstakeNeededToPreBoost, "GEN")} on Pass to boost
               </b>
             </span>
             : proposal.stage === IProposalStage.PreBoosted && proposal.downStakeNeededToQueue.lten(0) ?
               <span className={css.boostedAmount}>
                 <b>
-                  {detailView ? <img src="/assets/images/Icon/Boost-slate.svg" /> : ""}
+                  {detailView ? <img src="assets/images/Icon/Boost-slate.svg" /> : ""}
                 &gt; {formatTokens(proposal.downStakeNeededToQueue.abs(), "GEN")} on Pass to stay boosted
                 </b>
               </span>
               : proposal.stage === IProposalStage.PreBoosted && proposal.downStakeNeededToQueue.gtn(0) ?
                 <span className={css.boostedAmount + " " + css.unboostAmount}>
                   <b>
-                    {detailView ? <img src="/assets/images/Icon/Boost-slate.svg" /> : ""}
+                    {detailView ? <img src="assets/images/Icon/Boost-slate.svg" /> : ""}
                 &gt;=  {formatTokens(proposal.downStakeNeededToQueue, "GEN")} on Fail to un-boost
                   </b>
                 </span>

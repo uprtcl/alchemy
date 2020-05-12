@@ -255,7 +255,7 @@ class AccountProfilePage extends React.Component<IProps, IState> {
                             </div>
                             <div className={css.saveProfile}>
                               <button className={css.submitButton} type="submit" disabled={isSubmitting}>
-                                <img className={css.loading} src="/assets/images/Icon/Loading-black.svg" />
+                                <img className={css.loading} src="assets/images/Icon/Loading-black.svg" />
                                 SUBMIT
                               </button>
                             </div>
@@ -272,7 +272,7 @@ class AccountProfilePage extends React.Component<IProps, IState> {
 
                         {editing
                           ? <div className={css.socialProof}>
-                            <img src="/assets/images/Icon/Alert-yellow.svg" /> Prove it&apos;s you by linking your social accounts through 3box.
+                            <img src="assets/images/Icon/Alert-yellow.svg" /> Prove it&apos;s you by linking your social accounts through 3box.
                           </div>
                           : " "
                         }
@@ -297,7 +297,7 @@ class AccountProfilePage extends React.Component<IProps, IState> {
                       <div>
                         <strong>ETH Address:</strong><br />
                         <span>{accountAddress.substr(0, 20)}...</span>
-                        <button className={css.copyButton} onClick={this.copyAddress}><img src="/assets/images/Icon/Copy-black.svg" /></button>
+                        <button className={css.copyButton} onClick={this.copyAddress}><img src="assets/images/Icon/Copy-black.svg" /></button>
                       </div>
                     </div>
                   </div>

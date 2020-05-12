@@ -148,33 +148,33 @@ class SchemeInfo extends React.Component<IProps, null> {
         <table className={css.infoCardContent}>
           <tbody>
             <tr>
-              <th>Address of plugin: <a href={linkToEtherScan(scheme.address)} target="_blank" rel="noopener noreferrer"><img src="/assets/images/Icon/Link-blue.svg" /></a></th>
+              <th>Address of plugin: <a href={linkToEtherScan(scheme.address)} target="_blank" rel="noopener noreferrer"><img src="assets/images/Icon/Link-blue.svg" /></a></th>
               <td>
                 <span>{scheme.address}</span>
               </td>
               <td>
-                <img className={css.copyButton} src="/assets/images/Icon/Copy-blue.svg" onClick={this.copyToClipboardHandler(scheme.address)} />
+                <img className={css.copyButton} src="assets/images/Icon/Copy-blue.svg" onClick={this.copyToClipboardHandler(scheme.address)} />
               </td>
             </tr>
             { scheme.genericSchemeParams ?
               <tr>
-                <th>will call this contract: <a href={linkToEtherScan(scheme.genericSchemeParams.contractToCall)} target="_blank" rel="noopener noreferrer"><img src="/assets/images/Icon/Link-blue.svg" /></a></th>
+                <th>will call this contract: <a href={linkToEtherScan(scheme.genericSchemeParams.contractToCall)} target="_blank" rel="noopener noreferrer"><img src="assets/images/Icon/Link-blue.svg" /></a></th>
                 <td>
                   <span>{scheme.genericSchemeParams.contractToCall}</span>
                 </td>
                 <td>
-                  <img className={css.copyButton} src="/assets/images/Icon/Copy-blue.svg" onClick={this.copyToClipboardHandler(scheme.genericSchemeParams.contractToCall)} />
+                  <img className={css.copyButton} src="assets/images/Icon/Copy-blue.svg" onClick={this.copyToClipboardHandler(scheme.genericSchemeParams.contractToCall)} />
                 </td>
               </tr> : undefined
             }
             { scheme.uGenericSchemeParams ?
               <tr>
-                <th>will call this contract: <a href={linkToEtherScan(scheme.uGenericSchemeParams.contractToCall)} target="_blank" rel="noopener noreferrer"><img src="/assets/images/Icon/Link-blue.svg" /></a></th>
+                <th>will call this contract: <a href={linkToEtherScan(scheme.uGenericSchemeParams.contractToCall)} target="_blank" rel="noopener noreferrer"><img src="assets/images/Icon/Link-blue.svg" /></a></th>
                 <td>
                   <span>{scheme.uGenericSchemeParams.contractToCall}</span>
                 </td>
                 <td>
-                  <img className={css.copyButton} src="/assets/images/Icon/Copy-blue.svg" onClick={this.copyToClipboardHandler(scheme.uGenericSchemeParams.contractToCall)} />
+                  <img className={css.copyButton} src="assets/images/Icon/Copy-blue.svg" onClick={this.copyToClipboardHandler(scheme.uGenericSchemeParams.contractToCall)} />
                 </td>
               </tr> : undefined
             }
@@ -185,7 +185,7 @@ class SchemeInfo extends React.Component<IProps, null> {
                 <span>{scheme.paramsHash}</span>
               </td>
               <td>
-                <img className={css.copyButton} src="/assets/images/Icon/Copy-blue.svg" onClick={this.copyToClipboardHandler(scheme.paramsHash)} />
+                <img className={css.copyButton} src="assets/images/Icon/Copy-blue.svg" onClick={this.copyToClipboardHandler(scheme.paramsHash)} />
               </td>
             </tr>
             <tr>

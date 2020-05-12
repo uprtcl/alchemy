@@ -341,7 +341,7 @@ class ReputationFromToken extends React.Component<IProps, IState> {
                     disabled={this.state.alreadyRedeemed || this.state.redemptionAmount.isZero()}
                     onClick={this.onSubmitClick(setFieldValue)}
                   >
-                    <img src="/assets/images/Icon/redeem.svg"/> Redeem
+                    <img src="assets/images/Icon/redeem.svg"/> Redeem
                   </button>
                 </div>
                 { getArcSettings().txSenderServiceUrl ?
@@ -351,7 +351,7 @@ class ReputationFromToken extends React.Component<IProps, IState> {
                       disabled={this.state.alreadyRedeemed || this.state.redemptionAmount.isZero()}
                       onClick={this.onSubmitClick(setFieldValue)}
                     >
-                      <img src="/assets/images/Icon/redeem.svg"/> Redeem w/o paying gas
+                      <img src="assets/images/Icon/redeem.svg"/> Redeem w/o paying gas
                     </button>
                   </div>
                   : null }

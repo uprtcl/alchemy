@@ -18,14 +18,14 @@ export default class Error404 extends React.PureComponent {
         <nav className={appCss.header}>
           <div>
             <div className={appCss.menu}>
-              <Link to="/"><img src="/assets/images/DXD.svg"/></Link>
+              <Link to="/"><img src="assets/images/DXD.svg"/></Link>
             </div>
             <div className={appCss.topInfo}>DXdao</div>
           </div>
         </nav>
         <div className={css.content}>
           <div className={css.banner}>
-            <img className={css.stars} src="/assets/images/Errors/stars-404.svg" />
+            <img className={css.stars} src="assets/images/Errors/stars-404.svg" />
           </div>
           <div className={css.title}>Are you lost?</div>
           <div className={css.description}>This URL seems wrong (probably a copy-paste error 😉)… Please check the url or contact support.</div>

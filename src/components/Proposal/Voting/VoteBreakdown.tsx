@@ -87,8 +87,8 @@ class VoteBreakdown extends React.Component<IProps, IState> {
     return (
       <div className={wrapperClass}>
         <div className={voteUpClass}>
-          <img className={css.upvote} src="/assets/images/Icon/vote/for-gray.svg"/>
-          <img className={css.upvoted} src="/assets/images/Icon/vote/for-fill.svg"/>
+          <img className={css.upvote} src="assets/images/Icon/vote/for-gray.svg"/>
+          <img className={css.upvoted} src="assets/images/Icon/vote/for-fill.svg"/>
           <span className={css.reputation}>
             <span className={css.label}>For</span>
             <br className={css.label}/>
@@ -97,8 +97,8 @@ class VoteBreakdown extends React.Component<IProps, IState> {
           </span>
         </div>
         <div className={voteDownClass}>
-          <img className={css.downvote} src="/assets/images/Icon/vote/against-gray.svg"/>
-          <img className={css.downvoted} src="/assets/images/Icon/vote/against-fill.svg"/>
+          <img className={css.downvote} src="assets/images/Icon/vote/against-gray.svg"/>
+          <img className={css.downvoted} src="assets/images/Icon/vote/against-fill.svg"/>
           <span className={css.reputation}>
             <span className={css.label}>Against</span>
             <br className={css.label}/>

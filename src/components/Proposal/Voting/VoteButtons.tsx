@@ -186,12 +186,12 @@ class VoteButtons extends React.Component<IProps, IState> {
               <div className={css.hasVoted}>
                 <div className={css.voteRecord}>
                   <span className={css.castVoteFor} data-test-id="youVotedFor">
-                    <img src="/assets/images/Icon/vote/for-fill-green.svg"/>
+                    <img src="assets/images/Icon/vote/for-fill-green.svg"/>
                     <br/>
                  For
                   </span>
                   <span className={css.castVoteAgainst}>
-                    <img src="/assets/images/Icon/vote/against-btn-fill-red.svg"/>
+                    <img src="assets/images/Icon/vote/against-btn-fill-red.svg"/>
                     <br/>
                  Against
                   </span>
@@ -202,18 +202,18 @@ class VoteButtons extends React.Component<IProps, IState> {
                   <div>
                     <button onClick={this.handleClickVote(1)} className={voteUpButtonClass} data-test-id="voteFor">
                       <img src={`/assets/images/Icon/vote/for-btn-selected${altStyle ? "-w" : ""}.svg`} />
-                      <img className={css.buttonLoadingImg} src="/assets/images/Icon/buttonLoadingBlue.gif"/>
+                      <img className={css.buttonLoadingImg} src="assets/images/Icon/buttonLoadingBlue.gif"/>
                       <span> For</span>
                     </button>
                     <button onClick={this.handleClickVote(2)} className={voteDownButtonClass}>
                       <img src={`/assets/images/Icon/vote/against-btn-selected${altStyle ? "-w" : ""}.svg`}/>
-                      <img className={css.buttonLoadingImg} src="/assets/images/Icon/buttonLoadingBlue.gif"/>
+                      <img className={css.buttonLoadingImg} src="assets/images/Icon/buttonLoadingBlue.gif"/>
                       <span> Against</span>
                     </button>
                   </div>
                   :
                   <div className={css.votingDisabled}>
-                    <span><img src="/assets/images/Icon/Alert-yellow-b.svg"/> {disabledMessage}</span>
+                    <span><img src="assets/images/Icon/Alert-yellow-b.svg"/> {disabledMessage}</span>
                   </div>
                 }
               </div>
@@ -226,12 +226,12 @@ class VoteButtons extends React.Component<IProps, IState> {
                 <div>
                   <button onClick={this.handleClickVote(1)} className={voteUpButtonClass} data-test-id="voteFor">
                     <img src={`/assets/images/Icon/vote/for-btn-selected${altStyle ? "-w" : ""}.svg`} />
-                    <img className={css.buttonLoadingImg} src="/assets/images/Icon/buttonLoadingBlue.gif"/>
+                    <img className={css.buttonLoadingImg} src="assets/images/Icon/buttonLoadingBlue.gif"/>
                     <span> For</span>
                   </button>
                   <button onClick={this.handleClickVote(2)} className={voteDownButtonClass}>
                     <img src={`/assets/images/Icon/vote/against-btn-selected${altStyle ? "-w" : ""}.svg`}/>
-                    <img className={css.buttonLoadingImg} src="/assets/images/Icon/buttonLoadingBlue.gif"/>
+                    <img className={css.buttonLoadingImg} src="assets/images/Icon/buttonLoadingBlue.gif"/>
                     <span> Against</span>
                   </button>
                 </div>

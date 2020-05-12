@@ -63,7 +63,7 @@ export default class ProposalSummary extends React.Component<IProps> {
 
     return <div className={proposalSummaryClass}>
       <span className={css.summaryTitle}>
-        <img src="/assets/images/Icon/edit-sm.svg"/>&nbsp;
+        <img src="assets/images/Icon/edit-sm.svg"/>&nbsp;
         { decodedCallData.action.label }
       </span>
 

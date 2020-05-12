@@ -19,7 +19,7 @@ export default class ProviderConfigButton extends React.Component<IExternalProps
   public render(): RenderOutput {
     return <Tooltip placement="bottom" trigger={["hover"]} overlay={`Open ${this.props.providerName} configuration`}>
       <button className={css.button} onClick={this.handleClick}>
-        <img src="/assets/images/gear.svg"/>
+        <img src="assets/images/gear.svg"/>
       </button>
     </Tooltip>;
   }

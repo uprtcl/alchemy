@@ -42,31 +42,31 @@ export default class ProposalStatus extends React.Component<IProps, null> {
                 <div className={classNames({
                   [css.status]: true,
                   [css.passed]: true,
-                })}><img src="/assets/images/Icon/vote/for-fill-green.svg" />Passed</div> :
+                })}><img src="assets/images/Icon/vote/for-fill-green.svg" />Passed</div> :
 
                 (failedByVote) ?
                   <div className={classNames({
                     [css.status]: true,
                     [css.failed]: true,
-                  })}><img src="/assets/images/Icon/vote/against-btn-fill-red.svg" />Failed</div> :
+                  })}><img src="assets/images/Icon/vote/against-btn-fill-red.svg" />Failed</div> :
 
                   (proposalState.stage === IProposalStage.PreBoosted) ?
                     <div className={classNames({
                       [css.status]: true,
                       [css.pending]: true,
-                    })}><img src="/assets/images/Icon/pending.svg" />Pending Boosting</div> :
+                    })}><img src="assets/images/Icon/pending.svg" />Pending Boosting</div> :
 
                     (proposalState.stage === IProposalStage.Boosted) ?
                       <div className={classNames({
                         [css.status]: true,
                         [css.boosted]: true,
-                      })}><img src="/assets/images/Icon/boosted.svg" />Boosted</div> :
+                      })}><img src="assets/images/Icon/boosted.svg" />Boosted</div> :
 
                       (proposalState.stage === IProposalStage.QuietEndingPeriod) ?
                         <div className={classNames({
                           [css.status]: true,
                           [css.quietEnding]: true,
-                        })}><img src="/assets/images/Icon/boosted.svg" />Boosted (overtime)</div> :
+                        })}><img src="assets/images/Icon/boosted.svg" />Boosted (overtime)</div> :
 
                         <div className={classNames({
                           [css.status]: true,
