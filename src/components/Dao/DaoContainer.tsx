@@ -7,7 +7,6 @@ import SchemeContainer from "components/Scheme/SchemeContainer";
 import Loading from "components/Shared/Loading";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -61,7 +60,8 @@ class DaoContainer extends React.Component<IProps, null> {
     // TODO: use this once 3box fixes Box.getProfiles
     //this.props.getProfilesForAddresses(this.props.data[1].map((member) => member.staticState.address));
   }
-
+  
+  
   private daoHistoryRoute = (routeProps: any) => <DaoHistoryPage {...routeProps} daoState={this.props.data[0]} currentAccountAddress={this.props.currentAccountAddress} />;
   private daoMembersRoute = (routeProps: any) => <DaoMembersPage {...routeProps} daoState={this.props.data[0]} />;
   private daoProposalRoute = (routeProps: any) =>
@@ -87,8 +87,6 @@ class DaoContainer extends React.Component<IProps, null> {
 
     return (
       <div className={css.outer}>
-        <BreadcrumbsItem to="/daos/">All DAOs</BreadcrumbsItem>
-        <BreadcrumbsItem to={"/dao/" + daoState.address}>{daoState.name}</BreadcrumbsItem>
         <Helmet>
           <meta name="description" content={daoState.name + " | Managed on Alchemy by DAOstack"} />
           <meta name="og:description" content={daoState.name + " | Managed on Alchemy by DAOstack"} />

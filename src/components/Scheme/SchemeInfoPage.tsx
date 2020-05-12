@@ -41,13 +41,12 @@ class SchemeInfo extends React.Component<IProps, null> {
   private handleEditPlugin = async (e: any) => {
     if (!await enableWalletProvider({ showNotification: this.props.showNotification })) { return; }
 
-    this.props.history.push(`/dao/${this.props.daoState.id}/scheme/${this.props.schemeManager.id}/proposals/create/?currentTab=editScheme`);
+    this.props.history.push(`/dao/scheme/${this.props.schemeManager.id}/proposals/create/?currentTab=editScheme`);
     e.preventDefault();
   }
 
   public render(): RenderOutput {
-    const { daoState, scheme } = this.props;
-    const daoAvatarAddress = daoState.address;
+    const { scheme } = this.props;
 
     const duration = (durationSeconds: number): any => {
       if (!durationSeconds) {
@@ -130,7 +129,7 @@ class SchemeInfo extends React.Component<IProps, null> {
       (scheme.schemeRegistrarParams && scheme.schemeRegistrarParams.votingMachine)
     );
     return <div>
-      <BreadcrumbsItem to={`/dao/${daoAvatarAddress}/scheme/${scheme.id}/info`}>Info</BreadcrumbsItem>
+      <BreadcrumbsItem to={`/dao/scheme/${scheme.id}/info`}>Info</BreadcrumbsItem>
 
       <div className={css.editPlugin}>
         <TrainingTooltip placement="topRight" overlay={"A small amount of ETH is necessary to submit a proposal in order to pay gas costs"}>

@@ -4,7 +4,6 @@ import * as css from "./DaoLandingPage.scss";
 import { Page } from "pages";
 import Analytics from "lib/analytics";
 import { Link } from "react-router-dom";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 
 type IExternalProps = {
   daoState: IDAOState;
@@ -39,8 +38,6 @@ export default class DaoLandingPage extends React.Component<IProps, IStateProps>
 
     return (
       <div className={css.landingPage}>
-
-        <BreadcrumbsItem to={"/dao/" + daoState.address}>{daoState.name}</BreadcrumbsItem>
 
         <div className={css.infoContainer}>
           <div className={css.titleContainer}>

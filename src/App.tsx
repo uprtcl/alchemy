@@ -6,8 +6,7 @@ import ErrorUncaught from "components/Errors/ErrorUncaught";
 import * as React from "react";
 import ReactGA from "react-ga";
 import { Provider } from "react-redux";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { ConnectedRouter } from "react-router-redux";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ThroughProvider } from "react-through";
 import * as css from "./layouts/App.scss";
 import { history, default as store } from "./configureStore";
@@ -101,13 +100,13 @@ export class App extends React.Component<{}, {
       return (
         <Provider store={store}>
           <ThroughProvider>
-            <ConnectedRouter history={history}>
+            <HashRouter>
               <Switch>
                 <Route path="/dao" component={AppContainer}/>
                 <Route path="/profile" component={AppContainer}/>
                 <Redirect from="/" to="/dao" />
               </Switch>
-            </ConnectedRouter>
+            </HashRouter>
           </ThroughProvider>
         </Provider>
       );

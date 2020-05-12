@@ -6,7 +6,6 @@ import gql from "graphql-tag";
 import Analytics from "lib/analytics";
 import { Page } from "pages";
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import * as InfiniteScroll from "react-infinite-scroll-component";
 import { Link, RouteComponentProps } from "react-router-dom";
 import * as Sticky from "react-stickynode";
@@ -45,8 +44,6 @@ class DaoHistoryPage extends React.Component<IProps, null> {
 
     return (
       <div>
-        <BreadcrumbsItem to={"/dao/" + daoState.address + "/history"}>History</BreadcrumbsItem>
-
         <Sticky enabled top={50} innerZ={10000}>
           <div className={css.daoHistoryHeader}>
             History

@@ -15,7 +15,6 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { closingTime, proposalEnded } from "lib/proposalHelpers";
 import TagsSelector from "components/Proposal/Create/SchemeForms/TagsSelector";
 import { rewarderContractName } from "components/Scheme/ContributionRewardExtRewarders/rewardersProps";
-import SocialShareModal from "../Shared/SocialShareModal";
 import ActionButton from "./ActionButton";
 import BoostAmount from "./Staking/BoostAmount";
 import StakeButtons from "./Staking/StakeButtons";
@@ -72,14 +71,6 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
     [css.proposal]: true,
     clearfix: true,
   });
-
-  private showShareModal = (_event: any): void => {
-    this.setState({ showShareModal: true });
-  }
-
-  private closeShareModal = (_event: any): void => {
-    this.setState({ showShareModal: false });
-  }
 
   private showVotersModal = (votesCount: number) => (_event: any): void => {
     if (votesCount > 0) {
@@ -156,8 +147,8 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
 
     return (
       <div className={css.wrapper}>
-        <BreadcrumbsItem weight={1} to={`/dao/${daoState.address}/scheme/${proposal.scheme.id}`}>{schemeName(proposal.scheme, proposal.scheme.address)}</BreadcrumbsItem>
-        <BreadcrumbsItem weight={2} to={`/dao/${daoState.address}/proposal/${proposal.id}`}>{humanProposalTitle(proposal, 40)}</BreadcrumbsItem>
+        <BreadcrumbsItem weight={1} to={`/dao/scheme/${proposal.scheme.id}`}>{schemeName(proposal.scheme, proposal.scheme.address)}</BreadcrumbsItem>
+        <BreadcrumbsItem weight={2} to={`/dao/proposal/${proposal.id}`}>{humanProposalTitle(proposal, 40)}</BreadcrumbsItem>
         <div className={this.proposalClass} data-test-id={"proposal-" + proposal.id}>
           <div className={css.proposalInfo}>
             <div>
@@ -180,13 +171,13 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
               {
                 (crxContractName) ? <div className={css.gotoCompetition}>
                   {
-                    <Link to={`/dao/${daoState.address}/crx/proposal/${proposal.id}`}>Go to {crxContractName}&nbsp;&gt;</Link>
+                    <Link to={`/dao/crx/proposal/${proposal.id}`}>Go to {crxContractName}&nbsp;&gt;</Link>
                   }
                 </div> : ""
               }
             </div>
             <h3 className={css.proposalTitleTop}>
-              <Link to={"/dao/" + daoState.address + "/proposal/" + proposal.id} data-test-id="proposal-title">{humanProposalTitle(proposal)}</Link>
+              <Link to={"/dao/proposal/" + proposal.id} data-test-id="proposal-title">{humanProposalTitle(proposal)}</Link>
             </h3>
 
             <div className={css.timer + " clearfix"}>
@@ -272,11 +263,6 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
                 </div>
               </div>
 
-              <button onClick={this.showShareModal} className={css.shareButton} data-test-id="share">
-                <img src={"/assets/images/Icon/share-white.svg"} />
-                <span>Share</span>
-              </button>
-
               <div className={css.followButton}><FollowButton type="proposals" id={proposal.id} style="bigButton" /></div>
             </div>
           </div>
@@ -360,12 +346,6 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
           /> : ""
         }
 
-        {this.state.showShareModal ?
-          <SocialShareModal
-            closeHandler={this.closeShareModal}
-            url={`https://alchemy.daostack.io/dao/${daoState.address}/proposal/${proposal.id}`}
-          /> : ""
-        }
       </div>
     );
   }
