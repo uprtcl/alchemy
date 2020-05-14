@@ -24,7 +24,7 @@ const config = merge(baseConfig, {
     filename: "[name].bundle-[hash:8].js",
     chunkFilename: '[name].bundle-[hash:8].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath: '',
   },
 
   optimization: {
@@ -95,12 +95,12 @@ plugins: [
       NETWORK: "main",
       NODE_ENV: "production",
       SHOW_ALL_DAOS: "false",
-      BASE_URL: "https://alchemy.daostack.io",
+      BASE_URL: "",
       DISQUS_SITE: 'daostack-alchemy',
       ARC_GRAPHQLHTTPPROVIDER: "",
       ARC_GRAPHQLWSPROVIDER : "",
       ARC_WEB3PROVIDER : "https://mainnet.eth.cloud.ava.do",
-      ARC_WEB3PROVIDERREAD : "",
+      ARC_WEB3PROVIDERREAD : "https://mainnet.eth.cloud.ava.do",
       ARC_IPFSPROVIDER: "",
       ARC_IPFSPROVIDER_HOST : "",
       ARC_IPFSPROVIDER_PORT : "",
