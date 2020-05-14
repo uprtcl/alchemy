@@ -11,7 +11,7 @@ import ErrorUncaught from "components/Errors/ErrorUncaught";
 import * as React from "react";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { connect } from "react-redux";
-import { Link, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { ModalContainer } from "react-router-modal";
 import { History } from "history";
 import classNames from "classnames";
@@ -62,8 +62,6 @@ interface IState {
 
 class AppContainer extends React.Component<IProps, IState> {
   public unlisten: any;
-
-  private static hasAcceptedCookiesKey = "acceptedCookies";
 
   constructor(props: IProps) {
     super(props);
@@ -177,7 +175,6 @@ class AppContainer extends React.Component<IProps, IState> {
         <ErrorUncaught errorMessage={this.state.error.message} sentryEventId={this.state.sentryEventId} goHome={this.clearError}></ErrorUncaught>
       </div>;
     } else {
-      const hasAcceptedCookies = !!localStorage.getItem(AppContainer.hasAcceptedCookiesKey);
 
       return (
         <div className={classNames({[css.outer]: true, [css.withDAO]: false})}>
@@ -205,22 +202,9 @@ class AppContainer extends React.Component<IProps, IState> {
             { sortedNotifications.map(this.notificationHtml) }
           </div>
           <div className={css.background}></div>
-          { hasAcceptedCookies ? "" :
-            <div className={css.cookieDisclaimerContainer}>
-              <div className={css.cookieDisclaimer}>
-                <div className={css.body}>Alchemy stores cookies on your device to enhance platform experience and analyze platform usage. Please read the&nbsp;
-                  <Link to="/cookie-policy" target="_blank" rel="noopener noreferrer">Cookie Policy</Link> for more information.</div>
-                <div className={css.accept}><a href="#" onClick={this.handleAccept} className={css.blueButton} data-test-id="acceptCookiesButton"><img src="assets/images/Icon/v-white-thick.svg"></img>I Accept</a></div>
-              </div>
-            </div>
-          }
         </div>
       );
     }
-  }
-
-  private handleAccept(): void {
-    localStorage.setItem(AppContainer.hasAcceptedCookiesKey, "1");
   }
 }
 

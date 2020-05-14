@@ -1,7 +1,16 @@
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% {  transform: rotate(359deg); }
+}
 .loading {
   &.global {
     position: fixed;
-    top: calc(50vh - 100px);
-    left: calc(50vw - 100px);
+    top: 50%;
+    left: 50%;
+    width: 250px;
+    height: 250px;
+    margin-top: -125px; /* Negative half of height. */
+    margin-left: -125px; /* Negative half of width. */
+    animation: spin 3s linear infinite;
   }
 }
