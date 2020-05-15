@@ -5,7 +5,7 @@ import AccountBalances from "components/Account/AccountBalances";
 import AccountImage from "components/Account/AccountImage";
 import AccountProfileName from "components/Account/AccountProfileName";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
-import { copyToClipboard } from "lib/util";
+import { copyToClipboard, formatTokens, fromWei } from "lib/util";
 import { IRootState } from "reducers";
 import { NotificationStatus, showNotification } from "reducers/notifications";
 import { IProfileState } from "reducers/profilesReducer";
@@ -195,6 +195,14 @@ class Header extends React.Component<IProps, null> {
             <Link to={"/dao/members"}>Members</Link>
             <span>|</span>
             <Link to={"/dao/schemes"}>Proposals</Link>
+            <span>|</span>
+            <Link to={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Holdings</Link>
+            <span>|</span>
+            <Link to={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>
+              {fromWei(dao.reputationTotalSupply).toLocaleString(
+                undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}
+              {formatTokens(dao.reputationTotalSupply)} REP
+            </Link>
           </div>
           <TrainingTooltip placement="left" overlay={"Show / hide tooltips on hover"} alwaysAvailable>
             <div className={css.toggleButton} ref={this.toggleDiv}>
