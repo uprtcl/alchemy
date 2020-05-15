@@ -12,6 +12,7 @@ const baseConfig = require('./webpack.base.config.js');
 
 const config = merge(baseConfig, {
   mode: 'production',
+  devtool: '',
 
   entry: {
     // the entry point of our app
