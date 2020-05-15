@@ -2,7 +2,7 @@ import Box = require("3box");
 
 import { AsyncActionSequence, IAsyncAction } from "actions/async";
 import { getWeb3Provider } from "arc";
-import Analytics from "lib/analytics";
+
 
 import { NotificationStatus, showNotification } from "reducers/notifications";
 import { ActionTypes, FollowType, newProfile } from "reducers/profilesReducer";
@@ -58,13 +58,6 @@ export function getProfile(accountAddress: string, currentAccount = false) {
           payload: { profiles: { [accountAddress]: profile } },
         });
 
-        if (currentAccount) {
-          // If getting profile for the current account then update our analytics services with the profile data
-          Analytics.people.set({
-            Name: profile.name,
-            Description: profile.description,
-          });
-        }
       } else {
         // Setup blank profile for the account
         dispatch({
@@ -143,16 +136,6 @@ export function updateProfile(accountAddress: string, name: string, description:
       meta: { accountAddress },
       payload: { name, description, threeBox },
     } as UpdateProfileAction);
-
-    Analytics.track("Update Profile", {
-      Name: name,
-      Description: description,
-    });
-
-    Analytics.people.set({
-      Name: name,
-      Description: description,
-    });
 
     dispatch(showNotification(NotificationStatus.Success, "Profile data saved to 3box"));
     return true;

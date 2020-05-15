@@ -4,7 +4,7 @@ import { enableWalletProvider } from "arc";
 
 import BN = require("bn.js");
 import classNames from "classnames";
-import Analytics from "lib/analytics";
+
 import { formatTokens } from "lib/util";
 import { ActionTypes, default as PreTransactionModal } from "components/Shared/PreTransactionModal";
 import { Page } from "pages";
@@ -91,25 +91,12 @@ class StakeButtons extends React.Component<IProps, IState> {
     const { approveStakingGens } = this.props;
     approveStakingGens(this.props.proposal.votingMachine);
 
-    Analytics.track("Enable predictions");
-
     this.setState({ showApproveModal: false });
   }
 
   private getStakeProposalAction = (proposal: IProposalState, dao: IDAOState, pendingPrediction: number) =>
     (amount: number) => {
       this.props.stakeProposal(proposal.dao.id, proposal.id, pendingPrediction, amount);
-
-      Analytics.track("Stake", {
-        "DAO Address": proposal.dao.id,
-        "DAO Name": dao.name,
-        "GEN Staked": amount,
-        "Proposal Hash": proposal.id,
-        "Proposal TItle": proposal.title,
-        "Scheme Address": proposal.scheme.address,
-        "Scheme Name": proposal.scheme.name,
-        "Stake Type": pendingPrediction === IProposalOutcome.Fail ? "Fail" : pendingPrediction === IProposalOutcome.Pass ? "Pass" : "None",
-      });
     };
 
   public render(): RenderOutput {

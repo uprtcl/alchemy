@@ -107,7 +107,6 @@ plugins: [
       ARC_IPFSPROVIDER_PROTOCOL : "",
       ARC_IPFSPROVIDER_API_PATH : "",
       INFURA_ID : "",
-      MIXPANEL_TOKEN: "",
       DAO_AVATAR_ADDRESS: "0x519b70055af55a007110b4ff99b0ea33071c720a"
     }),
 

@@ -6,7 +6,7 @@ import classNames from "classnames";
 import Reputation from "components/Account/Reputation";
 import ProposalSummary from "components/Proposal/ProposalSummary";
 import VoteGraph from "components/Proposal/Voting/VoteGraph";
-import Analytics from "lib/analytics";
+
 import { Page } from "pages";
 import { formatTokens, fromWei, getExchangesList, humanProposalTitle } from "lib/util";
 import Tooltip from "rc-tooltip";
@@ -66,13 +66,6 @@ class PreTransactionModal extends React.Component<IProps, IState> {
 
   public componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress, false);
-
-    Analytics.trackLinks(".buyGenLink", "Clicked Buy Gen Link", (link: any) => {
-      return {
-        Origin: "Stake Popup",
-        URL: link.getAttribute("href"),
-      };
-    });
   }
 
   public componentWillUnmount(){
@@ -129,7 +122,7 @@ class PreTransactionModal extends React.Component<IProps, IState> {
   };
 
   public render(): RenderOutput {
-    const { actionType, beneficiaryProfile, currentAccount, currentAccountGens, dao, effectText, multiLineMsg, parentPage, proposal, secondaryHeader } = this.props;
+    const { actionType, beneficiaryProfile, currentAccount, currentAccountGens, dao, effectText, multiLineMsg, proposal, secondaryHeader } = this.props;
     const { stakeAmount } = this.state;
 
     let icon; let transactionType; let rulesHeader; let rules; let actionTypeClass;
@@ -143,16 +136,6 @@ class PreTransactionModal extends React.Component<IProps, IState> {
     if (actionType === ActionTypes.VoteDown || actionType === ActionTypes.VoteUp) {
       reputationFor = proposal.votesFor.add(actionType === ActionTypes.VoteUp ? currentAccount.reputation : new BN(0));
       reputationAgainst = proposal.votesAgainst.add(actionType === ActionTypes.VoteDown ? currentAccount.reputation : new BN(0));
-
-      Analytics.track("Open Vote Popup", {
-        "Origin": parentPage,
-        "DAO Address": dao.address,
-        "DAO Name": dao.name,
-        "Proposal Hash": proposal.id,
-        "Proposal Title": proposal.title,
-        "Scheme Address": proposal.scheme.address,
-        "Scheme Name": proposal.scheme.name,
-      });
     }
 
     if (actionType === ActionTypes.StakeFail || actionType === ActionTypes.StakePass) {
@@ -161,16 +144,6 @@ class PreTransactionModal extends React.Component<IProps, IState> {
       buyGensClass = classNames({
         [css.genError]: true,
         [css.hidden]: this.state.stakeAmount <= accountGens,
-      });
-
-      Analytics.track("Open Stake Popup", {
-        "Origin": parentPage,
-        "DAO Address": dao.address,
-        "DAO Name": dao.name,
-        "Proposal Hash": proposal.id,
-        "Proposal Title": proposal.title,
-        "Scheme Address": proposal.scheme.address,
-        "Scheme Name": proposal.scheme.name,
       });
     }
 
@@ -277,16 +250,6 @@ class PreTransactionModal extends React.Component<IProps, IState> {
       case ActionTypes.Redeem:
         icon = <img src="assets/images/Tx/Redemption.svg"/>;
         transactionType = <span>Redeem proposal</span>;
-
-        Analytics.track("Open Redeem Popup", {
-          "Origin": parentPage,
-          "DAO Address": dao.address,
-          "DAO Name": dao.name,
-          "Proposal Hash": proposal.id,
-          "Proposal Title": proposal.title,
-          "Scheme Address": proposal.scheme.address,
-          "Scheme Name": proposal.scheme.name,
-        });
         break;
       case ActionTypes.Execute:
         icon = <img src="assets/images/Tx/Redemption.svg"/>;

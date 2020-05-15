@@ -1,8 +1,7 @@
 import { IDAOState } from "@daostack/arc.js";
 import * as React from "react";
 import * as css from "./DaoLandingPage.scss";
-import { Page } from "pages";
-import Analytics from "lib/analytics";
+
 import { Link } from "react-router-dom";
 
 type IExternalProps = {
@@ -22,15 +21,6 @@ export default class DaoLandingPage extends React.Component<IProps, IStateProps>
     this.state = {
       showingEditPagePopup: false,
     };
-  }
-
-  public componentDidMount() {
-
-    Analytics.track("Page View", {
-      "Page Name": Page.DAOLanding,
-      "DAO Address": this.props.daoState.id,
-      "DAO Name": this.props.daoState.name,
-    });
   }
 
   public render() {

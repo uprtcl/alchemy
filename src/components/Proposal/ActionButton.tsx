@@ -3,7 +3,7 @@ import { executeProposal, redeemProposal } from "actions/arcActions";
 import { enableWalletProvider, getArc } from "arc";
 import classNames from "classnames";
 import { ActionTypes, default as PreTransactionModal } from "components/Shared/PreTransactionModal";
-import Analytics from "lib/analytics";
+
 import { AccountClaimableRewardsType, getCRRewards, getGpRewards, ethErrorHandler, fromWei } from "lib/util";
 import { Page } from "pages";
 import Tooltip from "rc-tooltip";
@@ -78,20 +78,10 @@ class ActionButton extends React.Component<IProps, IState> {
 
     if (!await enableWalletProvider({ showNotification: this.props.showNotification })) { return; }
 
-    const { currentAccountAddress, daoState, parentPage, proposalState } = this.props;
+    const { currentAccountAddress, daoState, proposalState } = this.props;
 
     await this.props.executeProposal(daoState.address, proposalState.id, currentAccountAddress);
 
-    Analytics.track("Transition Proposal", {
-      "DAO Address": daoState.address,
-      "DAO Name": daoState.name,
-      "Origin": parentPage,
-      "Proposal Hash": proposalState.id,
-      "Proposal Title": proposalState.title,
-      "Scheme Address": proposalState.scheme.address,
-      "Scheme Name": proposalState.scheme.name,
-      "Type": type,
-    });
   }
 
   private handleClickRedeem = async (e: any): Promise<void> => {
@@ -290,21 +280,7 @@ class ActionButton extends React.Component<IProps, IState> {
     } = this.props;
 
     await redeemProposal(daoState.address, proposalState.id, currentAccountAddress);
-
-    Analytics.track("Redeem", {
-      "DAO Address": daoState.address,
-      "DAO Name": daoState.name,
-      "Proposal Hash": proposalState.id,
-      "Proposal Title": proposalState.title,
-      "Scheme Address": proposalState.scheme.address,
-      "Scheme Name": proposalState.scheme.name,
-      "Reputation Requested": fromWei(contributionRewards.reputationReward),
-      "ETH Requested": fromWei(contributionRewards.ethReward),
-      "External Token Requested": fromWei(contributionRewards.externalTokenReward),
-      "DAO Token Requested": fromWei(contributionRewards.nativeTokenReward),
-      "GEN for staking": fromWei((gpRewards.daoBountyForStaker as BN).add(gpRewards.tokensForStaker)),
-      "GP Reputation Flow": fromWei((gpRewards.reputationForVoter as BN).add(gpRewards.reputationForProposer)),
-    });
+    
   }
 }
 

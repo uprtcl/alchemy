@@ -14,7 +14,7 @@ import { IRootState } from "reducers";
 import { NotificationStatus, showNotification } from "reducers/notifications";
 import * as arcActions from "actions/arcActions";
 
-import Analytics from "lib/analytics";
+
 import { isValidUrl } from "lib/util";
 import { exportUrl, importUrlValues } from "lib/proposalUtils";
 
@@ -141,13 +141,6 @@ class CreateKnownSchemeProposal extends React.Component<IProps, IState> {
       showNotification(NotificationStatus.Failure, err.message);
       throw err;
     }
-
-    Analytics.track("Submit Proposal", {
-      "DAO Address": this.props.daoAvatarAddress,
-      "Proposal Title": values.title,
-      "Scheme Address": this.props.scheme.address,
-      "Scheme Name": this.props.scheme.name,
-    });
 
     this.props.handleClose();
   }

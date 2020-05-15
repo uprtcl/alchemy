@@ -5,9 +5,8 @@ import Loading from "components/Shared/Loading";
 import TrainingTooltip from "components/Shared/TrainingTooltip";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
 import UnknownSchemeCard from "components/Dao/UnknownSchemeCard";
-import Analytics from "lib/analytics";
+
 import { getSchemeIsActive, KNOWN_SCHEME_NAMES, PROPOSAL_SCHEME_NAMES } from "lib/schemeUtils";
-import { Page } from "pages";
 import * as React from "react";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { RouteComponentProps } from "react-router-dom";
@@ -51,14 +50,6 @@ type IExternalProps = {
 type IProps = IExternalProps & ISubscriptionProps<[Scheme[], ISchemeState]> & IDispatchProps;
 
 class DaoSchemesPage extends React.Component<IProps, null> {
-
-  public componentDidMount() {
-    Analytics.track("Page View", {
-      "Page Name": Page.DAOSchemes,
-      "DAO Address": this.props.daoState.address,
-      "DAO Name": this.props.daoState.name,
-    });
-  }
 
   public handleNewProposal = (schemeId: string) => async (): Promise<void> => {
     const { showNotification } = this.props;

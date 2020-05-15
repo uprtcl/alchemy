@@ -6,8 +6,8 @@ import BN = require("bn.js");
 import classNames from "classnames";
 import Reputation from "components/Account/Reputation";
 import { ActionTypes, default as PreTransactionModal } from "components/Shared/PreTransactionModal";
-import Analytics from "lib/analytics";
-import { fromWei, targetedNetwork } from "lib/util";
+
+import { targetedNetwork } from "lib/util";
 import { Page } from "pages";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -67,20 +67,10 @@ class VoteButtons extends React.Component<IProps, IState> {
   private closePreVoteModal = (_event: any): void => { this.setState({ showPreVoteModal: false }); }
 
   private handleVoteOnProposal = (): void => {
-    const { currentAccountState, dao, proposal } = this.props;
+    const { dao, proposal } = this.props;
 
     this.props.voteOnProposal(dao.address, proposal.id, this.state.currentVote);
 
-    Analytics.track("Vote", {
-      "DAO Address": dao.address,
-      "DAo Name": dao.name,
-      "Proposal Hash": proposal.id,
-      "Proposal Title": proposal.title,
-      "Reputation Voted": fromWei(currentAccountState.reputation),
-      "Scheme Address": proposal.scheme.address,
-      "Scheme Name": proposal.scheme.name,
-      "Vote Type": this.state.currentVote === IProposalOutcome.Fail ? "Fail" : this.state.currentVote === IProposalOutcome.Pass ? "Pass" : "None",
-    });
   };
 
   public render(): RenderOutput {
