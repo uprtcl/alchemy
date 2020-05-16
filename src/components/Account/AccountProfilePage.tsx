@@ -15,7 +15,7 @@ import { Field, Formik, FormikProps } from "formik";
 import { baseTokenName, copyToClipboard, ethErrorHandler, genName, formatTokens } from "lib/util";
 import { parse } from "query-string";
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
@@ -147,9 +147,6 @@ class AccountProfilePage extends React.Component<IProps, IState> {
 
     return (
       <div className={css.profileWrapper}>
-        <BreadcrumbsItem to={`/profile/${accountAddress}`}>
-          {editing ? (accountProfile && accountProfile.name ? "Edit 3Box Profile" : "Set 3Box Profile") : "View 3Box Profile"}
-        </BreadcrumbsItem>
         <Helmet>
           <meta name="description" content={(accountProfile.name || accountProfile.ethereumAccountAddress) + " Profile on Alchemy by DAOstack"} />
           <meta name="og:description" content={(accountProfile.name || accountProfile.ethereumAccountAddress) + " Profile on Alchemy by DAOstack"} />

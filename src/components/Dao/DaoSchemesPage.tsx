@@ -8,7 +8,7 @@ import UnknownSchemeCard from "components/Dao/UnknownSchemeCard";
 
 import { getSchemeIsActive, KNOWN_SCHEME_NAMES, PROPOSAL_SCHEME_NAMES } from "lib/schemeUtils";
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+
 import { RouteComponentProps } from "react-router-dom";
 import * as Sticky from "react-stickynode";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -95,8 +95,6 @@ class DaoSchemesPage extends React.Component<IProps, null> {
 
     return (
       <div className={css.wrapper}>
-        <BreadcrumbsItem to={`/dao/schemes`}>Proposal Plugins</BreadcrumbsItem>
-
         <Sticky enabled top={50} innerZ={10000}>
           <h1>Proposal Plugins</h1>
           { schemeManager ?

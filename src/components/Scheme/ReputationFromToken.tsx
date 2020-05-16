@@ -12,7 +12,7 @@ import { ErrorMessage, Field, Form, Formik, FormikProps } from "formik";
 import { fromWei } from "lib/util";
 import { schemeName } from "lib/schemeUtils";
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+
 import * as Sticky from "react-stickynode";
 import { connect } from "react-redux";
 import { IRootState } from "reducers";
@@ -275,7 +275,6 @@ class ReputationFromToken extends React.Component<IProps, IState> {
 
     return (
       <div className={schemeCss.schemeContainer}>
-        <BreadcrumbsItem to={`/dao/scheme/${schemeState.id}`}>{schemeName(schemeState, schemeState.address)}</BreadcrumbsItem>
 
         <Sticky enabled top={50} innerZ={10000}>
           <h2 className={schemeCss.schemeName}>

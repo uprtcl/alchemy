@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+
 import { ISchemeState, IDAOState, IProposalState, CompetitionSuggestion, CompetitionVote } from "@daostack/arc.js";
 import { SortService } from "lib/sortService";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
@@ -83,11 +83,9 @@ class CompetitionsList extends React.Component<IProps, IStateProps> {
 
   public render(): RenderOutput {
 
-    const { daoState, scheme, proposals} = this.props;
-    const daoAvatarAddress = daoState.address;
+    const { daoState, proposals} = this.props;
 
     return <React.Fragment>
-      <BreadcrumbsItem to={`/dao/${daoAvatarAddress}/scheme/${scheme.id}/crx`}>Competitions</BreadcrumbsItem>
       <div className={css.competitionCards}>
         {
           proposals
@@ -147,4 +145,3 @@ export default withSubscription({
     );
   },
 });
-

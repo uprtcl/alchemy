@@ -2,7 +2,7 @@
 
 import { History } from "history";
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+
 import { Address, ISchemeState, IGenesisProtocolParams, IDAOState } from "@daostack/arc.js";
 import { copyToClipboard, fromWei, linkToEtherScan, roundUp } from "lib/util";
 import { schemeName } from "lib/schemeUtils";
@@ -120,7 +120,6 @@ class SchemeInfo extends React.Component<IProps, null> {
       (scheme.schemeRegistrarParams && scheme.schemeRegistrarParams.votingMachine)
     );
     return <div>
-      <BreadcrumbsItem to={`/dao/scheme/${scheme.id}/info`}>Info</BreadcrumbsItem>
 
       <div className={css.schemeInfoContainer}>
         <h3>{schemeName(scheme, scheme.address)}</h3>

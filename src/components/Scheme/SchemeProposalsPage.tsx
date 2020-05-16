@@ -7,7 +7,7 @@ import gql from "graphql-tag";
 
 import { schemeName } from "lib/schemeUtils";
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+
 import * as InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -105,8 +105,6 @@ class SchemeProposalsPage extends React.Component<IProps, null> {
 
     return (
       <>
-        <BreadcrumbsItem to={`/dao/${daoState.address}/schemes`}>Proposal Plugins</BreadcrumbsItem>
-        <BreadcrumbsItem to={`/dao/${daoState.address}/scheme/${scheme.id}`}>{schemeFriendlyName}</BreadcrumbsItem>
 
         { proposalsQueued.length === 0 && proposalsPreBoosted.length === 0 && proposalsBoosted.length === 0
           ?

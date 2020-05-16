@@ -9,7 +9,7 @@ import { dismissNotification, INotificationsState, NotificationStatus, showNotif
 import { getCachedAccount, cacheWeb3Info, logout, pollForAccountChanges } from "arc";
 import ErrorUncaught from "components/Errors/ErrorUncaught";
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+
 import { connect } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { ModalContainer } from "react-router-modal";
@@ -178,7 +178,6 @@ class AppContainer extends React.Component<IProps, IState> {
 
       return (
         <div className={classNames({[css.outer]: true, [css.withDAO]: false})}>
-          <BreadcrumbsItem to="/">Alchemy</BreadcrumbsItem>
 
           <div className={css.container}>
             <Route path="/" render={this.headerHtml} />
