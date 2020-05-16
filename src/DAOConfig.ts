@@ -1,6 +1,6 @@
 
 const daoConfig = {
-  daoName: "DXdao"
+  daoName: process.env.DAO_NAME
 };
 
 

@@ -117,13 +117,21 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html"
+      template: "src/index.html",
+      templateParameters: {
+        "title": "DXdao",
+        "description": "DXdao voting dapp",
+        "keywords": "dao, decentralization, voting"
+      }
     }),
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(require("./package.json").version)
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
+    new webpack.EnvironmentPlugin({
+      DAO_NAME: "DXdao",
+    })
   ],
   node: {
     fs: "empty",

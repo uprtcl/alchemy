@@ -2,7 +2,7 @@
   "name": "dxdao-alchemy",
   "version": "0.10.7",
   "description": "Fork of alchemy dapp form daostack to work just with one DAO in ipfs",
-  "author": "AugustoL <augustolemble@pm.me>",
+  "author": "github:AugustoL <augustolemble@pm.me>",
   "license": "GPL-3.0",
   "main": "./src/index.tsx",
   "repository": {
