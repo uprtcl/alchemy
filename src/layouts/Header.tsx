@@ -196,7 +196,7 @@ class Header extends React.Component<IProps, null> {
             <span>|</span>
             <Link to={"/dao/schemes"}>Proposals</Link>
             <span>|</span>
-            <Link to={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Holdings</Link>
+            <a href={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Holdings</a>
             <span>|</span>
             <a>
               {fromWei(dao.reputationTotalSupply).toLocaleString(
