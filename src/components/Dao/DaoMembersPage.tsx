@@ -2,9 +2,9 @@ import { IDAOState, Member } from "@daostack/arc.js";
 import { getProfile } from "actions/profilesActions";
 import Loading from "components/Shared/Loading";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
+import daoConfig from "../../DAOConfig";
 
 import * as React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import * as InfiniteScroll from "react-infinite-scroll-component";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
@@ -65,9 +65,8 @@ class DaoMembersPage extends React.Component<IProps, null> {
 
     return (
       <div className={css.membersContainer}>
-        <BreadcrumbsItem to={"/dao/members"}>DXdao Members</BreadcrumbsItem>
         <Sticky enabled top={50} innerZ={10000}>
-          <h2>DAO Members</h2>
+          <h2>{daoConfig.daoName} Members</h2>
         </Sticky>
         <table className={css.memberHeaderTable}>
           <tbody className={css.memberTable + " " + css.memberTableHeading}>

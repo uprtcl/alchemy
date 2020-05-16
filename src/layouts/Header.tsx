@@ -182,7 +182,7 @@ class Header extends React.Component<IProps, null> {
               <img src="assets/images/Icon/Close.svg"/> :
               <img src="assets/images/Icon/Menu.svg"/>}
           </div>
-          <TrainingTooltip overlay="Go to DXdao" placement="bottomRight">
+          <TrainingTooltip overlay="Go to home" placement="bottomRight">
             <div className={css.menu}>
               <Link to={"/dao"}>
                 <img src="assets/images/DXD.svg"/>
