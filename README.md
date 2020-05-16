@@ -1,20 +1,4 @@
-# DAOStack Alchemy
-
-[![Build Status](https://travis-ci.org/daostack/alchemy.svg?branch=dev)](https://travis-ci.org/daostack/alchemy)
-
-**Alchemy is a budgeting and resource-allocation tool for decentralized organizations.** It is an interface that enables thousands of individuals to coordinate towards a common purpose, by proposing and deciding on how to spend funds in alignment with their goals and values.
-
-Some example use cases for Alchemy include decentralized venture funds, charitable funds, innovation funds, a budget proposal system (like Dash but more sophisticated), or prioritizing features for an open-source project.
-
-Alchemy is a Dapp (decentralized application) built on top of [DAOstack](https://github.com/daostack), a platform for decentralized governance of DAOs (decentralized autonomous organizations).
-
-How does it work? **Alchemy makes it easy for DAO members to carry out three simple actions:**
-
-1. **Make proposals** for the DAO to take a specific action. A proposal is equivalent to a project pitch and includes details about the proposal such as objectives, methods, costs and milestones.
-2. **Predict** whether a proposal will be approved or rejected by the organization. This helps guide the collective voting process by sorting and prioritizing the proposals.
-3. **Vote** on whether a proposal should be accepted or rejected.
-
-While anyone can propose and predict, only people who hold reputation (voting power) can vote.
+# DXdao Alchemy
 
 ## Dependencies:
 * [NVM](https://github.com/creationix/nvm#installation) can be helpful to manage different versions of node
@@ -24,16 +8,10 @@ While anyone can propose and predict, only people who hold reputation (voting po
 
 ```sh
 sudo apt-get install -y libsecret-1-dev
-git clone https://github.com/daostack/alchemy.git
-cd alchemy
+git clone https://github.com/AugustoL/dxdao-alchemy.git
+cd dxdao-alchemy
 npm ci
 ```
-
-# Run app locally
-
-There are two ways to work with the alchemy stack.
-We are providing a convenient `docker-compose` file for quick setup. Alternatively,
-you can recreate the docker environment by installing an starting all [services locally](./docs/nodocker.md).
 
 ## Working with docker
 
@@ -45,12 +23,12 @@ After you have installed docker, run the following command to spin up ganache (w
 docker-compose up graph-node
 ```
 
-Now, in a separate terminal run the following command to run alchemy:
+Now, in a separate terminal run the following command to run dxdao-alchemy:
 ```sh
 npm run start
 ```
 
-At this point you should be able to access alchemy on http://127.0.0.1:3000.
+At this point you should be able to access dxdao-alchemy on http://127.0.0.1:3000.
 
 See [working with docker](./docs/docker.md) for details and troubleshooting.
 
