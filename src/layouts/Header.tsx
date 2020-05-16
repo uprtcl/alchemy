@@ -198,11 +198,11 @@ class Header extends React.Component<IProps, null> {
             <span>|</span>
             <Link to={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Holdings</Link>
             <span>|</span>
-            <Link to={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>
+            <a>
               {fromWei(dao.reputationTotalSupply).toLocaleString(
                 undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}
               {formatTokens(dao.reputationTotalSupply)} REP
-            </Link>
+            </a>
           </div>
           <TrainingTooltip placement="left" overlay={"Show / hide tooltips on hover"} alwaysAvailable>
             <div className={css.toggleButton} ref={this.toggleDiv}>
