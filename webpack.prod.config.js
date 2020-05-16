@@ -39,20 +39,6 @@ const config = merge(baseConfig, {
     ],
     splitChunks: {
       chunks: 'all',
-      cacheGroups: {
-        // "ipfs-http-client": {
-        //   chunks: "initial",
-        //   test: "ipfs-http-client",
-        //   name: "ipfs-http-client",
-        //   enforce: true
-        // },
-        // "@daostack/migration": {
-        //   chunks: "initial",
-        //   test: "@daostack/migration",
-        //   name: "@daostack/migration",
-        //   enforce: true
-        // }
-      }
     }
   },
 
