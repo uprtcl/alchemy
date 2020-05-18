@@ -5,7 +5,7 @@ import AccountBalances from "components/Account/AccountBalances";
 import AccountImage from "components/Account/AccountImage";
 import AccountProfileName from "components/Account/AccountProfileName";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
-import { copyToClipboard, formatTokens, fromWei } from "lib/util";
+import { copyToClipboard, fromWei } from "lib/util";
 import { IRootState } from "reducers";
 import { NotificationStatus, showNotification } from "reducers/notifications";
 import { IProfileState } from "reducers/profilesReducer";
@@ -200,8 +200,7 @@ class Header extends React.Component<IProps, null> {
             <span>|</span>
             <a>
               {fromWei(dao.reputationTotalSupply).toLocaleString(
-                undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}
-              {formatTokens(dao.reputationTotalSupply)} REP
+                undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})} REP
             </a>
           </div>
           <TrainingTooltip placement="left" overlay={"Show / hide tooltips on hover"} alwaysAvailable>
