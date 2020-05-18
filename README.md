@@ -1,4 +1,20 @@
-# DXdao Alchemy
+# Voting Dapp DAOstack
+
+This app is a fork of alchemy, an app to work with DAOstack DAOs, this fork is focused on providing a more simple, autonomous and decentralized experience than https://alchemy.daostack.io/ and just for one DAO.
+
+This is an open-source project under GPL 3.0 License, we invite you to fork it and collaborate :).
+
+## Differences from Alchemy
+
+- The app is designed to work only for one DAO.
+- No analytics.
+- No disqus widget.
+- Simpler UI.
+- Hash reactjs router-dom.
+- Less components in source code.
+- More optimized builds.
+- No cookies warning.
+- No terms and conditions.
 
 ## Dependencies:
 * [NVM](https://github.com/creationix/nvm#installation) can be helpful to manage different versions of node
@@ -8,8 +24,8 @@
 
 ```sh
 sudo apt-get install -y libsecret-1-dev
-git clone https://github.com/AugustoL/dxdao-alchemy.git
-cd dxdao-alchemy
+git clone https://github.com/AugustoL/voting-dapp-daostack.git
+cd voting-dapp-daostack
 npm ci
 ```
 

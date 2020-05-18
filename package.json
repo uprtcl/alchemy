@@ -1,13 +1,13 @@
 {
-  "name": "dxdao-alchemy",
+  "name": "voting-dapp-daostack",
   "version": "0.10.7",
-  "description": "Fork of alchemy dapp form daostack to work just with one DAO in ipfs",
+  "description": "Voting decentralized application for Daostack DAOs",
   "author": "github:AugustoL <augustolemble@pm.me>",
   "license": "GPL-3.0",
   "main": "./src/index.tsx",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AugustoL/dxdao-alchemy.git"
+    "url": "git+https://github.com/AugustoL/voting-dapp-daostack.git"
   },
   "engines": {
     "node": "12.16.2",
