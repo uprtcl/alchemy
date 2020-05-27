@@ -37,7 +37,7 @@ function getWeb3ConnectProviderOptions(network: string) {
         walletconnect: {
           package: isMobileBrowser() ? null : WalletConnectProvider,
           options: {
-            infuraId: process.env.INFURA_ID,
+            rpc: process.env.ARC_WEB3PROVIDER || `wss://rinkeby.infura.io/ws/v3/${process.env.INFURA_ID}`
           },
         },
         burnerconnect: {
@@ -77,7 +77,7 @@ function getWeb3ConnectProviderOptions(network: string) {
         walletconnect: {
           package: isMobileBrowser() ? null : WalletConnectProvider,
           options: {
-            infuraId: process.env.INFURA_ID,
+            rpc: process.env.ARC_WEB3PROVIDER || `wss://kovan.infura.io/ws/v3/${process.env.INFURA_ID}`,
           },
         },
         burnerconnect: {
@@ -117,7 +117,7 @@ function getWeb3ConnectProviderOptions(network: string) {
         walletconnect: {
           package: isMobileBrowser() ? null : WalletConnectProvider,
           options: {
-            infuraId: process.env.INFURA_ID,
+            rpc: process.env.ARC_WEB3PROVIDER || `wss://mainnet.infura.io/ws/v3/${process.env.INFURA_ID}`
           },
         },
         burnerconnect: {
