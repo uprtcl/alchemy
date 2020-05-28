@@ -29,6 +29,12 @@ cd voting-dapp-daostack
 npm ci
 ```
 
+## Run with DXdao config
+
+```sh
+npm run start-dxdao
+```
+
 ## Working with docker
 
 The easiest way to start developing is to work with docker.

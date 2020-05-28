@@ -81,20 +81,19 @@ plugins: [
     new webpack.EnvironmentPlugin({
       NETWORK: "main",
       NODE_ENV: "production",
-      SHOW_ALL_DAOS: "false",
       BASE_URL: "",
-      DISQUS_SITE: 'daostack-alchemy',
       ARC_GRAPHQLHTTPPROVIDER: "",
       ARC_GRAPHQLWSPROVIDER : "",
-      ARC_WEB3PROVIDER : "https://mainnet.eth.cloud.ava.do",
-      ARC_WEB3PROVIDERREAD : "https://mainnet.eth.cloud.ava.do",
+      ARC_WEB3PROVIDER : "https://mainnet.infura.io/ws/v3/e0cdf3bfda9b468fa908aa6ab03d5ba2",
+      ARC_WEB3PROVIDERREAD : "https://mainnet.infura.io/ws/v3/e0cdf3bfda9b468fa908aa6ab03d5ba2",
       ARC_IPFSPROVIDER: "",
       ARC_IPFSPROVIDER_HOST : "",
       ARC_IPFSPROVIDER_PORT : "",
       ARC_IPFSPROVIDER_PROTOCOL : "",
       ARC_IPFSPROVIDER_API_PATH : "",
       INFURA_ID : "",
-      DAO_AVATAR_ADDRESS: "0x519b70055af55a007110b4ff99b0ea33071c720a"
+      DAO_AVATAR_ADDRESS: "0x519b70055af55a007110b4ff99b0ea33071c720a",
+      DAO_CONTROLLER_ADDRESS: "0x9f828ac3baa9003e8a4e0b24bcae7b027b6740b0"
     }),
 
     new CopyWebpackPlugin([
