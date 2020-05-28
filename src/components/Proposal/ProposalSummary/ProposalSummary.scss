@@ -146,6 +146,12 @@
   .summaryDetails ul {
     padding-left: 40px;
   }
+  
+  .summaryDetails pre {
+    text-overflow: clip;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
 
   table {
     border-top: none;

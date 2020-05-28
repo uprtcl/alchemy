@@ -66,8 +66,8 @@ export default class ProposalSummary extends React.Component<IProps> {
           }
         </div>
       );
-    }
-
+    }    
+    
     return <div className={proposalSummaryClass}>
       <span className={css.summaryTitle}>
         <img src="assets/images/Icon/edit-sm.svg"/>&nbsp;
@@ -90,6 +90,32 @@ export default class ProposalSummary extends React.Component<IProps> {
           <pre><a href={linkToEtherScan(proposal.genericScheme.contractToCall)}>{proposal.genericScheme.contractToCall}</a></pre>
           sending to contract:
           <pre className={sendsETH ? css.warning : ""}>{formatTokens(proposal.genericScheme.value)} ETH</pre>
+          <h4>Advance call stack trace:</h4>
+          - {genericSchemeInfo.specs.name}({proposal.scheme.address}) to Controller ({process.env.DAO_CONTROLLER_ADDRESS}) with value {proposal.genericScheme.value.toString()}
+          <pre>
+            {
+              genericSchemeInfo.encodeCallData(
+                proposal.genericScheme.contractToCall,
+                proposal.genericScheme.callData,
+                proposal.genericScheme.value.toString(),
+                true
+              )
+            }
+          </pre><br/>
+          - Controller ({process.env.DAO_CONTROLLER_ADDRESS}) to Avatar ({proposal.dao.id})  with value {proposal.genericScheme.value.toString()}
+          <pre>
+            {
+              genericSchemeInfo.encodeCallData(
+                proposal.genericScheme.contractToCall,
+                proposal.genericScheme.callData,
+                proposal.genericScheme.value.toString(),
+                false
+              )
+            }
+          </pre><br/>
+          - Avatar ({proposal.dao.id}) to {proposal.genericScheme.contractToCall}  with value {proposal.genericScheme.value.toString()}
+          <pre>{proposal.genericScheme.callData}</pre>
+        
         </div>
         : ""
       }

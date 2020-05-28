@@ -241,6 +241,31 @@ export class GenericSchemeInfo {
       throw Error("Could not find a known action that corresponds with these callData");
     }
   }
+  
+  public encodeCallData(toCall: string, data: string, value: string, toController=false): string {
+    const web3 = new Web3();
+    if (toController)
+      return web3.eth.abi.encodeFunctionCall({
+        name: 'genericCall',
+        type: 'function',
+        inputs: [
+          { type: 'address', name: '_contract' },
+          { type: 'bytes', name: '_data' },
+          { type: 'address', name: '_avatar' },
+          { type: 'uint256', name: '_value' }
+        ]
+      }, [toCall, data, process.env.DAO_AVATAR_ADDRESS, value,]);
+    else return web3.eth.abi.encodeFunctionCall({
+        name: 'genericCall',
+        type: 'function',
+        inputs: [
+          { type: 'address', name: '_contract' },
+          { type: 'bytes', name: '_data' },
+          { type: 'uint256', name: '_value' }
+        ]
+      }, [toCall, data, value,]);
+  }
+  
 }
 
 
