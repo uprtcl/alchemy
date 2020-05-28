@@ -4,12 +4,11 @@ import AppContainer from "layouts/AppContainer";
 import { sleep } from "lib/util";
 import ErrorUncaught from "components/Errors/ErrorUncaught";
 import * as React from "react";
-import ReactGA from "react-ga";
 import { Provider } from "react-redux";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ThroughProvider } from "react-through";
 import * as css from "./layouts/App.scss";
-import { history, default as store } from "./configureStore";
+import { default as store } from "./configureStore";
 
 export class App extends React.Component<{}, {
   arcIsInitialized: boolean;
@@ -63,23 +62,6 @@ export class App extends React.Component<{}, {
       }
     }
 
-
-    let GOOGLE_ANALYTICS_ID: string;
-    switch (process.env.NODE_ENV) {
-      case "production": {
-        // the "real" id
-        GOOGLE_ANALYTICS_ID = "UA-142546205-1";
-        break;
-      }
-      default: {
-        // the "test" id
-        GOOGLE_ANALYTICS_ID = "UA-142546205-2";
-      }
-    }
-    ReactGA.initialize(GOOGLE_ANALYTICS_ID);
-    history.listen((location: any): void => {
-      ReactGA.pageview(location.pathname + location.search);
-    });
   }
 
   public render(): RenderOutput {
