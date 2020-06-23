@@ -93,7 +93,8 @@ plugins: [
       ARC_IPFSPROVIDER_API_PATH : "",
       INFURA_ID : "",
       DAO_AVATAR_ADDRESS: "0x519b70055af55a007110b4ff99b0ea33071c720a",
-      DAO_CONTROLLER_ADDRESS: "0x9f828ac3baa9003e8a4e0b24bcae7b027b6740b0"
+      DAO_CONTROLLER_ADDRESS: "0x9f828ac3baa9003e8a4e0b24bcae7b027b6740b0",
+      DAO_LANDING_PAGE_URL: "https://gateway.pinata.cloud/ipfs/QmPhoeL14E5SBFBaC4bA3nuRpg3MpxdWVYdPrdXHdQ3EHY"
     }),
 
     new CopyWebpackPlugin([
