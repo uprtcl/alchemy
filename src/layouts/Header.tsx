@@ -5,9 +5,9 @@ import AccountBalances from "components/Account/AccountBalances";
 import AccountImage from "components/Account/AccountImage";
 import AccountProfileName from "components/Account/AccountProfileName";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
-import { copyToClipboard, fromWei } from "lib/util";
+import CopyToClipboard from "components/Shared/CopyToClipboard";
 import { IRootState } from "reducers";
-import { NotificationStatus, showNotification } from "reducers/notifications";
+import { showNotification } from "reducers/notifications";
 import { IProfileState } from "reducers/profilesReducer";
 import TrainingTooltip from "components/Shared/TrainingTooltip";
 import { parse } from "query-string";
@@ -21,6 +21,8 @@ import { Address, IDAOState } from "@daostack/arc.js";
 import { ETHDENVER_OPTIMIZATION } from "../settings";
 import * as css from "./App.scss";
 import ProviderConfigButton from "layouts/ProviderConfigButton";
+import { fromWei } from "lib/util";
+
 
 interface IExternalProps extends RouteComponentProps<any> {
 }
@@ -89,7 +91,6 @@ class Header extends React.Component<IProps, null> {
 
   constructor(props: IProps) {
     super(props);
-    this.copyAddress = this.copyAddress.bind(this);
     this.toggleDiv = React.createRef();
     this.initializeTrainingTooltipsToggle();
   }
@@ -104,13 +105,6 @@ class Header extends React.Component<IProps, null> {
     this.toggleDiv.current.onmouseleave = (_ev: MouseEvent) => {
       this.props.disableTrainingTooltipsShowAll();
     };
-  }
-
-  public copyAddress(e: any): void {
-    const { showNotification, currentAccountAddress } = this.props;
-    copyToClipboard(currentAccountAddress);
-    showNotification(NotificationStatus.Success, "Copied to clipboard!");
-    e.preventDefault();
   }
 
   public handleClickLogin = async (_event: any): Promise<void> => {
@@ -235,9 +229,9 @@ class Header extends React.Component<IProps, null> {
                       <AccountProfileName accountAddress={currentAccountAddress}
                         accountProfile={currentAccountProfile} daoAvatarAddress={daoAvatarAddress} />
                     </div>
-                    <div className={css.copyAddress} style={{cursor: "pointer"}} onClick={this.copyAddress}>
-                      <span>{currentAccountAddress ? currentAccountAddress.slice(0, 40) : "No account known"}</span>
-                      <img src="assets/images/Icon/Copy-blue.svg"/>
+                    <div className={css.copyAddress}>
+                      <div className={css.accountAddress}>{currentAccountAddress ? currentAccountAddress.slice(0, 40) : "No account known"}</div>
+                      <CopyToClipboard value={currentAccountAddress} tooltipPlacement="left" />
                     </div>
                     <div className={css.fullProfile}>
                       <Link className={css.profileLink} to={"/profile/" + currentAccountAddress + (daoAvatarAddress ? "?daoAvatarAddress=" + daoAvatarAddress : "")}>

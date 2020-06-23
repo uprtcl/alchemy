@@ -16,8 +16,7 @@ import TagsSelector from "components/Proposal/Create/SchemeForms/TagsSelector";
 import { RouteComponentProps } from "react-router-dom";
 import { getSubmission, getSubmissionVoterHasVoted, getCompetitionVotes, CompetitionStatus } from "./utils";
 import * as css from "./Competitions.scss";
-
-const ReactMarkdown = require("react-markdown");
+import ProposalDescription from "components/Shared/ProposalDescription";
 
 type ISubscriptionState = [ICompetitionSuggestionState, boolean, Array<CompetitionVote>];
 
@@ -122,11 +121,7 @@ class SubmissionDetails extends React.Component<IProps, null> {
 
         { submission.description ?
           <div className={css.description}>
-            <ReactMarkdown source={submission.description}
-              renderers={{link: (props: { href: string; children: React.ReactNode }) => {
-                return <a href={props.href} target="_blank" rel="noopener noreferrer">{props.children}</a>;
-              }}}
-            />
+            <ProposalDescription description={submission.description} />
           </div>
           : "" }
 

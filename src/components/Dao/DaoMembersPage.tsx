@@ -5,7 +5,7 @@ import withSubscription, { ISubscriptionProps } from "components/Shared/withSubs
 import daoConfig from "../../DAOConfig";
 
 import * as React from "react";
-import * as InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import * as Sticky from "react-stickynode";
@@ -84,11 +84,7 @@ class DaoMembersPage extends React.Component<IProps, null> {
           next={this.props.fetchMore}
           hasMore={members.length < this.props.daoState.memberCount}
           loader={<h4>Loading...</h4>}
-          endMessage={
-            <p style={{textAlign: "center"}}>
-              <b>&mdash;</b>
-            </p>
-          }
+          endMessage={null}
         >
           {membersHTML}
         </InfiniteScroll>

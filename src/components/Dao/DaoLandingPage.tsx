@@ -9,13 +9,9 @@ type IExternalProps = {
   daoState: IDAOState;
 };
 
-interface IStateProps {
-  showingEditPagePopup: boolean;
-}
-
 type IProps = IExternalProps;
 
-export default class DaoLandingPage extends React.Component<IProps, IStateProps> {
+export default class DaoLandingPage extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);
