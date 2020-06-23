@@ -38,7 +38,8 @@ module.exports = {
       'lit-html': path.resolve('./node_modules/lit-html'),
       'graphql': path.resolve('./node_modules/graphql'),
       '@material/mwc-ripple': path.resolve('./node_modules/@material/mwc-ripple'),
-      '@material/mwc-ripple/ripple-directive': path.resolve('./node_modules/@material/mwc-ripple/ripple-directive')
+      '@material/mwc-ripple/ripple-directive': path.resolve('./node_modules/@material/mwc-ripple/ripple-directive'),
+      '@material/mwc-icon': path.resolve('./node_modules/@material/mwc-icon')
     }
   },
 

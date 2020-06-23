@@ -170,7 +170,7 @@ function DaoWiki(props: IProps) {
     <div>
       <div className={daoStyle.daoHistoryHeader}>Wiki</div>
       {hasWikiScheme && currentAccountAddress ? (
-        <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 247px)', display: 'flex', flexDirection: 'column' }}>
           <ReactiveWiki {...props} wikiSchemeAddress={wikiSchemeAddress} isActive={isActive} />
         </div>
       ) : !currentAccountAddress ? (
@@ -178,15 +178,15 @@ function DaoWiki(props: IProps) {
           <div className={proposalStyle.proposalsHeader}>You must be logged in to interact with Wiki</div>
         </div>
       ) : (
-        NoWikiScheme
-      )}
+            NoWikiScheme
+          )}
     </div>
   );
 }
 
 const SubscribedDaoWiki = withSubscription({
   wrappedComponent: DaoWiki,
-  loadingComponent: <Loading/>,
+  loadingComponent: <Loading />,
   errorComponent: props => <span>{props.error.message}</span>,
   checkForUpdate: [],
   createObservable: async (props: IExternalProps) => {
