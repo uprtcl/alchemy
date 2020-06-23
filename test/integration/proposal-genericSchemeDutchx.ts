@@ -1,6 +1,6 @@
 import * as uuid from "uuid";
 import { first } from "rxjs/operators";
-import { getArc } from "./utils";
+import { getArc, gotoDaoSchemes } from "./utils";
 
 describe("Proposals", () => {
   let daoAddress: string;
@@ -17,10 +17,9 @@ describe("Proposals", () => {
   });
 
   it("Create a DutchX Generic Scheme proposal, vote for it, stake on it", async () => {
-    const url = `/dao/${daoAddress}/`;
-    await browser.url(url);
+    await gotoDaoSchemes(daoAddress);
 
-    const schemeTitle = await $("h2=DutchX");
+    const schemeTitle = await $("h2=GenericSchemeDutchX");
     await schemeTitle.click();
 
     const createProposalButton = await $("a[data-test-id=\"createProposal\"]");
@@ -56,10 +55,9 @@ describe("Proposals", () => {
   });
 
   it("Export a DutchX Generic Scheme proposal", async () => {
-    const url = `/dao/${daoAddress}/`;
-    await browser.url(url);
+    await gotoDaoSchemes(daoAddress);
 
-    const schemeTitle = await $("h2=DutchX");
+    const schemeTitle = await $("h2=GenericSchemeDutchX");
     await schemeTitle.click();
 
     const createProposalButton = await $("a[data-test-id=\"createProposal\"]");
@@ -86,8 +84,6 @@ describe("Proposals", () => {
 
     const exportProposalSubmitButton = await $("*[id=\"export-proposal\"]");
     await exportProposalSubmitButton.click();
-
-
   });
 
 });
