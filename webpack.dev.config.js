@@ -101,7 +101,7 @@ module.exports = merge(baseConfig, {
       ARC_IPFSPROVIDER_PROTOCOL : "",
       ARC_IPFSPROVIDER_API_PATH : "",
       INFURA_ID : "",
-      DAO_AVATAR_ADDRESS: "0x86e9fe552e75e4fc51f46e4efc128628ecd5ada7",
+      DAO_AVATAR_ADDRESS: "0xde0348d7ac9806c329663bbcba0e5370ba099993",
       DAO_CONTROLLER_ADDRESS: "0x9f828ac3baa9003e8a4e0b24bcae7b027b6740b0"
     })
   ]
