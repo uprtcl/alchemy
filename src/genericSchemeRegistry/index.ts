@@ -4,6 +4,7 @@ import { Networks, targetedNetwork } from "lib/util";
 
 const Web3 = require("web3");
 const namehash = require("eth-ens-namehash");
+const WikiUpdate = require("./schemes/WikiUpdate.json");
 const dutchXInfo = require("./schemes/DutchX.json");
 const bountiesInfo = require("./schemes/StandardBounties.json");
 const gpInfo = require("./schemes/GenesisProtocol.json");
@@ -13,8 +14,10 @@ const ensPublicResolverInfo = require("./schemes/ENSPublicResolver.json");
 const registryLookupInfo = require("./schemes/RegistryLookup.json");
 const co2kenInfo = require("./schemes/CO2ken.json");
 const dXTokenRegistry = require("./schemes/dXTokenRegistry.json");
+const dXswapGovernance = require("./schemes/DXswapGovernance.json");
 
 const KNOWNSCHEMES = [
+  WikiUpdate,
   dutchXInfo,
   co2kenInfo,
   bountiesInfo,
@@ -24,6 +27,7 @@ const KNOWNSCHEMES = [
   gpInfo,
   registryLookupInfo,
   dXTokenRegistry,
+  dXswapGovernance,
 ];
 
 const SCHEMEADDRESSES: {[network: string]: { [address: string]: any}} = {

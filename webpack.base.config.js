@@ -16,7 +16,7 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+    extensions: [".mjs", ".ts", ".tsx", ".js", ".jsx", ".json"],
 
     alias: {
       assets: resolve("src/assets"),
@@ -34,7 +34,13 @@ module.exports = {
       selectors: resolve("src/selectors"),
       src: resolve("src"),
       "ipfs-api": "ipfs-api/dist",
-      "bn.js": "bn.js/lib/bn.js"
+      "bn.js": "bn.js/lib/bn.js",
+      'lit-element': path.resolve('./node_modules/lit-element'),
+      'lit-html': path.resolve('./node_modules/lit-html'),
+      'graphql': path.resolve('./node_modules/graphql'),
+      '@material/mwc-ripple': path.resolve('./node_modules/@material/mwc-ripple'),
+      '@material/mwc-ripple/ripple-directive': path.resolve('./node_modules/@material/mwc-ripple/ripple-directive'),
+      '@material/mwc-icon': path.resolve('./node_modules/@material/mwc-icon')
     }
   },
 
@@ -46,8 +52,6 @@ module.exports = {
         loader: ["react-hot-loader/webpack", "awesome-typescript-loader"],
         exclude: [/node_modules/, /\.spec\.ts$/]
       },
-
-      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {
         enforce: "pre",
         test: /\.js$/,
@@ -67,7 +71,17 @@ module.exports = {
           resolve("node_modules/subscriptions-transport-ws"),
           resolve("node_modules/xhr2-cookies"),
           resolve("node_modules/zen-observable-ts"),
-          resolve("node_modules/@dorgtech")
+          resolve("node_modules/@dorgtech"),
+          resolve("node_modules/@uprtcl"),
+          resolve("node_modules/@material"),
+          resolve("node_modules/graphql-tools"),
+          resolve("node_modules/deprecated-decorator"),
+          resolve("node_modules/lit-element"),
+          resolve("node_modules/lit-html"),
+          resolve("node_modules/@material-ui"),
+          resolve("node_modules/@polymer"),
+          resolve("node_modules/@webcomponent"),
+          resolve("node_modules/@authentic")
         ]
       },
 
