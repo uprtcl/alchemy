@@ -20,7 +20,6 @@ import { IDaoInformation } from "./types";
 
 type IExternalProps = {
   daoState: IDAOState;
-  match: Record<string, any>;
   currentAccountAddress: string;
 } & RouteComponentProps<any>;
 
@@ -53,10 +52,7 @@ function DaoWiki(props: IProps) {
   };
 
   const renderWikiComponent = (web3Provider: any, dispatcher: CustomDispatcher, hasHomeProposal: boolean) => {
-    const { daoAvatarAddress, perspectiveId, pageId } = props.match.params;
-    actualHash["dao"] = daoAvatarAddress;
-    actualHash["wiki"] = perspectiveId;
-    actualHash["page"] = pageId;
+    actualHash["dao"] = props.daoState.dao.id;
     return WikiContainer.getInstance(web3Provider, dispatcher, hasHomeProposal);
   };
 
@@ -170,7 +166,7 @@ function DaoWiki(props: IProps) {
     <div>
       <div className={daoStyle.daoHistoryHeader}>Wiki</div>
       {hasWikiScheme && currentAccountAddress ? (
-        <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 50px)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
           <ReactiveWiki {...props} wikiSchemeAddress={wikiSchemeAddress} isActive={isActive} />
         </div>
       ) : !currentAccountAddress ? (
