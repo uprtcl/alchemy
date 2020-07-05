@@ -37,7 +37,7 @@ const mapStateToProps = (state: IRootState, ownProps: IExternalProps): IExternal
   return {
     ...ownProps,
     currentAccountAddress: state.web3.currentAccountAddress,
-    daoAvatarAddress: ownProps.match.params.daoAvatarAddress,
+    daoAvatarAddress: process.env.DAO_AVATAR_ADDRESS,
     schemeId: ownProps.match.params.schemeId,
   };
 };
@@ -57,8 +57,8 @@ class CreateProposalPage extends React.Component<IProps, IStateProps> {
   }
 
   public doClose = () => {
-    const { daoAvatarAddress, history, schemeId } = this.props;
-    history.push("/dao/" + daoAvatarAddress + "/scheme/" + schemeId);
+    const { history, schemeId } = this.props;
+    history.push("/dao/scheme/" + schemeId);
   }
 
   public async componentDidMount() {
@@ -136,10 +136,7 @@ class CreateProposalPage extends React.Component<IProps, IStateProps> {
 
     return (
       <div className={css.createProposalWrapper}>
-        <h2 className={css.header}>
-          <span>+ New proposal <b>| {schemeTitle}</b></span>
-          <button className={css.closeButton} aria-label="Close Create Proposal Modal" onClick={this.handleClose}>&times;</button>
-        </h2>
+        <h2>New proposal in {schemeTitle}</h2>
         { createSchemeComponent }
       </div>
     );

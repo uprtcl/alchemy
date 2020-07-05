@@ -21,7 +21,6 @@ export default class DaoLandingPage extends React.Component<IProps> {
   }
 
   public render() {
-    const daoState = this.props.daoState;
 
     if (process.env.DAO_LANDING_PAGE_URL && process.env.DAO_LANDING_PAGE_URL.length > 0) {
       return(
@@ -43,11 +42,11 @@ export default class DaoLandingPage extends React.Component<IProps> {
 
             <div className={css.welcome}>Welcome to {daoConfig.daoName} voting dapp, a decentralized organization built focused on DEFI.</div>
             
-            <div className={css.visitProposals}>Visit the <Link to={`/dao/${daoState.id}/schemes`}>Proposals section</Link> vote or make a new proposal.</div>
+            <div className={css.visitProposals}>Visit the <Link to={`/dao/schemes`}>Proposals section</Link> vote or make a new proposal.</div>
             
-            <div className={css.visitProposals}>Visit the <Link to={`/dao/${daoState.id}/history`}>History section</Link> To see past proposals information and result.</div>
+            <div className={css.visitProposals}>Visit the <Link to={`/dao/history`}>History section</Link> To see past proposals information and result.</div>
             
-            <div className={css.visitProposals}>Visit the <Link to={`/dao/${daoState.id}/members`}>Members section</Link> To see all {daoConfig.daoName} members.</div>
+            <div className={css.visitProposals}>Visit the <Link to={`/dao/members`}>Members section</Link> To see all {daoConfig.daoName} members.</div>
           </div>
           
         </div>

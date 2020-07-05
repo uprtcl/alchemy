@@ -11,7 +11,6 @@ import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 //@ts-ignore
-import { ModalRoute } from "react-router-modal";
 import { IRootState } from "reducers";
 import { showNotification } from "reducers/notifications";
 import { IProfileState } from "reducers/profilesReducer";
@@ -80,7 +79,7 @@ class DaoContainer extends React.Component<IProps, null> {
   private schemeRoute = (routeProps: any) => <SchemeContainer {...routeProps} daoState={this.props.data[0]} currentAccountAddress={this.props.currentAccountAddress} />;
   private daoSchemesRoute = (routeProps: any) => <DaoSchemesPage {...routeProps} daoState={this.props.data[0]} />;
   private daoLandingRoute = (_routeProps: any) => <DaoLandingPage daoState={this.props.data[0]} />;
-  private modalRoute = (route: any) => `/dao/scheme/${route.params.schemeId}/`;
+  private createProposalRoute = (routeProps: any) => <CreateProposalPage {...routeProps} daoState={this.props.data[0]} />;
 
   public render(): RenderOutput {
     const daoState = this.props.data[0];
@@ -118,6 +117,7 @@ class DaoContainer extends React.Component<IProps, null> {
             <Route path="/dao/crx/proposal/:proposalId"
               render={this.daoCrxProposalRoute} />
 
+            <Route path="/dao/scheme/:schemeId/proposals/create" render={this.createProposalRoute} />
             <Route path="/dao/scheme/:schemeId"
               render={this.schemeRoute} />
 
@@ -125,13 +125,8 @@ class DaoContainer extends React.Component<IProps, null> {
               render={this.daoSchemesRoute} />
 
             <Route path="/dao" render={this.daoLandingRoute} />
-          </Switch>
 
-          <ModalRoute
-            path="/dao/scheme/:schemeId/proposals/create"
-            parentPath={this.modalRoute}
-            component={CreateProposalPage}
-          />
+          </Switch>
 
         </div>
       </div>
