@@ -114,11 +114,11 @@ interface IProposalDetailProps extends ISubscriptionProps<IProposalState> {
   proposal: Proposal;
 }
 const ProposalDetail = (props: IProposalDetailProps) => {
-  const { data, dao, proposal } = props;
+  const { data, proposal } = props;
 
   const proposalState = data;
   return (
-    <Link className={css.proposalTitle} to={"/dao/" + dao.address + "/proposal/" + proposal.id} data-test-id="proposal-title">
+    <Link className={css.proposalTitle} to={"/dao/proposal/" + proposal.id} data-test-id="proposal-title">
       <div className={css.container}>
         <div className={css.miniGraph}>
           <VoteGraph size={20} proposal={proposalState} />
