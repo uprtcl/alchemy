@@ -1,6 +1,7 @@
 .wrapper {
   width: 100%;
-
+  margin-top: -30px;
+  
   h1 {
     color: rgba(104, 155, 214, 1);
     border-bottom: 1px solid rgba(195, 212, 231, 1);
@@ -27,10 +28,6 @@
 .fadeExit.fadeExitActive {
   opacity: 0.01;
   transition: opacity 1000ms ease-in;
-}
-
-.allSchemes {
-  padding-top: 30px;
 }
 
 a.addPluginButton {

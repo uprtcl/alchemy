@@ -1,5 +1,13 @@
 $header-height: 100px;
 
+html {
+  overflow:   scroll;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
 @font-face {
   font-family: "AccordBold";
   src: url("assets/fonts/Accord-Bold.ttf");

@@ -105,16 +105,14 @@ class SchemeContainer extends React.Component<IProps, IState> {
   private handleNewProposal = async (e: any): Promise<void> => {
     if (!await enableWalletProvider({ showNotification: this.props.showNotification })) { return; }
 
-    this.props.history.push(`/dao/${this.props.daoState.address}/scheme/${this.props.schemeId}/proposals/create/`);
+    this.props.history.push(`/dao/scheme/${this.props.schemeId}/proposals/create/`);
 
-    e.preventDefault();
   };
 
   private handleEditPlugin = async (e: any) => {
     if (!await enableWalletProvider({ showNotification: this.props.showNotification })) { return; }
 
-    this.props.history.push(`/dao/${this.props.daoState.id}/scheme/${this.props.data[1].id}/proposals/create/?currentTab=editScheme`);
-    e.preventDefault();
+    this.props.history.push(`/dao/scheme/${this.props.data[1].id}/proposals/create/?currentTab=editScheme`);
   }
 
 
@@ -203,7 +201,6 @@ class SchemeContainer extends React.Component<IProps, IState> {
                     <TrainingTooltip placement="topRight" overlay={"A small amount of ETH is necessary to submit a proposal in order to pay gas costs"}>
                       <a
                         data-test-id="createProposal"
-                        href="#!"
                         onClick={this.handleEditPlugin}
                       >
                     Edit Plugin
@@ -218,7 +215,6 @@ class SchemeContainer extends React.Component<IProps, IState> {
                           [css.disabled]: !isActive,
                         })}
                       data-test-id="createProposal"
-                      href="#!"
                       onClick={isActive ? this.handleNewProposal : null}
                       >
                     + New Proposal</a>
@@ -296,7 +292,8 @@ const SubscribedSchemeContainer = withSubscription({
     }
 
     return combineLatest(
-      of(schemeState),
+      // refetch so we can subscribe.  Don't worry, has been cached
+      arc.scheme(props.schemeId).state({ subscribe: true }),
       // Find the SchemeManager scheme if this dao has one
       Scheme.search(arc, {where: { dao: props.daoState.id, name: "SchemeRegistrar" }}).pipe(mergeMap((scheme: Array<Scheme | CompetitionScheme>): Observable<ISchemeState> => scheme[0] ? scheme[0].state() : of(null))),
       approvedProposals
