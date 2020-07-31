@@ -5,6 +5,7 @@ import { init as sentryInit } from "@sentry/browser";
 import * as React from "react";
 import { render } from "react-dom";
 import { AppContainer } from "react-hot-loader";
+import WikiOrchestrator from "./WikiOrchestrator";
 
 import { App } from "./App";
 
@@ -28,6 +29,9 @@ async function renderApp() {
     document.querySelector("#root"),
   );
 }
+
+
+const orchestrator = WikiOrchestrator.getInstance(/* pass in the good shit */);
 
 if (module.hot) {
   module.hot.accept();
