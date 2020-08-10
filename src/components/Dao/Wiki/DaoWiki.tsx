@@ -1,7 +1,5 @@
 import * as React from "react";
 import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalStage, IProposalState } from "@daostack/arc.js";
-//TODO: remove the daosmind dependency
-import { WikiContainer, actualHash, ReactiveWiki } from "@dorgtech/daosmind";
 import classNames from "classnames";
 import { enableWalletProvider, getWeb3Provider } from "arc";
 import { combineLatest } from "rxjs";
@@ -46,6 +44,9 @@ function DaoWiki(props: IProps) {
   const [schemes, proposals] = props.data;
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
+  console.log(wikiSchemeAddress);
+  console.log(isActive);
+
   // daostack stuff
   const { createProposal, voteOnProposal, currentAccountAddress } = props;
 
@@ -54,12 +55,6 @@ function DaoWiki(props: IProps) {
     voteOnProposal,
   };
 
-
-  // remove this and replace with internal setup.
-  const renderWikiComponent = (web3Provider: any, dispatcher: CustomDispatcher, hasHomeProposal: boolean) => {
-    actualHash["dao"] = props.daoState.dao.id;
-    return WikiContainer.getInstance(web3Provider, dispatcher, hasHomeProposal);
-  };
 
   // DAOSTACK WIKI SCHEME CHECK
   const checkIfWikiSchemeExists = async () => {
@@ -89,6 +84,7 @@ function DaoWiki(props: IProps) {
       const wikiUpdateScheme = states.find(hasWikiScheme);
       setIsActive(getSchemeIsActive(wikiUpdateScheme));
       const web3Provider = await getWeb3Provider();
+      console.log(web3Provider);
       const { dao, address, schemeParams, id } = wikiUpdateScheme;
       setWikiSchemeAddress(id);
       const { contractToCall } = schemeParams as IGenericSchemeParams;
@@ -98,13 +94,16 @@ function DaoWiki(props: IProps) {
         contractToCall,
       };
       const dispatcher = new CustomDispatcher(wikiMethods, daoInformation);
+      console.log(dispatcher);
+
       const checkProposals = (proposal: Proposal) => {
         const state = proposal.staticState as IProposalState;
         return state.title === "Set home perspective";
       };
 
       const homeProposalExists = proposals.some(checkProposals);
-      renderWikiComponent(web3Provider, dispatcher, homeProposalExists);
+      console.log(homeProposalExists);
+
     }
   };
 
@@ -173,7 +172,9 @@ function DaoWiki(props: IProps) {
       <div className={daoStyle.daoHistoryHeader}>Wiki</div>
       {hasWikiScheme && currentAccountAddress ? (
         <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
-          <ReactiveWiki {...props} wikiSchemeAddress={wikiSchemeAddress} isActive={isActive} />
+          <module-container style={{flexGrow: '1', flexDirection: 'column', display: 'flex' }}>
+            <h1>Hello wiki</h1>
+          </module-container>
         </div>
       ) : !currentAccountAddress ? (
         <div className={proposalStyle.noDecisions}>

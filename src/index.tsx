@@ -5,11 +5,23 @@ import { init as sentryInit } from "@sentry/browser";
 import * as React from "react";
 import { render } from "react-dom";
 import { AppContainer } from "react-hot-loader";
-import WikiOrchestrator from "./WikiOrchestrator";
+import UprtclOrchestrator from "./UprtclOrchestrator";
 
 import { App } from "./App";
 
 import "./assets/styles/global.scss";
+
+/** The UprtclOrchestrator register the web-components of the _Prtcl Wiki
+ *  and prepares the services needed by the _Prtcl infrastructure */
+export const orchestrator = UprtclOrchestrator.getInstance();
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'module-container': any;
+    }
+  }
+}
 
 async function renderApp() {
   // Add icons we want to use from FontAwesome
@@ -22,6 +34,8 @@ async function renderApp() {
     });
   }
 
+  await orchestrator.load();
+
   render(
     <AppContainer>
       <App />
@@ -29,9 +43,6 @@ async function renderApp() {
     document.querySelector("#root"),
   );
 }
-
-
-const orchestrator = WikiOrchestrator.getInstance(/* pass in the good shit */);
 
 if (module.hot) {
   module.hot.accept();
