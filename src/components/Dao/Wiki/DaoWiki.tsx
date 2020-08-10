@@ -1,5 +1,6 @@
 import * as React from "react";
 import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalStage, IProposalState } from "@daostack/arc.js";
+//TODO: remove the daosmind dependency
 import { WikiContainer, actualHash, ReactiveWiki } from "@dorgtech/daosmind";
 import classNames from "classnames";
 import { enableWalletProvider, getWeb3Provider } from "arc";
@@ -39,11 +40,13 @@ type SubscriptionData = ISubscriptionProps<[Scheme[], Proposal[]]>;
 type IProps = IDispatchProps & IExternalProps & SubscriptionData;
 
 function DaoWiki(props: IProps) {
+  // state management
   const [hasWikiScheme, setHasWikiScheme] = React.useState<boolean>(false);
   const [wikiSchemeAddress, setWikiSchemeAddress] = React.useState<string>("");
   const [schemes, proposals] = props.data;
   const [isActive, setIsActive] = React.useState<boolean>(false);
 
+  // daostack stuff
   const { createProposal, voteOnProposal, currentAccountAddress } = props;
 
   const wikiMethods = {
@@ -51,11 +54,14 @@ function DaoWiki(props: IProps) {
     voteOnProposal,
   };
 
+
+  // remove this and replace with internal setup.
   const renderWikiComponent = (web3Provider: any, dispatcher: CustomDispatcher, hasHomeProposal: boolean) => {
     actualHash["dao"] = props.daoState.dao.id;
     return WikiContainer.getInstance(web3Provider, dispatcher, hasHomeProposal);
   };
 
+  // DAOSTACK WIKI SCHEME CHECK
   const checkIfWikiSchemeExists = async () => {
     const genericSchemes = schemes.filter((scheme: Scheme) => scheme.staticState.name === "GenericScheme");
     const states: ISchemeState[] = [];
