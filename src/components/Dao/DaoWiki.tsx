@@ -1,27 +1,21 @@
 import * as React from "react";
-import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalStage, IProposalState } from "@daostack/arc.js";
+import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalState } from "@daostack/arc.js";
 import classNames from "classnames";
 import { enableWalletProvider, getWeb3Provider } from "arc";
-import { combineLatest } from "rxjs";
 
 import { Link, RouteComponentProps } from "react-router-dom";
 import * as arcActions from "actions/arcActions";
 import { showNotification, NotificationStatus } from "reducers/notifications";
 import { schemeName, getSchemeIsActive } from "lib/schemeUtils";
-import { connect } from "react-redux";
-import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
-import Loading from "components/Shared/Loading";
+import { ISubscriptionProps } from "components/Shared/withSubscription";
+
 import * as proposalStyle from "../Scheme/SchemeProposals.scss";
-import * as daoStyle from "./Dao.scss";
 
 type IExternalProps = {
   daoState: IDAOState;
   currentAccountAddress: string;
 } & RouteComponentProps<any>;
 
-const mapDispatchToProps = {
-  showNotification,
-};
 
 interface IDispatchProps {
   showNotification: typeof showNotification;
@@ -30,15 +24,19 @@ interface IDispatchProps {
 type SubscriptionData = ISubscriptionProps<[Scheme[], Proposal[]]>;
 type IProps = IDispatchProps & IExternalProps & SubscriptionData;
 
-function DaoWiki(props: IProps) {
+export default class DaoWiki extends React.Component<IProps> {
   // state management
   const [hasWikiScheme, setHasWikiScheme] = React.useState<boolean>(false);
   const [, setWikiSchemeAddress] = React.useState<string>("");
   const [schemes, proposals] = props.data;
   const [, setIsActive] = React.useState<boolean>(false);
 
-  // DAOSTACK WIKI SCHEME CHECK
-  const checkIfWikiSchemeExists = async () => {
+  constructor(props: IProps) {
+    super(props);
+  }
+
+  // Check Wiki Scheme
+  async checkIfWikiSchemeExists() {
     const genericSchemes = schemes.filter((scheme: Scheme) => scheme.staticState.name === "GenericScheme");
     const states: ISchemeState[] = [];
     const getSchemeState = () => {
@@ -79,11 +77,7 @@ function DaoWiki(props: IProps) {
     }
   };
 
-  React.useEffect(() => {
-    checkIfWikiSchemeExists();
-  }, []);
-
-  const registerWikiScheme = async () => {
+  async registerWikiScheme() {
     if (!(await enableWalletProvider({ showNotification: props.showNotification }))) {
       return;
     }
@@ -117,63 +111,46 @@ function DaoWiki(props: IProps) {
     }
   };
 
-  const NoWikiScheme = (
-    <div className={proposalStyle.noDecisions}>
-      <img className={proposalStyle.relax} src="/assets/images/yogaman.svg" />
-      <div className={proposalStyle.proposalsHeader}>Wiki scheme not registered on this DAO yet</div>
-      <p>You can create the proposal to register it today! (:</p>
-      <div className={proposalStyle.cta}>
-        <Link to={"/dao/" + props.daoState.address}>
-          <img className={proposalStyle.relax} src="/assets/images/lt.svg" /> Back to home
-        </Link>
-        <a
-          className={classNames({
-            [proposalStyle.blueButton]: true,
-          })}
-          onClick={registerWikiScheme}
-          data-test-id="createProposal"
-        >
-          + Register wiki scheme
-        </a>
+  renderNoWikiScheme() {
+    return (
+      <div className={proposalStyle.noDecisions}>
+        <img className={proposalStyle.relax} src="/assets/images/yogaman.svg" />
+        <div className={proposalStyle.proposalsHeader}>Wiki scheme not registered on this DAO yet</div>
+        <p>You can create the proposal to register it today! (:</p>
+        <div className={proposalStyle.cta}>
+          <Link to={"/dao/" + this.props.daoState.address}>
+            <img className={proposalStyle.relax} src="/assets/images/lt.svg" /> Back to home
+          </Link>
+          <a
+            className={classNames({
+              [proposalStyle.blueButton]: true,
+            })}
+            onClick={registerWikiScheme}
+            data-test-id="createProposal"
+          >
+            + Register wiki scheme
+          </a>
+        </div>
       </div>
-    </div>
-  );
-
-  return (
-    <div>
-      <div className={daoStyle.daoHistoryHeader}>Wiki</div>
-      {hasWikiScheme && props.currentAccountAddress ? (
-        <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
-          <module-container style={{flexGrow: '1', flexDirection: 'column', display: 'flex' }}>
-            <h1>Hello wiki</h1>
-          </module-container>
-        </div>
-      ) : !props.currentAccountAddress ? (
-        <div className={proposalStyle.noDecisions}>
-          <div className={proposalStyle.proposalsHeader}>You must be logged in to interact with Wiki</div>
-        </div>
-      ) : (
-            NoWikiScheme
-          )}
-    </div>
-  );
-}
-
-const SubscribedDaoWiki = withSubscription({
-  wrappedComponent: DaoWiki,
-  loadingComponent: <Loading />,
-  errorComponent: props => <span>{props.error.message}</span>,
-  checkForUpdate: [],
-  createObservable: async (props: IExternalProps) => {
-    const dao = props.daoState.dao;
-    return combineLatest(
-      dao.schemes({}, { fetchAllData: true }),
-      dao.proposals({ where: { stage: IProposalStage.Queued } }, { subscribe: true, fetchAllData: true })
     );
-  },
-});
+  }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SubscribedDaoWiki);
+  render() {
+    return (
+      <div>
+        <div className={daoStyle.daoHistoryHeader}>Wiki</div>
+        {hasWikiScheme && this.props.currentAccountAddress ? (
+          <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
+            <module-container style={{flexGrow: '1', flexDirection: 'column', display: 'flex' }}>
+              <h1>Hello wiki</h1>
+            </module-container>
+          </div>
+        ) : !this.props.currentAccountAddress ? (
+          <div className={proposalStyle.noDecisions}>
+            <div className={proposalStyle.proposalsHeader}>You must be logged in to interact with Wiki</div>
+          </div>
+        ) : this.renderNoWikiScheme}
+      </div>
+    );
+  }  
+}
