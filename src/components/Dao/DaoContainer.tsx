@@ -22,7 +22,7 @@ import DaoHistoryPage from "./DaoHistoryPage";
 import DaoMembersPage from "./DaoMembersPage";
 import * as css from "./Dao.scss";
 import DaoLandingPage from "components/Dao/DaoLandingPage";
-import DaoWiki from "./Wiki/DaoWiki";
+import DaoWiki from "./DaoWiki";
 
 type IExternalProps = RouteComponentProps<any>;
 

@@ -11,11 +11,8 @@ import { schemeName, getSchemeIsActive } from "lib/schemeUtils";
 import { connect } from "react-redux";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
 import Loading from "components/Shared/Loading";
-import { IGenericSchemeParams } from "@daostack/arc.js/dist/types/schemes/base";
-import * as proposalStyle from "../../Scheme/SchemeProposals.scss";
-import * as daoStyle from "../Dao.scss";
-import { CustomDispatcher } from "./CustomDispatcher";
-import { IDaoInformation } from "./types";
+import * as proposalStyle from "../Scheme/SchemeProposals.scss";
+import * as daoStyle from "./Dao.scss";
 
 type IExternalProps = {
   daoState: IDAOState;
@@ -23,14 +20,10 @@ type IExternalProps = {
 } & RouteComponentProps<any>;
 
 const mapDispatchToProps = {
-  createProposal: arcActions.createProposal,
-  voteOnProposal: arcActions.voteOnProposal,
   showNotification,
 };
 
 interface IDispatchProps {
-  createProposal: typeof arcActions.createProposal;
-  voteOnProposal: typeof arcActions.voteOnProposal;
   showNotification: typeof showNotification;
 }
 
@@ -40,21 +33,9 @@ type IProps = IDispatchProps & IExternalProps & SubscriptionData;
 function DaoWiki(props: IProps) {
   // state management
   const [hasWikiScheme, setHasWikiScheme] = React.useState<boolean>(false);
-  const [wikiSchemeAddress, setWikiSchemeAddress] = React.useState<string>("");
+  const [, setWikiSchemeAddress] = React.useState<string>("");
   const [schemes, proposals] = props.data;
-  const [isActive, setIsActive] = React.useState<boolean>(false);
-
-  console.log(wikiSchemeAddress);
-  console.log(isActive);
-
-  // daostack stuff
-  const { createProposal, voteOnProposal, currentAccountAddress } = props;
-
-  const wikiMethods = {
-    createProposal,
-    voteOnProposal,
-  };
-
+  const [, setIsActive] = React.useState<boolean>(false);
 
   // DAOSTACK WIKI SCHEME CHECK
   const checkIfWikiSchemeExists = async () => {
@@ -85,16 +66,7 @@ function DaoWiki(props: IProps) {
       setIsActive(getSchemeIsActive(wikiUpdateScheme));
       const web3Provider = await getWeb3Provider();
       console.log(web3Provider);
-      const { dao, address, schemeParams, id } = wikiUpdateScheme;
-      setWikiSchemeAddress(id);
-      const { contractToCall } = schemeParams as IGenericSchemeParams;
-      const daoInformation: IDaoInformation = {
-        dao,
-        scheme: address,
-        contractToCall,
-      };
-      const dispatcher = new CustomDispatcher(wikiMethods, daoInformation);
-      console.log(dispatcher);
+      setWikiSchemeAddress(wikiUpdateScheme.id);
 
       const checkProposals = (proposal: Proposal) => {
         const state = proposal.staticState as IProposalState;
@@ -141,7 +113,7 @@ function DaoWiki(props: IProps) {
         scheme: schemeRegistrar.staticState.address,
         schemeToRegister: "0x0800340862fCA767b3007fE3b297f5F16a441dC8", // rinkeby
       };
-      await createProposal(proposalValues);
+      await arcActions.createProposal(proposalValues);
     }
   };
 
@@ -170,13 +142,13 @@ function DaoWiki(props: IProps) {
   return (
     <div>
       <div className={daoStyle.daoHistoryHeader}>Wiki</div>
-      {hasWikiScheme && currentAccountAddress ? (
+      {hasWikiScheme && props.currentAccountAddress ? (
         <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
           <module-container style={{flexGrow: '1', flexDirection: 'column', display: 'flex' }}>
             <h1>Hello wiki</h1>
           </module-container>
         </div>
-      ) : !currentAccountAddress ? (
+      ) : !props.currentAccountAddress ? (
         <div className={proposalStyle.noDecisions}>
           <div className={proposalStyle.proposalsHeader}>You must be logged in to interact with Wiki</div>
         </div>
