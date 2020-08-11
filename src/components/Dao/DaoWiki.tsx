@@ -1,4 +1,5 @@
 import * as React from "react";
+import Web3 from "web3";
 import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalState, IProposalStage } from "@daostack/arc.js";
 import classNames from "classnames";
 import { enableWalletProvider, getWeb3Provider } from "arc";
@@ -12,6 +13,11 @@ import * as arcActions from "actions/arcActions";
 import { showNotification, NotificationStatus } from "reducers/notifications";
 import { schemeName, getSchemeIsActive } from "lib/schemeUtils";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
+
+import {
+  abi as abiHome,
+  networks as networksHome,
+} from './UprtclHomePerspectives.min.json';
 
 import * as daoStyle from "./Dao.scss";
 import * as proposalStyle from "../Scheme/SchemeProposals.scss";
@@ -37,6 +43,8 @@ type SubscriptionData = ISubscriptionProps<[Scheme[], Proposal[]]>;
 type IProps = IDispatchProps & IExternalProps & SubscriptionData;
 type IState = {
   hasWikiScheme: boolean;
+  hasWiki: boolean;
+  wikiId: string | undefined;
   isActive: boolean;
   schemeAddress: string;
 }
@@ -49,6 +57,8 @@ type IState = {
     super(props);
     this.state = {
       hasWikiScheme: false,
+      hasWiki: false,
+      wikiId: undefined,
       isActive: false,
       schemeAddress: ''
     };
@@ -58,6 +68,7 @@ type IState = {
 
   componentWillMount() {
     this.checkIfWikiSchemeExists();
+    this.checkHome();
   }
 
   // Check Wiki Scheme
@@ -137,6 +148,33 @@ type IState = {
     }
   };
 
+  async checkHome() {
+    const provider = await getWeb3Provider();
+    const web3 = new Web3(provider);
+  
+    const networkId = await web3.eth.net.getId();
+    const contractInstance = new web3.eth.Contract(
+      abiHome,
+      networksHome[networkId]
+    );
+    console.log(contractInstance)
+
+    const events = await contractInstance.getPastEvents('HomePerspectiveSet', {
+      filter: { owner: this.props.daoState.address },
+      fromBlock: 0,
+    });
+  
+    if (events.length === 0) return '';
+    
+    const last = events
+      .sort((e1, e2) => (e1.blockNumber > e2.blockNumber ? 1 : -1))
+      .pop();
+  
+    const wikiId = last.returnValues.perspectiveId;
+
+    this.setState({ wikiId: wikiId, hasWiki: wikiId !== ''});
+  };
+
   renderNoWikiScheme() {
     return (
       <div className={proposalStyle.noDecisions}>
@@ -168,7 +206,7 @@ type IState = {
         {this.state.hasWikiScheme && this.props.currentAccountAddress ? (
           <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
             <module-container style={{flexGrow: '1', flexDirection: 'column', display: 'flex' }}>
-              <h1>Hello wiki</h1>
+              <wiki-drawer uref={this.state.wikiId}></wiki-drawer>
             </module-container>
           </div>
         ) : !this.props.currentAccountAddress ? (
