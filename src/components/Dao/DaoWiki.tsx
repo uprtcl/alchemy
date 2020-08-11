@@ -9,6 +9,7 @@ import { showNotification, NotificationStatus } from "reducers/notifications";
 import { schemeName, getSchemeIsActive } from "lib/schemeUtils";
 import { ISubscriptionProps } from "components/Shared/withSubscription";
 
+import * as daoStyle from "./Dao.scss";
 import * as proposalStyle from "../Scheme/SchemeProposals.scss";
 
 type IExternalProps = {
@@ -23,21 +24,30 @@ interface IDispatchProps {
 
 type SubscriptionData = ISubscriptionProps<[Scheme[], Proposal[]]>;
 type IProps = IDispatchProps & IExternalProps & SubscriptionData;
+type IState = {
+  hasWikiScheme: boolean;
+  isActive: boolean;
+  schemeAddress: string;
+}
 
-export default class DaoWiki extends React.Component<IProps> {
-  // state management
-  const [hasWikiScheme, setHasWikiScheme] = React.useState<boolean>(false);
-  const [, setWikiSchemeAddress] = React.useState<string>("");
-  const [schemes, proposals] = props.data;
-  const [, setIsActive] = React.useState<boolean>(false);
+export default class DaoWiki extends React.Component<IProps, IState> {
+  schemes: Scheme[];
+  proposals: Proposal[];
 
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      hasWikiScheme: false,
+      isActive: false,
+      schemeAddress: ''
+    };
+    this.schemes = props.data[0];
+    this.proposals = props.data[1];
   }
 
   // Check Wiki Scheme
   async checkIfWikiSchemeExists() {
-    const genericSchemes = schemes.filter((scheme: Scheme) => scheme.staticState.name === "GenericScheme");
+    const genericSchemes = this.schemes.filter((scheme: Scheme) => scheme.staticState.name === "GenericScheme");
     const states: ISchemeState[] = [];
     const getSchemeState = () => {
       return new Promise((resolve, reject) => {
@@ -54,31 +64,32 @@ export default class DaoWiki extends React.Component<IProps> {
       return "underscore protocol" === schemeName(schemeState, "[Unknown]");
     };
     const wikiSchemeExists = states.some(hasWikiScheme);
-    setHasWikiScheme(wikiSchemeExists);
+    this.setState({ hasWikiScheme: true });
+
     if (wikiSchemeExists) {
-      if (!(await enableWalletProvider({ showNotification: props.showNotification }))) {
-        props.showNotification(NotificationStatus.Failure, "You must be logged in to use Wiki!");
+      if (!(await enableWalletProvider({ showNotification: this.props.showNotification }))) {
+        this.props.showNotification(NotificationStatus.Failure, "You must be logged in to use Wiki!");
         return;
       }
       const wikiUpdateScheme = states.find(hasWikiScheme);
-      setIsActive(getSchemeIsActive(wikiUpdateScheme));
+      this.setState({ isActive: getSchemeIsActive(wikiUpdateScheme) });
       const web3Provider = await getWeb3Provider();
       console.log(web3Provider);
-      setWikiSchemeAddress(wikiUpdateScheme.id);
+      this.setState({ schemeAddress: wikiUpdateScheme.id });
 
       const checkProposals = (proposal: Proposal) => {
         const state = proposal.staticState as IProposalState;
         return state.title === "Set home perspective";
       };
 
-      const homeProposalExists = proposals.some(checkProposals);
+      const homeProposalExists = this.proposals.some(checkProposals);
       console.log(homeProposalExists);
 
     }
   };
 
   async registerWikiScheme() {
-    if (!(await enableWalletProvider({ showNotification: props.showNotification }))) {
+    if (!(await enableWalletProvider({ showNotification: this.props.showNotification }))) {
       return;
     }
 
@@ -87,13 +98,13 @@ export default class DaoWiki extends React.Component<IProps> {
       return state.title === "Creation of WikiUpdate scheme";
     };
 
-    const wikiProposalAlreadyExists = proposals.some(checkProposals);
-    const dao = props.daoState.address;
-    const schemeRegistrar = schemes.find((scheme: Scheme) => scheme.staticState.name === "SchemeRegistrar");
+    const wikiProposalAlreadyExists = this.proposals.some(checkProposals);
+    const dao = this.props.daoState.address;
+    const schemeRegistrar = this.schemes.find((scheme: Scheme) => scheme.staticState.name === "SchemeRegistrar");
 
     if (wikiProposalAlreadyExists) {
-      props.showNotification(NotificationStatus.Success, "Wiki Scheme proposal has already been created!");
-      props.history.replace(`/dao/${dao}/scheme/${schemeRegistrar.id}`);
+      this.props.showNotification(NotificationStatus.Success, "Wiki Scheme proposal has already been created!");
+      this.props.history.replace(`/dao/${dao}/scheme/${schemeRegistrar.id}`);
     } else {
       const proposalValues = {
         dao,
@@ -125,7 +136,7 @@ export default class DaoWiki extends React.Component<IProps> {
             className={classNames({
               [proposalStyle.blueButton]: true,
             })}
-            onClick={registerWikiScheme}
+            onClick={this.registerWikiScheme}
             data-test-id="createProposal"
           >
             + Register wiki scheme
@@ -139,7 +150,7 @@ export default class DaoWiki extends React.Component<IProps> {
     return (
       <div>
         <div className={daoStyle.daoHistoryHeader}>Wiki</div>
-        {hasWikiScheme && this.props.currentAccountAddress ? (
+        {this.state.hasWikiScheme && this.props.currentAccountAddress ? (
           <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
             <module-container style={{flexGrow: '1', flexDirection: 'column', display: 'flex' }}>
               <h1>Hello wiki</h1>
