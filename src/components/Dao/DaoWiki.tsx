@@ -1,13 +1,17 @@
 import * as React from "react";
-import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalState } from "@daostack/arc.js";
+import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalState, IProposalStage } from "@daostack/arc.js";
 import classNames from "classnames";
 import { enableWalletProvider, getWeb3Provider } from "arc";
+
+import { connect } from "react-redux";
+import { combineLatest } from "rxjs";
+import Loading from "components/Shared/Loading";
 
 import { Link, RouteComponentProps } from "react-router-dom";
 import * as arcActions from "actions/arcActions";
 import { showNotification, NotificationStatus } from "reducers/notifications";
 import { schemeName, getSchemeIsActive } from "lib/schemeUtils";
-import { ISubscriptionProps } from "components/Shared/withSubscription";
+import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
 
 import * as daoStyle from "./Dao.scss";
 import * as proposalStyle from "../Scheme/SchemeProposals.scss";
@@ -18,7 +22,14 @@ type IExternalProps = {
 } & RouteComponentProps<any>;
 
 
+const mapDispatchToProps = {
+  createProposal: arcActions.createProposal,
+  voteOnProposal: arcActions.voteOnProposal,
+  showNotification,
+};
 interface IDispatchProps {
+  createProposal: typeof arcActions.createProposal;
+  voteOnProposal: typeof arcActions.voteOnProposal;
   showNotification: typeof showNotification;
 }
 
@@ -30,7 +41,7 @@ type IState = {
   schemeAddress: string;
 }
 
-export default class DaoWiki extends React.Component<IProps, IState> {
+ class DaoWiki extends React.Component<IProps, IState> {
   schemes: Scheme[];
   proposals: Proposal[];
 
@@ -43,6 +54,10 @@ export default class DaoWiki extends React.Component<IProps, IState> {
     };
     this.schemes = props.data[0];
     this.proposals = props.data[1];
+  }
+
+  componentWillMount() {
+    this.checkIfWikiSchemeExists();
   }
 
   // Check Wiki Scheme
@@ -64,7 +79,7 @@ export default class DaoWiki extends React.Component<IProps, IState> {
       return "underscore protocol" === schemeName(schemeState, "[Unknown]");
     };
     const wikiSchemeExists = states.some(hasWikiScheme);
-    this.setState({ hasWikiScheme: true });
+    this.setState({ hasWikiScheme: wikiSchemeExists });
 
     if (wikiSchemeExists) {
       if (!(await enableWalletProvider({ showNotification: this.props.showNotification }))) {
@@ -118,7 +133,7 @@ export default class DaoWiki extends React.Component<IProps, IState> {
         scheme: schemeRegistrar.staticState.address,
         schemeToRegister: "0x0800340862fCA767b3007fE3b297f5F16a441dC8", // rinkeby
       };
-      await arcActions.createProposal(proposalValues);
+      await this.props.createProposal(proposalValues);
     }
   };
 
@@ -146,7 +161,7 @@ export default class DaoWiki extends React.Component<IProps, IState> {
     );
   }
 
-  render() {
+  public render() {
     return (
       <div>
         <div className={daoStyle.daoHistoryHeader}>Wiki</div>
@@ -160,8 +175,27 @@ export default class DaoWiki extends React.Component<IProps, IState> {
           <div className={proposalStyle.noDecisions}>
             <div className={proposalStyle.proposalsHeader}>You must be logged in to interact with Wiki</div>
           </div>
-        ) : this.renderNoWikiScheme}
+        ) : this.renderNoWikiScheme() }
       </div>
     );
   }  
 }
+
+const SubscribedDaoWiki = withSubscription({
+  wrappedComponent: DaoWiki,
+  loadingComponent: <Loading />,
+  errorComponent: (props: any) => <span>{props.error.message}</span>,
+  checkForUpdate: [],
+  createObservable: async (props: IExternalProps) => {
+    const dao = props.daoState.dao;
+    return combineLatest(
+      dao.schemes({}, { fetchAllData: true }),
+      dao.proposals({ where: { stage: IProposalStage.Queued } }, { subscribe: true, fetchAllData: true })
+    );
+  },
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SubscribedDaoWiki);
