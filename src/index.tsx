@@ -18,7 +18,7 @@ export const orchestrator = UprtclOrchestrator.getInstance();
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'module-container': any;
+      [elemName: string]: any;
     }
   }
 }

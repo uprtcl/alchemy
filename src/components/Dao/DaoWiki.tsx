@@ -1,5 +1,4 @@
 import * as React from "react";
-import Web3 from "web3";
 import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalState, IProposalStage } from "@daostack/arc.js";
 import classNames from "classnames";
 import { enableWalletProvider, getWeb3Provider } from "arc";
@@ -14,10 +13,8 @@ import { showNotification, NotificationStatus } from "reducers/notifications";
 import { schemeName, getSchemeIsActive } from "lib/schemeUtils";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
 
-import {
-  abi as abiHome,
-  networks as networksHome,
-} from './UprtclHomePerspectives.min.json';
+const Web3 = require('web3');
+const { abi, networks } = require('./UprtclHomePerspectives.min.json');
 
 import * as daoStyle from "./Dao.scss";
 import * as proposalStyle from "../Scheme/SchemeProposals.scss";
@@ -149,13 +146,17 @@ type IState = {
   };
 
   async checkHome() {
-    const provider = await getWeb3Provider();
+    const providerGetter = await getWeb3Provider();
+    const provider = await providerGetter
+
+    if (provider === undefined) throw new Error('provider is undefined');
+
     const web3 = new Web3(provider);
-  
+
     const networkId = await web3.eth.net.getId();
     const contractInstance = new web3.eth.Contract(
-      abiHome,
-      networksHome[networkId]
+      abi,
+      networks[networkId].address
     );
     console.log(contractInstance)
 
@@ -167,7 +168,7 @@ type IState = {
     if (events.length === 0) return '';
     
     const last = events
-      .sort((e1, e2) => (e1.blockNumber > e2.blockNumber ? 1 : -1))
+      .sort((e1: any, e2: any) => (e1.blockNumber > e2.blockNumber ? 1 : -1))
       .pop();
   
     const wikiId = last.returnValues.perspectiveId;
