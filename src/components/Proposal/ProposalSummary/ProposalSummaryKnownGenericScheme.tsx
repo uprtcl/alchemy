@@ -9,6 +9,7 @@ import * as css from "./ProposalSummary.scss";
 import ProposalSummaryDutchX from "./ProposalSummaryDutchX";
 import ProposalSummaryStandardBounties from "./ProposalSummaryStandardBounties";
 import ProposalSummaryCO2ken from "./ProposalSummaryCO2ken";
+import ProposalSummaryWiki from "./ProposalSummaryWiki";
 
 interface IExternalProps {
   beneficiaryProfile?: IProfileState;
@@ -51,7 +52,10 @@ export default class ProposalSummary extends React.Component<IProps> {
       return <ProposalSummaryStandardBounties {...this.props} />;
     } else if (genericSchemeInfo.specs.name === "CO2ken") {
       return <ProposalSummaryCO2ken {...this.props} />;
+    } else if (genericSchemeInfo.specs.name === "WikiUpdate") {
+      return <ProposalSummaryWiki {...this.props} />;
     }
+
     const proposalSummaryClass = classNames({
       [css.detailView]: detailView,
       [css.transactionModal]: transactionModal,

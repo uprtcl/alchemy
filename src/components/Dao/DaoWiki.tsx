@@ -128,7 +128,6 @@ class DaoWiki extends React.Component<IProps, IState> {
     if (this.container.current == null) return;
 
     this.container.current.addEventListener('evees-proposal-created', async (e: any) => {
-      debugger
       this.createProposal({
         methodName: 'authorizeProposal',
         methodParams: [e.detail.proposalId, '1', true],
