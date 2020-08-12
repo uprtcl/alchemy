@@ -13,7 +13,7 @@ import "./assets/styles/global.scss";
 
 /** The UprtclOrchestrator register the web-components of the _Prtcl Wiki
  *  and prepares the services needed by the _Prtcl infrastructure */
-export const orchestrator = UprtclOrchestrator.getInstance();
+export const uprtcl = UprtclOrchestrator.getInstance();
 
 declare global {
   namespace JSX {
@@ -34,7 +34,7 @@ async function renderApp() {
     });
   }
 
-  await orchestrator.load();
+  await uprtcl.load();
 
   render(
     <AppContainer>

@@ -1,23 +1,50 @@
 import * as React from "react";
-import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalState, IProposalStage } from "@daostack/arc.js";
 import classNames from "classnames";
-import { enableWalletProvider, getWeb3Provider } from "arc";
+import { IDAOState, ISchemeState, Scheme, IProposalType, Proposal, IProposalState, IProposalStage } from "@daostack/arc.js";
+import { enableWalletProvider } from "arc";
 
 import { connect } from "react-redux";
 import { combineLatest } from "rxjs";
 import Loading from "components/Shared/Loading";
 
-import { Link, RouteComponentProps } from "react-router-dom";
+import {  RouteComponentProps, Link } from "react-router-dom";
 import * as arcActions from "actions/arcActions";
 import { showNotification, NotificationStatus } from "reducers/notifications";
 import { schemeName, getSchemeIsActive } from "lib/schemeUtils";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
 
-const Web3 = require('web3');
-const { abi, networks } = require('./UprtclHomePerspectives.min.json');
+const uprtclHomeDetails = require('./UprtclHomePerspectives.min.json');
+
+interface IGenericSchemeProposal {
+  methodName: string;
+  methodParams: Array<string | number>; 
+}
+
+export const getHomePerspective = async (uprtclHome: any, address: string) => {
+  const events = await uprtclHome.getPastEvents('HomePerspectiveSet', {
+    filter: { owner: address },
+    fromBlock: 0,
+  });
+
+  if (events.length === 0) return '';
+
+  const last = events
+    .sort((e1: any, e2: any) => (e1.blockNumber > e2.blockNumber ? 1 : -1))
+    .pop();
+
+  return last.returnValues.perspectiveId;
+};
+
+import { uprtcl } from '../../index';
 
 import * as daoStyle from "./Dao.scss";
 import * as proposalStyle from "../Scheme/SchemeProposals.scss";
+import { EveesBindings, EveesRemote, EveesHelpers, EveesEthereum } from "@uprtcl/evees";
+import { ApolloClientModule } from "@uprtcl/graphql";
+import { ApolloClient } from "apollo-boost";
+import { Wiki } from "@uprtcl/wikis";
+import { EthereumContract } from "@uprtcl/ethereum-provider";
+import { Action, GenericSchemeRegistry } from "genericSchemeRegistry";
 
 type IExternalProps = {
   daoState: IDAOState;
@@ -39,33 +66,65 @@ interface IDispatchProps {
 type SubscriptionData = ISubscriptionProps<[Scheme[], Proposal[]]>;
 type IProps = IDispatchProps & IExternalProps & SubscriptionData;
 type IState = {
+  loading: boolean;
   hasWikiScheme: boolean;
-  hasWiki: boolean;
   wikiId: string | undefined;
   isActive: boolean;
   schemeAddress: string;
 }
 
- class DaoWiki extends React.Component<IProps, IState> {
+class DaoWiki extends React.Component<IProps, IState> {
   schemes: Scheme[];
   proposals: Proposal[];
+  defaultRemote: EveesRemote;
+  wikiUpdateScheme: ISchemeState;
+  eveesEthereum: EveesEthereum;
+  homePerspectivesContract: EthereumContract;
 
   constructor(props: IProps) {
     super(props);
     this.state = {
+      loading: true,
       hasWikiScheme: false,
-      hasWiki: false,
       wikiId: undefined,
       isActive: false,
       schemeAddress: ''
     };
     this.schemes = props.data[0];
     this.proposals = props.data[1];
+
+    this.defaultRemote = uprtcl.orchestrator.container.get(EveesBindings.DefaultRemote);
+    this.eveesEthereum = uprtcl.orchestrator.container.getAll(
+      EveesBindings.EveesRemote
+    ).find((provider: EveesRemote) =>
+      provider.id.startsWith('eth')
+    ) as EveesEthereum;
+
+    this.homePerspectivesContract = new EthereumContract(
+    {
+      contract: {
+        abi: uprtclHomeDetails.abi,
+        networks: uprtclHomeDetails.networks,
+      },
+    },
+    this.eveesEthereum.ethConnection);
   }
 
   componentWillMount() {
-    this.checkIfWikiSchemeExists();
-    this.checkHome();
+    this.load();
+  }
+
+  async load() {
+    this.setState({loading: true});
+
+    await this.eveesEthereum.ready();
+    await this.homePerspectivesContract.ready();
+
+    await Promise.all([
+      this.checkIfWikiSchemeExists(),
+      this.checkWiki()]);
+    
+    this.setState({loading: false});
   }
 
   // Check Wiki Scheme
@@ -94,11 +153,9 @@ type IState = {
         this.props.showNotification(NotificationStatus.Failure, "You must be logged in to use Wiki!");
         return;
       }
-      const wikiUpdateScheme = states.find(hasWikiScheme);
-      this.setState({ isActive: getSchemeIsActive(wikiUpdateScheme) });
-      const web3Provider = await getWeb3Provider();
-      console.log(web3Provider);
-      this.setState({ schemeAddress: wikiUpdateScheme.id });
+      this.wikiUpdateScheme = states.find(hasWikiScheme);
+      this.setState({ isActive: getSchemeIsActive(this.wikiUpdateScheme) });
+      this.setState({ schemeAddress: this.wikiUpdateScheme.id });
 
       const checkProposals = (proposal: Proposal) => {
         const state = proposal.staticState as IProposalState;
@@ -107,7 +164,6 @@ type IState = {
 
       const homeProposalExists = this.proposals.some(checkProposals);
       console.log(homeProposalExists);
-
     }
   };
 
@@ -145,35 +201,72 @@ type IState = {
     }
   };
 
-  async checkHome() {
-    const providerGetter = await getWeb3Provider();
-    const provider = await providerGetter
+  async checkWiki() {
+    const wikiId = await getHomePerspective(this.homePerspectivesContract.contractInstance, this.props.daoState.address);
+    this.setState({ wikiId: wikiId });
+  };
 
-    if (provider === undefined) throw new Error('provider is undefined');
-
-    const web3 = new Web3(provider);
-
-    const networkId = await web3.eth.net.getId();
-    const contractInstance = new web3.eth.Contract(
-      abi,
-      networks[networkId].address
-    );
-    console.log(contractInstance)
-
-    const events = await contractInstance.getPastEvents('HomePerspectiveSet', {
-      filter: { owner: this.props.daoState.address },
-      fromBlock: 0,
-    });
-  
-    if (events.length === 0) return '';
+  async createWiki() {
     
-    const last = events
-      .sort((e1: any, e2: any) => (e1.blockNumber > e2.blockNumber ? 1 : -1))
-      .pop();
-  
-    const wikiId = last.returnValues.perspectiveId;
+    const client = uprtcl.orchestrator.container.get(
+      ApolloClientModule.bindings.Client
+    ) as ApolloClient<any>;
 
-    this.setState({ wikiId: wikiId, hasWiki: wikiId !== ''});
+    const wiki: Wiki = {
+      title: `${this.props.daoState.name} Wiki`,
+      pages: [],
+    };
+
+    const dataId = await EveesHelpers.createEntity(
+      client,
+      this.eveesEthereum.store,
+      wiki
+    );
+    const headId = await EveesHelpers.createCommit(client, this.eveesEthereum.store, {
+      dataId,
+    });
+
+    const randint = 0 + Math.floor((1000000000 - 0) * Math.random());
+
+    const wikiId = await EveesHelpers.createPerspective(client, this.eveesEthereum, {
+      headId,
+      context: `${this.props.daoState.name}-wiki-${randint}`,
+      canWrite: this.props.daoState.address
+    }); 
+
+    const proposalValues = {
+      methodName: 'setHomePerspective',
+      methodParams: [wikiId],
+    };
+    
+    await this.createProposal(proposalValues);
+
+    this.load();
+  }
+
+  async createProposal(proposalOptions: IGenericSchemeProposal) {
+    const genericSchemeRegistry = new GenericSchemeRegistry();
+    const genericSchemeInfo = genericSchemeRegistry.getSchemeInfo(
+      (this.wikiUpdateScheme.schemeParams as any).contractToCall
+    );
+    const availableActions = genericSchemeInfo.actions();
+    const actionCalled = availableActions.find(
+      (action: Action) => action.id === proposalOptions.methodName
+    );
+    const dataEncoded = genericSchemeInfo.encodeABI(
+      actionCalled,
+      proposalOptions.methodParams
+    );
+    const proposalOptionsDetailed = {
+      dao: this.wikiUpdateScheme.dao,
+      scheme: this.wikiUpdateScheme.address,
+      type: IProposalType.GenericScheme,
+      value: 0, // amount of eth to send with the call
+      title: actionCalled.label,
+      description: actionCalled.description,
+      callData: dataEncoded,
+    };
+    this.props.createProposal(proposalOptionsDetailed);
   };
 
   renderNoWikiScheme() {
@@ -200,21 +293,48 @@ type IState = {
     );
   }
 
+  renderInitializeWiki() {
+    return (
+      <div className="container">
+        <div className="header">The Wiki for this DAO has not yet been created</div>
+        <a
+          href="javascript:void(0)"
+          className="blueButton"
+          onClick={() => this.createWiki()}
+        >
+          Create
+        </a>
+      </div>
+    );
+  };
+
+  renderWiki() {
+    return (
+      <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
+        <module-container style={{flexGrow: '1', flexDirection: 'column', display: 'flex' }}>
+          <wiki-drawer uref={this.state.wikiId} default-remote={this.defaultRemote.id}></wiki-drawer>
+        </module-container>
+      </div>
+    );
+  }
+
   public render() {
+    let content: any;
+
+    if (this.state.loading) {
+      content = (<h1>Loading</h1>);
+    } else if (!this.state.hasWikiScheme) {
+      content = this.renderNoWikiScheme() ;
+    } else if (this.state.wikiId === undefined || this.state.wikiId === '') {
+      content = this.renderInitializeWiki();
+    } else {
+      content = this.renderWiki();
+    }
+    
     return (
       <div>
         <div className={daoStyle.daoHistoryHeader}>Wiki</div>
-        {this.state.hasWikiScheme && this.props.currentAccountAddress ? (
-          <div style={{ marginTop: '-31px', minHeight: 'calc(100vh - 241px)', display: 'flex', flexDirection: 'column' }}>
-            <module-container style={{flexGrow: '1', flexDirection: 'column', display: 'flex' }}>
-              <wiki-drawer uref={this.state.wikiId}></wiki-drawer>
-            </module-container>
-          </div>
-        ) : !this.props.currentAccountAddress ? (
-          <div className={proposalStyle.noDecisions}>
-            <div className={proposalStyle.proposalsHeader}>You must be logged in to interact with Wiki</div>
-          </div>
-        ) : this.renderNoWikiScheme() }
+        {content}
       </div>
     );
   }  

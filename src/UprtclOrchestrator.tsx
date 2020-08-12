@@ -10,8 +10,9 @@ import { WikisModule } from '@uprtcl/wikis';
 import { CortexModule } from '@uprtcl/cortex';
 import { AccessControlModule } from '@uprtcl/access-control';
 import { EveesModule, EveesEthereum, EveesHttp } from '@uprtcl/evees';
+import { IpfsStore } from '@uprtcl/ipfs-provider';
 
-import { HttpConnection } from '@uprtcl/http-provider';
+import { HttpConnection, HttpStore } from '@uprtcl/http-provider';
 
 import { EthereumConnection } from '@uprtcl/ethereum-provider';
 
@@ -60,17 +61,18 @@ export default class UprtclOrchestrator {
     const httpConnection = new HttpConnection();
     const ethConnection = new EthereumConnection({ provider: ethHost });
 
+    const httpStore = new HttpStore(host, httpConnection, httpCidConfig);
     this.httpEvees = new EveesHttp(
       host,
       httpConnection,
       ethConnection,
-      httpCidConfig,
+      httpStore,
     );
 
+    const ipfsStore = new IpfsStore(ipfsConfig, ipfsCidConfig);
     this.ethEvees = new EveesEthereum(
       ethConnection,
-      ipfsConfig,
-      ipfsCidConfig,
+      ipfsStore,
       this.orchestrator.container
     )
 
