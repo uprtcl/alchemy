@@ -31,8 +31,8 @@ export default class UprtclOrchestrator {
   wikis: WikisModule;
 
   constructor() {
-    const host = 'https://api.intercreativity.io/uprtcl/1';
-    //const host = 'http://localhost:3100/uprtcl/1'
+    // const host = 'https://api.intercreativity.io/uprtcl/1';
+    const host = 'http://localhost:3100/uprtcl/1'
 
     const ethHost = '';
 

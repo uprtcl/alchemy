@@ -39,12 +39,13 @@ import { uprtcl } from '../../index';
 
 import * as daoStyle from "./Dao.scss";
 import * as proposalStyle from "../Scheme/SchemeProposals.scss";
-import { EveesBindings, EveesRemote, EveesHelpers, EveesEthereum } from "@uprtcl/evees";
+import { EveesBindings, EveesRemote, EveesHelpers, EveesEthereum, EveesHttp } from "@uprtcl/evees";
 import { ApolloClientModule } from "@uprtcl/graphql";
 import { ApolloClient } from "apollo-boost";
 import { Wiki } from "@uprtcl/wikis";
 import { EthereumContract } from "@uprtcl/ethereum-provider";
 import { Action, GenericSchemeRegistry } from "genericSchemeRegistry";
+import { createRef } from "react";
 
 type IExternalProps = {
   daoState: IDAOState;
@@ -79,7 +80,10 @@ class DaoWiki extends React.Component<IProps, IState> {
   defaultRemote: EveesRemote;
   wikiUpdateScheme: ISchemeState;
   eveesEthereum: EveesEthereum;
+  eveesHttp: EveesHttp;
   homePerspectivesContract: EthereumContract;
+
+  private container = createRef<HTMLDivElement>();
 
   constructor(props: IProps) {
     super(props);
@@ -100,6 +104,12 @@ class DaoWiki extends React.Component<IProps, IState> {
       provider.id.startsWith('eth')
     ) as EveesEthereum;
 
+    this.eveesHttp = uprtcl.orchestrator.container.getAll(
+      EveesBindings.EveesRemote
+    ).find((provider: EveesRemote) =>
+      provider.id.startsWith('http')
+    ) as EveesHttp;
+
     this.homePerspectivesContract = new EthereumContract(
     {
       contract: {
@@ -114,10 +124,23 @@ class DaoWiki extends React.Component<IProps, IState> {
     this.load();
   }
 
+  componentDidMount() {
+    if (this.container.current == null) return;
+
+    this.container.current.addEventListener('evees-proposal-created', async (e: any) => {
+      debugger
+      this.createProposal({
+        methodName: 'authorizeProposal',
+        methodParams: [e.detail.proposalId, '1', true],
+      });
+    });
+  }
+
   async load() {
     this.setState({loading: true});
 
     await this.eveesEthereum.ready();
+    await this.eveesHttp.connect();
     await this.homePerspectivesContract.ready();
 
     await Promise.all([
@@ -207,7 +230,6 @@ class DaoWiki extends React.Component<IProps, IState> {
   };
 
   async createWiki() {
-    
     const client = uprtcl.orchestrator.container.get(
       ApolloClientModule.bindings.Client
     ) as ApolloClient<any>;
@@ -334,7 +356,9 @@ class DaoWiki extends React.Component<IProps, IState> {
     return (
       <div>
         <div className={daoStyle.daoHistoryHeader}>Wiki</div>
-        {content}
+        <div ref={this.container}>
+          {content}
+        </div>
       </div>
     );
   }  
