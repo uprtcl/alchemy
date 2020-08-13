@@ -1,116 +1,119 @@
-
 import {
   MicroOrchestrator,
   i18nextBaseModule,
-} from '@uprtcl/micro-orchestrator';
+} from '@uprtcl/micro-orchestrator'
 
-import { LensesModule } from '@uprtcl/lenses';
-import { DocumentsModule } from '@uprtcl/documents';
-import { WikisModule } from '@uprtcl/wikis'; 
-import { CortexModule } from '@uprtcl/cortex';
-import { AccessControlModule } from '@uprtcl/access-control';
-import { EveesModule, EveesEthereum, EveesHttp } from '@uprtcl/evees';
-import { IpfsStore } from '@uprtcl/ipfs-provider';
+import { LensesModule } from '@uprtcl/lenses'
+import { DocumentsModule } from '@uprtcl/documents'
+import { WikisModule } from '@uprtcl/wikis'
+import { CortexModule } from '@uprtcl/cortex'
+import { AccessControlModule } from '@uprtcl/access-control'
+import {
+  EveesModule,
+  EveesEthereum,
+  OrbitDBConnection,
+  EveesOrbitDB,
+} from '@uprtcl/evees'
+import { IpfsStore } from '@uprtcl/ipfs-provider'
 
-import { HttpConnection, HttpStore } from '@uprtcl/http-provider';
+import { EthereumConnection } from '@uprtcl/ethereum-provider'
 
-import { EthereumConnection } from '@uprtcl/ethereum-provider';
+import { ApolloClientModule } from '@uprtcl/graphql'
+import { DiscoveryModule } from '@uprtcl/multiplatform'
 
-import { ApolloClientModule } from '@uprtcl/graphql';
-import { DiscoveryModule, CidConfig } from '@uprtcl/multiplatform';
-
-type version = 1 | 0;
+type version = 1 | 0
 
 export default class UprtclOrchestrator {
-
-  orchestrator: MicroOrchestrator;
-  httpEvees: EveesHttp;
-  ethEvees: EveesEthereum;
-  evees: EveesModule;
-  documents: DocumentsModule;
-  wikis: WikisModule;
+  orchestrator: MicroOrchestrator
+  config: any
 
   constructor() {
-    // const host = 'https://api.intercreativity.io/uprtcl/1';
-    const host = 'http://localhost:3100/uprtcl/1'
+    this.config = {}
 
-    const ethHost = '';
+    this.config.eth = {
+      host: '',
+    }
 
-    const httpCidConfig: CidConfig = {
-      version: 1,
-      type: 'sha3-256',
-      codec: 'raw',
-      base: 'base58btc',
-    };
-
-    const ipfsConfig = {
-      host: 'ipfs.intercreativity.io',
-      port: 443,
-      protocol: 'https',
-    };
-
-    const ipfsCidConfig = {
-      version: 1 as version,
-      type: 'sha2-256',
-      codec: 'raw',
-      base: 'base58btc',
-    };
-
-    this.orchestrator = new MicroOrchestrator();
-
-    const httpConnection = new HttpConnection();
-    const ethConnection = new EthereumConnection({ provider: ethHost });
-
-    const httpStore = new HttpStore(host, httpConnection, httpCidConfig);
-    this.httpEvees = new EveesHttp(
-      host,
-      httpConnection,
-      ethConnection,
-      httpStore,
-    );
-
-    const ipfsStore = new IpfsStore(ipfsConfig, ipfsCidConfig);
-    this.ethEvees = new EveesEthereum(
-      ethConnection,
-      ipfsStore,
-      this.orchestrator.container
-    )
-
-    this.evees = new EveesModule([this.ethEvees, this.httpEvees], this.httpEvees);
-    this.documents = new DocumentsModule();
-    this.wikis = new WikisModule();
+    // this.config.ipfs.http = { host: 'localhost', port: 5001, protocol: 'http' };
+    this.config.ipfs = {
+      http: {
+        host: 'ipfs.intercreativity.io',
+        port: 443,
+        protocol: 'https',
+      },
+      cid: {
+        version: 1 as version,
+        type: 'sha2-256',
+        codec: 'raw',
+        base: 'base58btc',
+      },
+      jsipfs: {
+        config: {
+          Addresses: {
+            Swarm: [
+              '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+              '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
+              '/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/',
+            ],
+          },
+        },
+      },
+    }
   }
 
   async load() {
+    this.orchestrator = new MicroOrchestrator()
+    const ipfsStore = new IpfsStore(this.config.ipfs.http, this.config.ipfs.cid)
+    await ipfsStore.ready()
+
+    const ethConnection = new EthereumConnection({
+      provider: this.config.eth.host,
+    })
+
+    const orbitDBConnection = new OrbitDBConnection(ipfsStore, {
+      params: this.config.ipfs.jsipfs,
+    })
+    await orbitDBConnection.ready()
+
+    const odbEvees = new EveesOrbitDB(
+      ethConnection,
+      orbitDBConnection,
+      ipfsStore,
+      this.orchestrator.container,
+    )
+
+    const ethEvees = new EveesEthereum(
+      ethConnection,
+      ipfsStore,
+      this.orchestrator.container,
+    )
+
+    const evees = new EveesModule([ethEvees, odbEvees], odbEvees)
+    const documents = new DocumentsModule()
+    const wikis = new WikisModule()
+
     const modules = [
       new i18nextBaseModule(),
       new ApolloClientModule(),
       new CortexModule(),
-      new DiscoveryModule([this.httpEvees.casID]),
+      new DiscoveryModule([odbEvees.store.casID]),
       new LensesModule(),
       new AccessControlModule(),
-      this.evees,
-      this.documents,
-      this.wikis,
-    ];
+      evees,
+      documents,
+      wikis,
+    ]
 
     try {
-      await this.orchestrator.loadModules(modules);
+      await this.orchestrator.loadModules(modules)
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
   }
 
-  private static _instance: UprtclOrchestrator;
+  private static _instance: UprtclOrchestrator
 
-  public static getInstance() {
-    return (
-      this._instance || (this._instance = new this())
-    )
+  public static getInstance(config?: any) {
+    return this._instance || (this._instance = new this())
   }
-  
 }
-
-
-
-
