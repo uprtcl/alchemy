@@ -37,8 +37,7 @@ module.exports = {
       "bn.js": "bn.js/lib/bn.js",
       'lit-element': path.resolve('./node_modules/lit-element'),
       'lit-html': path.resolve('./node_modules/lit-html'),
-      'graphql': path.resolve('./node_modules/graphql'),
-      '@material': path.resolve('./node_modules/@material')
+      'graphql': path.resolve('./node_modules/graphql')
     }
   },
 

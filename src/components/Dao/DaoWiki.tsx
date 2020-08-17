@@ -392,6 +392,7 @@ class DaoWiki extends React.Component<IProps, IState> {
           minHeight: 'calc(100vh - 241px)',
           display: 'flex',
           flexDirection: 'column',
+          position: 'relative'
         }}
       >
         <module-container
