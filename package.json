@@ -1,13 +1,13 @@
 {
-  "name": "voting-dapp-daostack",
+  "name": "dxcongress",
   "version": "0.10.15",
-  "description": "Voting decentralized application for Daostack DAOs",
+  "description": "Voting decentralized application for DXdao",
   "author": "github:AugustoL <augustolemble@pm.me>",
   "license": "GPL-3.0",
   "main": "./src/index.tsx",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AugustoL/voting-dapp-daostack.git"
+    "url": "git+https://github.com/AugustoL/dxcongress.git"
   },
   "engines": {
     "node": "12.16.2",

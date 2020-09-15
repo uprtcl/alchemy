@@ -120,7 +120,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "src/index.html",
       templateParameters: {
-        "title": "DXdao",
+        "title": "DXcongress",
         "description": "DXdao voting dapp",
         "keywords": "dao, decentralization, voting"
       }

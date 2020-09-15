@@ -1,6 +1,6 @@
-# Voting Dapp DAOstack
+# DXcongress
 
-This app is a fork of alchemy, an app to work with DAOstack DAOs, this fork is focused on providing a more simple, autonomous and decentralized experience than https://alchemy.daostack.io/ and just for one DAO.
+This app is a fork of alchemy, an app to work with DAOstack DAOs, this fork is focused on providing a more simple, autonomous and decentralized experience than https://alchemy.daostack.io/ and just for DXdao.
 
 This is an open-source project under GPL 3.0 License, we invite you to fork it and collaborate :).
 
