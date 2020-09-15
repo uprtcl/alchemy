@@ -163,7 +163,7 @@ class VoteButtons extends React.Component<IProps, IState> {
           /> : ""
         }
         {contextMenu ?
-          <div>
+          <>
             <div className={css.contextTitle}>
               <div>
                 <span className={css.hasVoted}>
@@ -210,9 +210,9 @@ class VoteButtons extends React.Component<IProps, IState> {
                 }
               </div>
             </div>
-          </div>
+          </>
           :
-          <div>
+          <>
             <div className={css.castVote}>
               {!votingDisabled ?
                 <div>
@@ -243,7 +243,7 @@ class VoteButtons extends React.Component<IProps, IState> {
               - Against
               </span>
             </div>
-          </div>
+          </>
         }
       </div>
     );

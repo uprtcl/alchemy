@@ -99,12 +99,16 @@ class Header extends React.Component<IProps, null> {
   private toggleDiv: RefObject<HTMLDivElement>;
 
   public componentDidMount() {
-    this.toggleDiv.current.onmouseenter = (_ev: MouseEvent) => {
-      this.props.enableTrainingTooltipsShowAll();
-    };
-    this.toggleDiv.current.onmouseleave = (_ev: MouseEvent) => {
-      this.props.disableTrainingTooltipsShowAll();
-    };
+    if (this.toggleDiv.current) {
+      this.toggleDiv.current.onmouseenter = (_ev: MouseEvent) => {
+        this.props.enableTrainingTooltipsShowAll();
+      };
+      this.toggleDiv.current.onmouseleave = (_ev: MouseEvent) => {
+        this.props.disableTrainingTooltipsShowAll();
+      };
+    }
+
+    this.setState({ alchemyVersion: PACKAGE_VERSION ?? "Not found" });
   }
 
   public handleClickLogin = async (_event: any): Promise<void> => {

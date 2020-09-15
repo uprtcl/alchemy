@@ -2,7 +2,6 @@ import { IDAOState, Member } from "@daostack/arc.js";
 import { getProfile } from "actions/profilesActions";
 import Loading from "components/Shared/Loading";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
-import daoConfig from "../../DAOConfig";
 
 import * as React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -66,7 +65,7 @@ class DaoMembersPage extends React.Component<IProps, null> {
     return (
       <div className={css.membersContainer}>
         <Sticky enabled top={50} innerZ={10000}>
-          <h2>{daoConfig.daoName} Members</h2>
+          <h2>DXdao Members</h2>
         </Sticky>
         <table className={css.memberHeaderTable}>
           <tbody className={css.memberTable + " " + css.memberTableHeading}>
