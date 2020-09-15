@@ -32,7 +32,7 @@ npm ci
 ## Run with DXdao config
 
 ```sh
-npm run start-dxdao
+npm run start-mainnet
 ```
 
 ## Working with docker

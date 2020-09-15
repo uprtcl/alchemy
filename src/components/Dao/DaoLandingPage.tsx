@@ -20,7 +20,7 @@ export default class DaoLandingPage extends React.Component<IProps> {
   public render() {
       return(
         <div className={css.landingPage}>
-          <iframe src="http://dxdao.eth.link/">
+          <iframe src="https://gateway.pinata.cloud/ipfs/QmPhoeL14E5SBFBaC4bA3nuRpg3MpxdWVYdPrdXHdQ3EHY">
           </iframe>
         </div>
       )
