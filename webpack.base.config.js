@@ -8,9 +8,7 @@ const isProd = ENV === "production";
 const isDev = ENV === "development";
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const basePath = process.cwd();
-
-const resolve = (pat) => path.resolve(basePath, pat)
+const resolve = (pat) => path.resolve('', pat)
 
 module.exports = {
   devtool: "eval",

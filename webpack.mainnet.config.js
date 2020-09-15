@@ -13,7 +13,7 @@ module.exports = merge(baseConfig, {
   devtool: 'eval-source-map',
 
   devServer: {
-    contentBase: path.resolve(__dirname, 'src'),
+    contentBase: 'src',
     hot: true,
     publicPath: '/',
     historyApiFallback: true,
@@ -41,7 +41,7 @@ module.exports = merge(baseConfig, {
     'webpack/hot/only-dev-server',
 
     // the entry point of our app
-    __dirname + '/src/index.tsx',
+    'src/index.tsx',
   ],
 
   module: {

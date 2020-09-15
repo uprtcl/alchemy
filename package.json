@@ -123,6 +123,7 @@
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.7",
     "redux-thunk": "2.2.0",
+    "replace-in-file": "^6.1.0",
     "reselect": "^4.0.0",
     "rxjs": "6.4.0",
     "ts-node": "^5.0.1",
