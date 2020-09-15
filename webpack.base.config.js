@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ENV = process.env.NODE_ENV || "development";
 const isProd = ENV === "production";
@@ -129,9 +130,9 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new MiniCssExtractPlugin(),
-    new webpack.EnvironmentPlugin({
-      DAO_NAME: "DXdao",
-    })
+    new CopyWebpackPlugin([
+      { from: 'src/assets', to: 'assets' }
+    ])
   ],
   node: {
     fs: "empty",

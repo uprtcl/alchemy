@@ -14,7 +14,6 @@ import { parse } from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath, RouteComponentProps } from "react-router-dom";
-import Toggle from "react-toggle";
 import { RefObject } from "react";
 import classNames from "classnames";
 import { Address, IDAOState } from "@daostack/arc.js";
@@ -134,17 +133,6 @@ class Header extends React.Component<IProps, null> {
     this.props.toggleMenu();
   }
 
-  private handleTrainingTooltipsEnabled = (event: any): void => {
-    /**
-     * maybe making this asynchronous can address reports of the button responding very slowly
-     */
-    const checked = event.target.checked;
-    setTimeout(() => {
-      localStorage.setItem(Header.trainingTooltipsEnabledKey, checked);
-      this.props.toggleTrainingTooltipsOnHover();
-    }, 0);
-  }
-
   private getTrainingTooltipsEnabled(): boolean {
     const trainingTooltipsOnSetting = localStorage.getItem(Header.trainingTooltipsEnabledKey);
     return (trainingTooltipsOnSetting === null) || trainingTooltipsOnSetting === "true";
@@ -170,7 +158,6 @@ class Header extends React.Component<IProps, null> {
     const accountIsEnabled = getAccountIsEnabled();
     const web3ProviderInfo = getWeb3ProviderInfo();
     const web3Provider = getWeb3Provider();
-    const trainingTooltipsOn = this.getTrainingTooltipsEnabled();
 
     return (
       <div className={css.headerContainer}>
@@ -201,14 +188,6 @@ class Header extends React.Component<IProps, null> {
                 undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})} REP
             </a>
           </div>
-          <TrainingTooltip placement="left" overlay={"Show / hide tooltips on hover"} alwaysAvailable>
-            <div className={css.toggleButton} ref={this.toggleDiv}>
-              <Toggle
-                defaultChecked={trainingTooltipsOn}
-                onChange={this.handleTrainingTooltipsEnabled}
-                icons={{ checked: <img src='assets/images/Icon/checked.svg'/>, unchecked: <img src='assets/images/Icon/unchecked.svg'/> }}/>
-            </div>
-          </TrainingTooltip>
           <div className={css.accountInfo}>
             { currentAccountAddress ?
               <span>
