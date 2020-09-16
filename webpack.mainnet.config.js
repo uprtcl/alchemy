@@ -14,7 +14,7 @@ require('dotenv').config();
 const config = merge(baseConfig, {
   mode: 'production',
 
-  devtool: 'cheap-source-map',
+  devtool: '',
   
   optimization: {
     minimize: true,
