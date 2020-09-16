@@ -20,8 +20,6 @@ import { Address, IDAOState } from "@daostack/arc.js";
 import { ETHDENVER_OPTIMIZATION } from "../settings";
 import * as css from "./App.scss";
 import ProviderConfigButton from "layouts/ProviderConfigButton";
-import { fromWei } from "lib/util";
-
 
 interface IExternalProps extends RouteComponentProps<any> {
 }
@@ -181,12 +179,7 @@ class Header extends React.Component<IProps, null> {
             <span>|</span>
             <Link to={"/dao/schemes"}>Proposals</Link>
             <span>|</span>
-            <a href={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Holdings</a>
-            <span>|</span>
-            <a>
-              {fromWei(dao.reputationTotalSupply).toLocaleString(
-                undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})} REP
-            </a>
+            <a target="_blank" href={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Holdings</a>
           </div>
           <div className={css.accountInfo}>
             { currentAccountAddress ?
