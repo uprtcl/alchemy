@@ -4,9 +4,7 @@ export const ETHDENVER_OPTIMIZATION = true;
 export const USE_CONTRACTINFOS_CACHE = false;
 import BurnerConnectProvider from "@burner-wallet/burner-connect-provider";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-const Torus = require("@toruslabs/torus-embed");
 
-const Portis = require("@portis/web3");
 const Fortmatic = require("fortmatic");
 const SubgraphEndpoints = require("./subgraph_endpoints.json");
 
@@ -30,10 +28,6 @@ function getWeb3ConnectProviderOptions(network: string) {
     case "rinkeby":
       return {
         network: "rinkeby",
-        torus: {
-          package: Torus,
-          options: { network: "rinkeby" },
-        },
         walletconnect: {
           package: isMobileBrowser() ? null : WalletConnectProvider,
           options: {
@@ -47,12 +41,6 @@ function getWeb3ConnectProviderOptions(network: string) {
             defaultWallets: [
               { origin: "https://denver-demo.burnerfactory.com/", name: "Denver Demo Wallet" },
             ],
-          },
-        },
-        portis: {
-          package: Portis,
-          options: {
-            id: "aae9cff5-6e61-4b68-82dc-31a5a46c4a86",
           },
         },
         fortmatic: {
@@ -70,10 +58,6 @@ function getWeb3ConnectProviderOptions(network: string) {
     case "kovan":
       return {
         network: "kovan",
-        torus: {
-          package: Torus,
-          options: { network: "kovan" },
-        },
         walletconnect: {
           package: isMobileBrowser() ? null : WalletConnectProvider,
           options: {
@@ -87,12 +71,6 @@ function getWeb3ConnectProviderOptions(network: string) {
             defaultWallets: [
               { origin: "https://denver-demo.burnerfactory.com/", name: "Denver Demo Wallet" },
             ],
-          },
-        },
-        portis: {
-          package: Portis,
-          options: {
-            id: "aae9cff5-6e61-4b68-82dc-31a5a46c4a86",
           },
         },
         fortmatic: {
@@ -110,10 +88,6 @@ function getWeb3ConnectProviderOptions(network: string) {
     case "mainnet":
       return {
         network: "mainnet",
-        torus: {
-          package: Torus,
-          options: { network: "mainnet" },
-        },
         walletconnect: {
           package: isMobileBrowser() ? null : WalletConnectProvider,
           options: {
@@ -127,12 +101,6 @@ function getWeb3ConnectProviderOptions(network: string) {
             defaultWallets: [
               { origin: "https://buffidao.com/", name: "BuffiDAO" },
             ],
-          },
-        },
-        portis: {
-          package: Portis,
-          options: {
-            id: "aae9cff5-6e61-4b68-82dc-31a5a46c4a86",
           },
         },
         fortmatic: {

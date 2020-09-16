@@ -103,7 +103,6 @@ class ProposalDetailsPage extends React.Component<IProps, IState> {
     const url = ensureHttps(proposal.url);
 
     this.disqusConfig.title = this.props.proposal.title;
-    this.disqusConfig.url = process.env.BASE_URL + this.props.location.pathname;
     this.disqusConfig.identifier = this.props.proposalId;
 
     let currentAccountVote: IProposalOutcome | undefined;
