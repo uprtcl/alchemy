@@ -78,12 +78,6 @@ const config = merge(baseConfig, {
   },
 
   plugins: [
-    // enable HMR globally
-    new webpack.HotModuleReplacementPlugin(),
-
-    // Prints more readable module names in the browser console on HMR updates
-    new webpack.NamedModulesPlugin(),
-
     new webpack.EnvironmentPlugin({
       NETWORK: "main",
       NODE_ENV: "production",
