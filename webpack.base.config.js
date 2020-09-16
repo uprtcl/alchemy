@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ENV = process.env.NODE_ENV || "development";
 const isProd = ENV === "production";
@@ -127,10 +126,7 @@ module.exports = {
       PACKAGE_VERSION: JSON.stringify(require("./package.json").version)
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new MiniCssExtractPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'src/assets', to: 'assets' }
-    ])
+    new MiniCssExtractPlugin()
   ],
   node: {
     fs: "empty",
