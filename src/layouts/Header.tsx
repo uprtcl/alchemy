@@ -181,7 +181,7 @@ class Header extends React.Component<IProps, null> {
             <span>|</span>
             <Link to={"/dao/manifesto"}>Manifesto</Link>
             <span>|</span>
-            <a target="_blank" href={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Holdings</a>
+            <a target="_blank" href={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Treasury</a>
           </div>
           <div className={css.accountInfo}>
             { currentAccountAddress ?
