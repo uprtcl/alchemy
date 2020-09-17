@@ -88,12 +88,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html",
-      templateParameters: {
-        "title": "DXcongress",
-        "description": "DXdao voting dapp",
-        "keywords": "dao, decentralization, voting"
-      }
+      template: "src/index.html"
     }),
     new webpack.DefinePlugin({
       PACKAGE_VERSION: JSON.stringify(require("./package.json").version)
