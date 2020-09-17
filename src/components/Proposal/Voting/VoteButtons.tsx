@@ -205,7 +205,7 @@ class VoteButtons extends React.Component<IProps, IState> {
                   </div>
                   :
                   <div className={css.votingDisabled}>
-                    <img src="/assets/images/Icon/Alert-yellow-b.svg"/> {disabledMessage}
+                    <img src="assets/images/Icon/Alert-yellow-b.svg"/> {disabledMessage}
                   </div>
                 }
               </div>
