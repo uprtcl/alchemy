@@ -17,16 +17,20 @@ const config = merge(baseConfig, {
   devtool: '',
   
   optimization: {
-    minimize: true,
-    minimizer: [
-      new OptimizeCSSAssetsPlugin({}),
-      new TerserPlugin({
-        terserOptions: {}
-      })
-    ],
+    moduleIds: 'hashed',
     splitChunks: {
-      chunks: 'all'
-    }
+      chunks: 'all',
+      maxAsyncRequests: 10
+    },
+    minimize: true,
+      minimizer: [
+          new TerserPlugin({
+              parallel: require('os').cpus().length,
+              terserOptions: {
+                mangle: false
+              }
+          })
+      ]
   },
 
   output: {
