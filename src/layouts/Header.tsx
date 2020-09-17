@@ -179,6 +179,8 @@ class Header extends React.Component<IProps, null> {
             <span>|</span>
             <Link to={"/dao/schemes"}>Proposals</Link>
             <span>|</span>
+            <Link to={"/dao/manifesto"}>Manifesto</Link>
+            <span>|</span>
             <a target="_blank" href={"https://etherscan.io/tokenholdings?a="+process.env.DAO_AVATAR_ADDRESS}>Holdings</a>
           </div>
           <div className={css.accountInfo}>
