@@ -53,6 +53,7 @@
   },
   "scripts": {
     "analyze": "NODE_ENV=production NETWORK=main ANALYZE=1 node --max_old_space_size=4096 node_modules/.bin/webpack --config webpack.mainnet.config.js --progress --colors",
+    "build-ipfs":"rm -rf dist && npm run build && node scripts/afterBuild.js && ipfs add -r -n dist",
     "build": "NODE_ENV=production node --max_old_space_size=4096 ./node_modules/webpack/bin/webpack.js --config webpack.mainnet.config.js",
     "fetch-contracts": "cross-env NODE_ENV=production ./node_modules/.bin/ts-node scripts/fetchContracts.ts",
     "lint": "eslint --ext .js,.ts,.tsx ./src ./test",
