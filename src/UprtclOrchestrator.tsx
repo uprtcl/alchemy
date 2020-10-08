@@ -1,3 +1,6 @@
+import { ethers } from 'ethers'
+import * as IPFS from 'ipfs'
+
 import {
   MicroOrchestrator,
   i18nextBaseModule,
@@ -7,13 +10,13 @@ import { LensesModule } from '@uprtcl/lenses'
 import { DocumentsModule } from '@uprtcl/documents'
 import { WikisModule } from '@uprtcl/wikis'
 import { CortexModule } from '@uprtcl/cortex'
-import { AccessControlModule } from '@uprtcl/access-control'
+import { EveesModule } from '@uprtcl/evees'
 import {
-  EveesModule,
-  EveesEthereum,
   OrbitDBConnection,
   EveesOrbitDB,
-} from '@uprtcl/evees'
+  EveesOrbitDBModule,
+} from '@uprtcl/evees-orbitdb'
+import { EveesEthereum, EveesEthereumModule } from '@uprtcl/evees-ethereum'
 import { IpfsStore } from '@uprtcl/ipfs-provider'
 
 import { EthereumConnection } from '@uprtcl/ethereum-provider'
@@ -30,24 +33,27 @@ export default class UprtclOrchestrator {
   constructor() {
     this.config = {}
 
-    this.config.eth = {
-      host: '',
-    }
+    const provider = ethers.getDefaultProvider('rinkeby', {
+      etherscan: '6H4I43M46DJ4IJ9KKR8SFF1MF2TMUQTS2F',
+      infura: '73e0929fc849451dae4662585aea9a7b',
+    })
+
+    this.config.eth = { provider }
+
+    this.config.orbitdb = { pinnerUrl: 'http://localhost:3000' }
 
     // this.config.ipfs.http = { host: 'localhost', port: 5001, protocol: 'http' };
     this.config.ipfs = {
-      http: {
-        host: 'ipfs.intercreativity.io',
-        port: 443,
-        protocol: 'https',
-      },
       cid: {
         version: 1 as version,
         type: 'sha2-256',
         codec: 'raw',
         base: 'base58btc',
       },
-      jsipfs: {
+      jsIpfs: {
+        preload: { enabled: false },
+        relay: { enabled: true, hop: { enabled: true, active: true } },
+        EXPERIMENTAL: { pubsub: true },
         config: {
           Addresses: {
             Swarm: [
@@ -56,6 +62,10 @@ export default class UprtclOrchestrator {
               '/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/',
             ],
           },
+          Bootstrap: [
+            '/ip4/192.168.1.13/tcp/4003/ws/p2p/QmQRikSoUqDryMUuF5A4PCnJDUdHNL5Yp3feF2mTJJ5RYv',
+            ,
+          ],
         },
       },
     }
@@ -63,16 +73,22 @@ export default class UprtclOrchestrator {
 
   async load() {
     this.orchestrator = new MicroOrchestrator()
-    const ipfsStore = new IpfsStore(this.config.ipfs.http, this.config.ipfs.cid)
+
+    const ipfs = await IPFS.create(this.config.ipfs.jsIpfs)
+
+    const ipfsStore = new IpfsStore(this.config.ipfs.cid, ipfs)
     await ipfsStore.ready()
 
     const ethConnection = new EthereumConnection({
-      provider: this.config.eth.host,
+      provider: this.config.eth.provider,
     })
+    await ethConnection.ready()
 
-    const orbitDBConnection = new OrbitDBConnection(ipfsStore, {
-      params: this.config.ipfs.jsipfs,
-    })
+    const orbitDBConnection = new OrbitDBConnection(
+      this.config.orbitdb.pinnerUrl,
+      ipfsStore,
+      ipfs,
+    )
     await orbitDBConnection.ready()
 
     const odbEvees = new EveesOrbitDB(
@@ -81,12 +97,10 @@ export default class UprtclOrchestrator {
       ipfsStore,
       this.orchestrator.container,
     )
+    await odbEvees.connect()
 
-    const ethEvees = new EveesEthereum(
-      ethConnection,
-      ipfsStore,
-      this.orchestrator.container,
-    )
+    const ethEvees = new EveesEthereum(ethConnection, ipfsStore)
+    await ethEvees.ready()
 
     const evees = new EveesModule([ethEvees, odbEvees], odbEvees)
     const documents = new DocumentsModule()
@@ -98,7 +112,8 @@ export default class UprtclOrchestrator {
       new CortexModule(),
       new DiscoveryModule([odbEvees.store.casID]),
       new LensesModule(),
-      new AccessControlModule(),
+      new EveesEthereumModule(),
+      new EveesOrbitDBModule(),
       evees,
       documents,
       wikis,

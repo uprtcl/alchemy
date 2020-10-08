@@ -31,10 +31,9 @@ interface IGenericSchemeProposal {
 }
 
 export const getHomePerspective = async (uprtclHome: any, address: string) => {
-  const events = await uprtclHome.getPastEvents('HomePerspectiveSet', {
-    filter: { owner: address },
-    fromBlock: 0,
-  })
+  const filter = uprtclHome.filters.HomePerspectiveSet(address, null)
+
+  const events = await uprtclHome.queryFilter(filter, 0)
 
   if (events.length === 0) return ''
 
@@ -42,20 +41,17 @@ export const getHomePerspective = async (uprtclHome: any, address: string) => {
     .sort((e1: any, e2: any) => (e1.blockNumber > e2.blockNumber ? 1 : -1))
     .pop()
 
-  return last.returnValues.perspectiveId
+  return last.args.perspectiveId
 }
 
 import { uprtcl } from '../../index'
 
 import * as daoStyle from './Dao.scss'
 import * as proposalStyle from '../Scheme/SchemeProposals.scss'
-import {
-  EveesBindings,
-  EveesRemote,
-  EveesHelpers,
-  EveesEthereum,
-  EveesOrbitDB,
-} from '@uprtcl/evees'
+import { EveesBindings, EveesRemote, EveesHelpers } from '@uprtcl/evees'
+import { EveesEthereum } from '@uprtcl/evees-ethereum'
+import { EveesOrbitDB } from '@uprtcl/evees-orbitdb'
+
 import { ApolloClientModule } from '@uprtcl/graphql'
 import { ApolloClient } from 'apollo-boost'
 import { Wiki } from '@uprtcl/wikis'
@@ -271,6 +267,8 @@ class DaoWiki extends React.Component<IProps, IState> {
   }
 
   async createWiki() {
+    await this.eveesEthereum.login()
+
     const client = uprtcl.orchestrator.container.get(
       ApolloClientModule.bindings.Client,
     ) as ApolloClient<any>
@@ -392,7 +390,7 @@ class DaoWiki extends React.Component<IProps, IState> {
           minHeight: 'calc(100vh - 241px)',
           display: 'flex',
           flexDirection: 'column',
-          position: 'relative'
+          position: 'relative',
         }}
       >
         <module-container
