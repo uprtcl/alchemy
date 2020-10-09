@@ -1,3 +1,63 @@
+## 0.10.15
+  - Features Added
+   - update subgraph endpoints
+   - Display proposal event history on the Proposal Details page
+   
+  - Bugs Fixed
+    - user's vote was not automatically updating in the UI after the user voted
+
+## 0.10.14-2
+  - Bugs Fixed
+    - revert subgraph endpoint domain
+
+## 0.10.14-1
+  - Bugs Fixed
+    - fix display of DXD and NEC tokens
+
+## 0.10.14
+  - Features Added
+    - show raw calldata in proposal details for relevant plugins
+    - improve doc about adding GenericSchemes to Alchemy
+    - show the Alchemy package version as tooltip over the Alchemy header icon
+
+  - Bugs Fixed
+    - upgrade DaoCreator to fix a bug when creating a new DAO
+
+## 0.10.13
+  - Features Added
+    - added support for awarding the DMG token
+
+  - Bugs Fixed
+    - fixed issue with redemption of GEN for staking was gated by DAO GEN balance
+    - fixed that Plugin Proposals page crashed when there is no PluginManager registered to the DAO
+    - fixed Infura request limits being exceeded
+    - fix messaging about DXD token
+
+## 0.10.12
+  - Features Added
+    - added custom landing page data for Venus Project
+    - made it easier for anyone to submit a PR to create their own DAO custom landing page
+    - added support for awarding the GEM and DXD tokens
+
+  - Bugs Fixed
+    - DAO and account balances are now computed correctly on xDAI
+    - contract and account etherscan links now direct to blockscout, for xDAI
+    - enabling predictions now works on xDAI
+    - fixed several visual bugs
+    - fixed layout of description label on Blockchain interaction proposal create modal
+    - fixed crash when clicking on a DAO on the DAO Langing page.
+
+## 0.10.11
+  - Features Added
+    - added the ability to receive email notifications, per DAO, when proposals are created
+    - added support for DXSwap governance plugin
+    - added support for creating DAOs on the xDAI network
+
+  - Bugs Fixed
+    - fix proposal count not automatically updating in the Plugin Proposals page, when proposals are created or expired or move between queues
+    - don't add spaces to GenericScheme plugin names in the UI
+    - fix layout in a known-GenericScheme proposal summary UI when the callData is very wide
+
 ## 0.10.10
   - Several code refactorings
 

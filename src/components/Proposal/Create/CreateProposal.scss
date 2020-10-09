@@ -8,54 +8,21 @@
 }
 
 .createProposalWrapper {
-  width: 930px;
-  border-radius: 15px 15px 0 0;
+  
+  width: 70%;
+  border-radius: 10px;
   background-color: $white;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 60px;
+  right: calc(15%);
+  bottom: 10px;
   box-shadow: $shadow-3;
-  height: calc(100% - 105px);
-
-  .header {
-    background-color: $navy;
-    border-radius: 15px 15px 0 0;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    color: $white;
-    height: 40px;
-    opacity: 1;
-    font-family: $body-font;
-    font-weight: $normal;
-
-    span {
-      position: relative;
-      font-size: 16px;
-      font-weight: normal;
-      left: 13px;
-
-      b {
-        font-weight: normal;
-        opacity: 0.5;
-        font-size: 14px;
-      }
-    }
-
-    .closeButton {
-      background: none;
-      border: none;
-      position: absolute;
-      right: 10px;
-      color: white;
-      font-size: 28px;
-    }
-
-    .editIcon {
-      display: inline-block;
-      margin: 10px;
-    }
+  overflow-y: auto;
+  padding: 20px 0px;
+  
+  h2 {
+    padding: 0px 30px;
+    margin: 0px;
   }
 
   form {
@@ -371,7 +338,6 @@
 
 .containerNoSidebar {
   width: calc(100% - 60px);
-  overflow-y: auto;
   height: calc(100% - 90px);
   padding: 20px 30px 30px 30px;
 }

@@ -22,6 +22,10 @@ export interface ISimpleMessagePopupProps {
   closeHandler?: (event: any) => void;
   body: string | JSX.Element;
   buttonSpec?: EnumButtonSpec;
+  /**
+   * `buttonSpec` is ignored if `hideFooter` is true
+   */
+  hideFooter?: boolean;
   title?: string | JSX.Element;
 }
 
@@ -72,7 +76,7 @@ class SimpleMessagePopup extends React.Component<IDispatchProps & IStateProps, n
           header={
             <div className={css.modalHeader}>
               <div className={css.title}>{this.props.options.title ?? "Alchemy"}</div>
-              <div className={css.closeButtonX} onClick={this.closeHandler}><img src={"/assets/images/Icon/close-grey.svg"} />
+              <div className={css.closeButtonX} onClick={this.closeHandler}><img src={"assets/images/Icon/close-grey.svg"} />
               </div>
             </div>
           }
@@ -80,7 +84,8 @@ class SimpleMessagePopup extends React.Component<IDispatchProps & IStateProps, n
             <div className={css.modalBody}>{this.props.options.body}</div>
           }
           footer={
-            <div className={css.modalFooter}>{this.renderButtons()}</div>
+            this.props.options.hideFooter ? undefined :
+              <div className={css.modalFooter}>{this.renderButtons()}</div>
           }
         />
       </div>

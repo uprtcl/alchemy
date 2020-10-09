@@ -97,7 +97,7 @@ class SchemeProposalsPreboosted extends React.Component<IPropsPreBoosted, null> 
           {proposalsPreBoosted.length === 0
             ?
             <div>
-              <img src="/assets/images/yoga.svg" />
+              <img src="assets/images/yoga.svg" />
             </div>
             : " "
           }
@@ -186,7 +186,7 @@ class SchemeProposalsQueued extends React.Component<IPropsQueued, null> {
           {proposalsQueued.length === 0
             ?
             <div>
-              <img src="/assets/images/yoga.svg" />
+              <img src="assets/images/yoga.svg" />
             </div>
             : " "
           }

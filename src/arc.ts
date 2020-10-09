@@ -280,7 +280,7 @@ export interface IEnableWalletProviderParams {
 }
 
 function inTesting(): boolean {
-  if (process.env.NODE_ENV === "development" && navigator.webdriver) {
+  if (process.env.NODE_ENV === "development" && (global as any).inAlchemyTests) {
     // in test mode, we have an unlocked ganache and we are not using any wallet
     // eslint-disable-next-line no-console
     console.log("not using any wallet, because we are in automated test");
@@ -310,15 +310,7 @@ async function enableWeb3Provider(): Promise<void> {
   if (!web3Modal) {
     _web3Modal = new Web3Modal({
       cacheProvider: true,
-      providerOptions: Object.assign(
-        /**
-         * This will hide the web3connect fallback ("Web3") button which currently
-         * doesn't behave well when there is no available extension.  The fallback is
-         * apparently "for injected providers that haven't been added to the library or
-         * that don't support the normal specification. Opera is an example of it."
-         */
-        { disableInjectedProvider: !((window as any).web3 || (window as any).ethereum) },
-        getArcSettings().web3ConnectProviderOptions) as any,
+      providerOptions: getArcSettings().web3ConnectProviderOptions,
     });
 
     // eslint-disable-next-line require-atomic-updates
@@ -477,10 +469,12 @@ export async function enableWalletProvider(options: IEnableWalletProviderParams)
       return true;
     }
 
-    // If not MetaMask or other injected web3 and on ganache then try to connect to local ganache directly
-    if (targetedNetwork() === "ganache" && !(window as any).web3 && !(window as any).ethereum) {
+    /**
+     * If not MetaMask or other injected web3 and on ganache then try to connect to local ganache directly.
+     * Note we're going to ignore any injected web3 in favor of using our own preferred version of Web3.
+     */
+    if (!selectedProvider && (targetedNetwork() === "ganache" && !(window as any).ethereum)) {
       selectedProvider = new Web3(settings.ganache.web3Provider);
-      return true;
     }
 
     if (!selectedProvider) {

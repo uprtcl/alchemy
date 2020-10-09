@@ -38,7 +38,7 @@
 
   .proposalsHeader {
     font-size: 45px;
-    padding-top: 30px;
+    padding-top: 10px;
     border-top: none;
     max-width: 100%;
     color: rgba(104, 154, 214, 1);
@@ -94,12 +94,12 @@
 
 .boostedContainer,
 .regularContainer {
+  padding: 10px 0px;
   position: relative;
-  margin-top: 20px;
 }
 
 .proposalsContainer.boostedProposalsContainer {
-  margin: 10px 0 20px 0;
+  margin: 10px 0px;
 }
 
 .boostedContainer .proposalsHeader {
@@ -110,9 +110,7 @@
   font-size: 16px;
   position: relative;
   text-align: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-top: $gray-border-2;
+  padding-bottom: 10px;
   color: $gray-1;
   font-weight: $bold;
 

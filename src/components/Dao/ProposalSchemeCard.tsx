@@ -22,13 +22,11 @@ type IProps = IExternalProps & ISubscriptionProps<SubscriptionData>;
 
 const ProposalSchemeCard = (props: IProps) => {
   const { data, dao } = props;
+  const [schemeState, proposals] = data;
 
-  const [schemeState, boostedProposals] = data;
-
-  const numProposals = schemeState.numberOfPreBoostedProposals + schemeState.numberOfBoostedProposals + schemeState.numberOfQueuedProposals;
-  const proposals = boostedProposals.slice(0, 3);
-
-  const proposalsHTML = proposals.map((proposal: Proposal) => <SubscribedProposalDetail key={proposal.id} proposal={proposal} dao={dao} />);
+  const proposalsHTML = proposals.map(
+    (proposal: Proposal) => <SubscribedProposalDetail key={proposal.id} proposal={proposal} dao={dao} />
+  );
   const headerHtml = <h2>{schemeName(schemeState, "[Unknown]")}</h2>;
 
   let trainingTooltipMessage: string;
@@ -64,16 +62,7 @@ const ProposalSchemeCard = (props: IProps) => {
           : " "
         }
       </Link>
-
-      {proposals.length > 0 ?
-        <div>
-          {proposalsHTML}
-          <div className={css.numProposals}>
-            <Link to={`/dao/scheme/${schemeState.id}/proposals`}>View all {numProposals} &gt;</Link>
-          </div>
-        </div>
-        : " "
-      }
+      {proposalsHTML}
     </div>
   );
 };
@@ -95,9 +84,9 @@ export default withSubscription({
       dao.proposals({ where: {
         scheme:  props.scheme.id,
         // eslint-disable-next-line @typescript-eslint/camelcase
-        stage_in: [IProposalStage.Boosted, IProposalStage.QuietEndingPeriod],
+        stage_in: [IProposalStage.Queued, IProposalStage.PreBoosted, IProposalStage.Boosted, IProposalStage.QuietEndingPeriod],
       },
-      orderBy: "boostedAt",
+      orderBy: "stage",
       }, {
         fetchAllData: true,
         subscribe: true, // subscribe to updates of the proposals. We can replace this once https://github.com/daostack/subgraph/issues/326 is done
@@ -114,17 +103,20 @@ interface IProposalDetailProps extends ISubscriptionProps<IProposalState> {
   proposal: Proposal;
 }
 const ProposalDetail = (props: IProposalDetailProps) => {
-  const { data, dao, proposal } = props;
+  const { data, proposal } = props;
 
   const proposalState = data;
   return (
-    <Link className={css.proposalTitle} to={"/dao/" + dao.address + "/proposal/" + proposal.id} data-test-id="proposal-title">
+    <Link className={css.proposalTitle} to={"/dao/proposal/" + proposal.id} data-test-id="proposal-title">
       <div className={css.container}>
         <div className={css.miniGraph}>
           <VoteGraph size={20} proposal={proposalState} />
         </div>
         <div className={css.title}>
           {humanProposalTitle(proposalState)}
+        </div>
+        <div className={css.stage}>
+          {IProposalStage[proposalState.stage]}
         </div>
         <div className={css.countdown}>
           <ProposalCountdown proposal={proposalState} schemeView />

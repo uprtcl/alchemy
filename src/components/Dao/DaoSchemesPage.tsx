@@ -1,16 +1,13 @@
 import { CompetitionScheme, IDAOState, ISchemeState, Scheme } from "@daostack/arc.js";
 import { enableWalletProvider, getArc } from "arc";
-import classNames from "classnames";
 import Loading from "components/Shared/Loading";
-import TrainingTooltip from "components/Shared/TrainingTooltip";
 import withSubscription, { ISubscriptionProps } from "components/Shared/withSubscription";
 import UnknownSchemeCard from "components/Dao/UnknownSchemeCard";
 
-import { getSchemeIsActive, KNOWN_SCHEME_NAMES, PROPOSAL_SCHEME_NAMES } from "lib/schemeUtils";
+import { KNOWN_SCHEME_NAMES, PROPOSAL_SCHEME_NAMES } from "lib/schemeUtils";
 import * as React from "react";
 
 import { RouteComponentProps } from "react-router-dom";
-import * as Sticky from "react-stickynode";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
 import { showNotification } from "reducers/notifications";
@@ -69,9 +66,6 @@ class DaoSchemesPage extends React.Component<IProps, null> {
     const unknownSchemes = allSchemes.filter((scheme: Scheme) => KNOWN_SCHEME_NAMES.indexOf(scheme.staticState.name) === -1 );
     const allKnownSchemes = [...contributionReward, ...knownSchemes];
 
-    const schemeManager = data[1];
-    const schemeManagerActive = getSchemeIsActive(schemeManager);
-
     const schemeCardsHTML = (
       <TransitionGroup>
         { allKnownSchemes.map((scheme: Scheme) => (
@@ -95,24 +89,6 @@ class DaoSchemesPage extends React.Component<IProps, null> {
 
     return (
       <div className={css.wrapper}>
-        <Sticky enabled top={50} innerZ={10000}>
-          <h1>Proposal Plugins</h1>
-          { schemeManager ?
-            <TrainingTooltip placement="topLeft" overlay={"A small amount of ETH is necessary to submit a proposal in order to pay gas costs"}>
-              <a className={
-                classNames({
-                  [css.addPluginButton]: true,
-                  [css.disabled]: !schemeManagerActive,
-                })}
-              data-test-id="createProposal"
-              href="#!"
-              onClick={schemeManagerActive ? this.handleNewProposal(schemeManager.id) : null}
-              >
-                Add a Plugin
-              </a>
-            </TrainingTooltip>
-            : ""}
-        </Sticky>
         {(allKnownSchemes.length + unknownSchemes.length) === 0
           ? <div>
             <img src="assets/images/meditate.svg" />
@@ -121,7 +97,7 @@ class DaoSchemesPage extends React.Component<IProps, null> {
             </div>
           </div>
           :
-          <div className={css.allSchemes}>{schemeCardsHTML}</div>
+          <div>{schemeCardsHTML}</div>
         }
       </div>
     );

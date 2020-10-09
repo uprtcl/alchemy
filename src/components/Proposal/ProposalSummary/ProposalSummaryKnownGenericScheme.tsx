@@ -28,15 +28,12 @@ export default class ProposalSummary extends React.Component<IProps> {
   private callDataHtml = (value: any, isArrayItem = false) => {
     if (value?.length > 66) {
 
-      value = truncateWithEllipses(value, 66);
+      const truncatedValue = truncateWithEllipses(value, 66);
 
       return <div
         className={isArrayItem ? css.arrayItem : ""}
         key={value}
-      >{value}<CopyToClipboard
-          value={value}
-
-        />{isArrayItem ? "," : ""}
+      >{truncatedValue}<CopyToClipboard value={value}/>{isArrayItem ? "," : ""}
       </div>;
 
     } else {
@@ -78,8 +75,8 @@ export default class ProposalSummary extends React.Component<IProps> {
           </span>
           {detailView ?
             <div className={css.summaryDetails}>
-              to contract at <a href={linkToEtherScan(proposal.genericScheme.contractToCall)}>{proposal.genericScheme.contractToCall.substr(0, 8)}...</a>
-              with callData: <pre>{proposal.genericScheme.callData}</pre>
+              To contract at: <pre><a href={linkToEtherScan(proposal.genericScheme.contractToCall)} target="_blank" rel="noopener noreferrer">{proposal.genericScheme.contractToCall}</a></pre>
+              with callData: <pre>{truncateWithEllipses(proposal.genericScheme.callData, 42)}<CopyToClipboard value={proposal.genericScheme.callData} /></pre>
             </div>
             : ""
           }
@@ -102,7 +99,7 @@ export default class ProposalSummary extends React.Component<IProps> {
         <div className={css.summaryDetails}>
           Executing this proposal will call the function:
           <pre>{decodedCallData.action.abi.name}
-        ({decodedCallData.action.abi.inputs.map(this.inputHtml)})
+            ({decodedCallData.action.abi.inputs.map(this.inputHtml)})
           </pre>
           with values: <pre>{
             decodedCallData.values.map((value: string | Array<string>) => {

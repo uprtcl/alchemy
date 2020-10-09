@@ -7,9 +7,7 @@ const isProd = ENV === "production";
 const isDev = ENV === "development";
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const basePath = process.cwd();
-
-const resolve = (pat) => path.resolve(basePath, pat)
+const resolve = (pat) => path.resolve('', pat)
 
 module.exports = {
   devtool: "eval",
@@ -32,12 +30,7 @@ module.exports = {
       pages: resolve("src/pages"),
       reducers: resolve("src/reducers"),
       selectors: resolve("src/selectors"),
-      src: resolve("src"),
-      "ipfs-api": "ipfs-api/dist",
-      "bn.js": "bn.js/lib/bn.js",
-      'lit-element': path.resolve('./node_modules/lit-element'),
-      'lit-html': path.resolve('./node_modules/lit-html'),
-      'graphql': path.resolve('./node_modules/graphql')
+      src: resolve("src")
     }
   },
 
@@ -46,40 +39,8 @@ module.exports = {
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       {
         test: /\.tsx?$/,
-        loader: ["react-hot-loader/webpack", "awesome-typescript-loader"],
+        loader: ["awesome-typescript-loader"],
         exclude: [/node_modules/, /\.spec\.ts$/]
-      },
-      {
-        enforce: "pre",
-        test: /\.js$/,
-        loader: "source-map-loader",
-        exclude: [
-          resolve("node_modules/apollo-cache-inmemory"),
-          resolve("node_modules/apollo-client"),
-          resolve("node_modules/apollo-link"),
-          resolve("node_modules/apollo-link-http"),
-          resolve("node_modules/apollo-link-ws"),
-          resolve("node_modules/ethereumjs-common"),
-          resolve("node_modules/ethereumjs-tx"),
-          resolve("node_modules/ethereumjs-util"),
-          resolve("node_modules/graphql-request"),
-          resolve("node_modules/https-did-resolver"),
-          resolve("node_modules/rlp"),
-          resolve("node_modules/subscriptions-transport-ws"),
-          resolve("node_modules/xhr2-cookies"),
-          resolve("node_modules/zen-observable-ts"),
-          resolve("node_modules/@dorgtech"),
-          resolve("node_modules/@uprtcl"),
-          resolve("node_modules/@material"),
-          resolve("node_modules/graphql-tools"),
-          resolve("node_modules/deprecated-decorator"),
-          resolve("node_modules/lit-element"),
-          resolve("node_modules/lit-html"),
-          resolve("node_modules/@material-ui"),
-          resolve("node_modules/@polymer"),
-          resolve("node_modules/@webcomponent"),
-          resolve("node_modules/@authentic")
-        ]
       },
 
       // This handle the CSS coming from dao creator
@@ -88,7 +49,6 @@ module.exports = {
         include: [
           resolve("node_modules/@fortawesome/fontawesome-free/css/all.min.css"),
           resolve("node_modules/mdbreact/dist/css/mdb.css"),
-          resolve("node_modules/@dorgtech/daocreator-ui/dist")
         ],
         use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
@@ -106,7 +66,7 @@ module.exports = {
             options: {
               camelCase: true,
               localIdentName: "[name]__[local]___[hash:base64:5]",
-              minimize: isProd,
+              minimize: true,
               modules: true,
               namedExport: true,
               sourceMap: true
@@ -128,21 +88,13 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html",
-      templateParameters: {
-        "title": "DXdao",
-        "description": "DXdao voting dapp",
-        "keywords": "dao, decentralization, voting"
-      }
+      template: "src/index.html"
     }),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(require("./package.json").version)
+      PACKAGE_VERSION: JSON.stringify(require("./package.json").version)
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new MiniCssExtractPlugin(),
-    new webpack.EnvironmentPlugin({
-      DAO_NAME: "DXdao",
-    })
+    new MiniCssExtractPlugin()
   ],
   node: {
     fs: "empty",

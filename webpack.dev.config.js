@@ -29,19 +29,8 @@ module.exports = merge(baseConfig, {
   },
 
   entry: [
-    // activate HMR for React
-    'react-hot-loader/patch',
-
-    // bundle the client for webpack-dev-server
-    // and connect to the provided endpoint
-    'webpack-dev-server/client?http://127.0.0.1:3000',
-
-    // bundle the client for hot reloading
-    // only- means to only hot reload for successful updates
-    'webpack/hot/only-dev-server',
-
     // the entry point of our app
-    __dirname + '/src/index.tsx',
+    'src/index.tsx',
   ],
 
   module: {
@@ -88,9 +77,9 @@ module.exports = merge(baseConfig, {
     new webpack.NamedModulesPlugin(),
 
     new webpack.EnvironmentPlugin({
-      NETWORK: "ganache",
+      NETWORK: "main",
       NODE_ENV: "development",
-      BASE_URL: "http://127.0.0.1:3000",
+      BASE_URL: "",
       ARC_GRAPHQLHTTPPROVIDER: "",
       ARC_GRAPHQLWSPROVIDER : "",
       ARC_WEB3PROVIDER : "",

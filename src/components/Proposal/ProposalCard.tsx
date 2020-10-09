@@ -4,7 +4,6 @@ import AccountPopup from "components/Account/AccountPopup";
 import AccountProfileName from "components/Account/AccountProfileName";
 import ProposalCountdown from "components/Shared/ProposalCountdown";
 import FollowButton from "components/Shared/FollowButton";
-import { humanProposalTitle } from "lib/util";
 import { Page } from "pages";
 import * as React from "react";
 import TrackVisibility from "react-on-screen";
@@ -221,7 +220,7 @@ export default class ProposalCard extends React.Component<IProps, null> {
               </div>
 
               <h3 className={css.detailLink} data-test-id="proposal-title">
-                <span>{humanProposalTitle(proposal)}</span>
+                <span>{proposal.title}</span>
               </h3>
 
               { tags && tags.length ? <div className={css.tagsContainer}>
