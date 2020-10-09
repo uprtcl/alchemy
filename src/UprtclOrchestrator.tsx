@@ -1,28 +1,32 @@
 import { ethers } from 'ethers'
 import * as IPFS from 'ipfs'
 
+import { MicroOrchestrator, i18nextBaseModule } from '@uprtcl/micro-orchestrator';
+import { LensesModule } from '@uprtcl/lenses';
+import { DocumentsModule } from '@uprtcl/documents';
+import { WikisModule } from '@uprtcl/wikis';
+
+import { CortexModule } from '@uprtcl/cortex';
+import { EveesModule } from '@uprtcl/evees';
+import { IpfsStore } from '@uprtcl/ipfs-provider';
+
+import { EveesOrbitDB, EveesOrbitDBModule, ProposalsOrbitDB } from '@uprtcl/evees-orbitdb';
+import { OrbitDBCustom } from '@uprtcl/orbitdb-provider';
+import { EveesEthereum, EveesEthereumModule, EthereumIdentity } from '@uprtcl/evees-ethereum';
+
+import { EthereumConnection } from '@uprtcl/ethereum-provider';
+
+import { ApolloClientModule } from '@uprtcl/graphql';
+import { DiscoveryModule } from '@uprtcl/multiplatform';
+
 import {
-  MicroOrchestrator,
-  i18nextBaseModule,
-} from '@uprtcl/micro-orchestrator'
-
-import { LensesModule } from '@uprtcl/lenses'
-import { DocumentsModule } from '@uprtcl/documents'
-import { WikisModule } from '@uprtcl/wikis'
-import { CortexModule } from '@uprtcl/cortex'
-import { EveesModule } from '@uprtcl/evees'
-import {
-  OrbitDBConnection,
-  EveesOrbitDB,
-  EveesOrbitDBModule,
-} from '@uprtcl/evees-orbitdb'
-import { EveesEthereum, EveesEthereumModule } from '@uprtcl/evees-ethereum'
-import { IpfsStore } from '@uprtcl/ipfs-provider'
-
-import { EthereumConnection } from '@uprtcl/ethereum-provider'
-
-import { ApolloClientModule } from '@uprtcl/graphql'
-import { DiscoveryModule } from '@uprtcl/multiplatform'
+  PerspectiveStore,
+  ContextStore,
+  ProposalStore,
+  ProposalsToPerspectiveStore,
+  ContextAccessController,
+  ProposalsAccessController
+} from '@uprtcl/evees-orbitdb';
 
 type version = 1 | 0
 
@@ -83,26 +87,26 @@ export default class UprtclOrchestrator {
       provider: this.config.eth.provider,
     })
     await ethConnection.ready()
+    const identity = new EthereumIdentity(ethConnection);
 
-    const orbitDBConnection = new OrbitDBConnection(
+    const orbitDBCustom = new OrbitDBCustom(
+      [PerspectiveStore, ContextStore, ProposalStore, ProposalsToPerspectiveStore],
+      [ContextAccessController, ProposalsAccessController],
+      identity,
       this.config.orbitdb.pinnerUrl,
-      ipfsStore,
-      ipfs,
-    )
-    await orbitDBConnection.ready()
+      ipfs
+    );
+    await orbitDBCustom.ready();
 
-    const odbEvees = new EveesOrbitDB(
-      ethConnection,
-      orbitDBConnection,
-      ipfsStore,
-      this.orchestrator.container,
-    )
-    await odbEvees.connect()
+    const orbitdbEvees = new EveesOrbitDB(orbitDBCustom, ipfsStore);
+    await orbitdbEvees.connect();
 
-    const ethEvees = new EveesEthereum(ethConnection, ipfsStore)
-    await ethEvees.ready()
+    const proposals = new ProposalsOrbitDB(orbitDBCustom, ipfsStore);
+    const ethEvees = new EveesEthereum(ethConnection, ipfsStore, proposals);
+    await ethEvees.ready();
 
-    const evees = new EveesModule([ethEvees, odbEvees], odbEvees)
+    const evees = new EveesModule([orbitdbEvees, ethEvees]);
+
     const documents = new DocumentsModule()
     const wikis = new WikisModule()
 
@@ -110,7 +114,7 @@ export default class UprtclOrchestrator {
       new i18nextBaseModule(),
       new ApolloClientModule(),
       new CortexModule(),
-      new DiscoveryModule([odbEvees.store.casID]),
+      new DiscoveryModule([ipfsStore.casID]),
       new LensesModule(),
       new EveesEthereumModule(),
       new EveesOrbitDBModule(),

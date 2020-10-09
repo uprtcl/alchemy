@@ -77,7 +77,7 @@ module.exports = merge(baseConfig, {
     new webpack.NamedModulesPlugin(),
 
     new webpack.EnvironmentPlugin({
-      NETWORK: "main",
+      NETWORK: "rinkeby",
       NODE_ENV: "development",
       BASE_URL: "",
       ARC_GRAPHQLHTTPPROVIDER: "",

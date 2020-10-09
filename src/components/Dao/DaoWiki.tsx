@@ -48,7 +48,7 @@ import { uprtcl } from '../../index'
 
 import * as daoStyle from './Dao.scss'
 import * as proposalStyle from '../Scheme/SchemeProposals.scss'
-import { EveesBindings, EveesRemote, EveesHelpers } from '@uprtcl/evees'
+import { EveesBindings, EveesRemote, EveesHelpers, EveesModule } from '@uprtcl/evees'
 import { EveesEthereum } from '@uprtcl/evees-ethereum'
 import { EveesOrbitDB } from '@uprtcl/evees-orbitdb'
 
@@ -108,9 +108,10 @@ class DaoWiki extends React.Component<IProps, IState> {
     this.schemes = props.data[0]
     this.proposals = props.data[1]
 
-    this.defaultRemote = uprtcl.orchestrator.container.get(
-      EveesBindings.DefaultRemote,
-    )
+    this.defaultRemote = (uprtcl.orchestrator.container.get(
+      EveesModule.bindings.Config
+    ) as any).defaultRemote;
+
     this.eveesEthereum = uprtcl.orchestrator.container
       .getAll(EveesBindings.EveesRemote)
       .find((provider: EveesRemote) =>
