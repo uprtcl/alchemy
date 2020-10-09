@@ -17,3 +17,4 @@ subgraph.yaml
 build/
 *.scss.d.ts
 *.ps1
+*.code-workspace
