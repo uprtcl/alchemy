@@ -12,7 +12,9 @@ import { IpfsStore } from '@uprtcl/ipfs-provider';
 
 import { EveesOrbitDB, EveesOrbitDBModule, ProposalsOrbitDB } from '@uprtcl/evees-orbitdb';
 import { OrbitDBCustom } from '@uprtcl/orbitdb-provider';
-import { EveesEthereum, EveesEthereumModule, EthereumIdentity } from '@uprtcl/evees-ethereum';
+import { EveesEthereumConnection, EthereumIdentity } from '@uprtcl/evees-ethereum';
+import { EveesBlockchainCached, EveesBlockchainModule } from '@uprtcl/evees-blockchain';
+
 
 import { EthereumConnection } from '@uprtcl/ethereum-provider';
 
@@ -102,7 +104,11 @@ export default class UprtclOrchestrator {
     await orbitdbEvees.connect();
 
     const proposals = new ProposalsOrbitDB(orbitDBCustom, ipfsStore);
-    const ethEvees = new EveesEthereum(ethConnection, ipfsStore, proposals);
+
+    const ethEveesConnection = new EveesEthereumConnection(ethConnection);
+    await ethEveesConnection.ready();
+
+    const ethEvees = new EveesBlockchainCached(ethEveesConnection, orbitDBCustom, ipfsStore, proposals, 'ethereum-evees-cache');
     await ethEvees.ready();
 
     const evees = new EveesModule([orbitdbEvees, ethEvees]);
@@ -116,7 +122,7 @@ export default class UprtclOrchestrator {
       new CortexModule(),
       new DiscoveryModule([ipfsStore.casID]),
       new LensesModule(),
-      new EveesEthereumModule(),
+      new EveesBlockchainModule(),
       new EveesOrbitDBModule(),
       evees,
       documents,
