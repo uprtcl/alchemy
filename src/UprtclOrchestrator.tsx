@@ -12,7 +12,7 @@ import { IpfsStore } from '@uprtcl/ipfs-provider';
 
 import { EveesOrbitDB, EveesOrbitDBModule, ProposalsOrbitDB } from '@uprtcl/evees-orbitdb';
 import { OrbitDBCustom } from '@uprtcl/orbitdb-provider';
-import { EveesEthereumConnection, EthereumIdentity } from '@uprtcl/evees-ethereum';
+import { EveesEthereumConnection, EthereumOrbitDBIdentity } from '@uprtcl/evees-ethereum';
 import { EveesBlockchainCached, EveesBlockchainModule } from '@uprtcl/evees-blockchain';
 
 
@@ -89,7 +89,7 @@ export default class UprtclOrchestrator {
       provider: this.config.eth.provider,
     })
     await ethConnection.ready()
-    const identity = new EthereumIdentity(ethConnection);
+    const identity = new EthereumOrbitDBIdentity(ethConnection);
 
     const orbitDBCustom = new OrbitDBCustom(
       [PerspectiveStore, ContextStore, ProposalStore, ProposalsToPerspectiveStore],

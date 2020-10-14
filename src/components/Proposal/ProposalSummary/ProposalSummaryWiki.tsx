@@ -4,7 +4,6 @@ import { uprtcl } from '../../../index'
 
 import { GenericSchemeInfo } from 'genericSchemeRegistry'
 import { EveesBindings, EveesRemote } from '@uprtcl/evees'
-import { EveesEthereum } from '@uprtcl/evees-ethereum'
 
 interface IProps {
   genericSchemeInfo: GenericSchemeInfo
@@ -59,7 +58,7 @@ export default class ProposalSummaryWiki extends React.Component<
       .getAll(EveesBindings.EveesRemote)
       .find((provider: EveesRemote) =>
         provider.id.startsWith('eth'),
-      ) as EveesEthereum
+      ) as EveesRemote
 
     this.action = decodedCallData.action
     this.setState({

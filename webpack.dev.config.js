@@ -77,7 +77,7 @@ module.exports = merge(baseConfig, {
     new webpack.NamedModulesPlugin(),
 
     new webpack.EnvironmentPlugin({
-      NETWORK: "rinkeby",
+      NETWORK: "xdai",
       NODE_ENV: "development",
       BASE_URL: "",
       ARC_GRAPHQLHTTPPROVIDER: "",
@@ -90,7 +90,7 @@ module.exports = merge(baseConfig, {
       ARC_IPFSPROVIDER_PROTOCOL : "",
       ARC_IPFSPROVIDER_API_PATH : "",
       INFURA_ID : "",
-      DAO_AVATAR_ADDRESS: "0xde0348d7ac9806c329663bbcba0e5370ba099993",
+      DAO_AVATAR_ADDRESS: "0x8ad4d4cd56a4c1ac20aa483ee20300c1e9b77d76",
       DAO_CONTROLLER_ADDRESS: "0x9f828ac3baa9003e8a4e0b24bcae7b027b6740b0"
     })
   ]

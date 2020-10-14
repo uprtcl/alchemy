@@ -23,41 +23,21 @@ import withSubscription, {
   ISubscriptionProps,
 } from 'components/Shared/withSubscription'
 
-const uprtclHomeDetails = require('./UprtclHomePerspectives.min.json')
+
+import * as daoStyle from './Dao.scss'
+import * as proposalStyle from '../Scheme/SchemeProposals.scss'
+import { Action, GenericSchemeRegistry } from 'genericSchemeRegistry'
+
+import { EveesRemote, EveesModule, Perspective, deriveSecured } from '@uprtcl/evees'
+
+import { EthereumContract } from '@uprtcl/ethereum-provider'
+
+import { uprtcl } from '../../index'
 
 interface IGenericSchemeProposal {
   methodName: string
   methodParams: Array<string | number>
 }
-
-export const getHomePerspective = async (uprtclHome: any, address: string) => {
-  const filter = uprtclHome.filters.HomePerspectiveSet(address, null)
-
-  const events = await uprtclHome.queryFilter(filter, 0)
-
-  if (events.length === 0) return ''
-
-  const last = events
-    .sort((e1: any, e2: any) => (e1.blockNumber > e2.blockNumber ? 1 : -1))
-    .pop()
-
-  return last.args.perspectiveId
-}
-
-import { uprtcl } from '../../index'
-
-import * as daoStyle from './Dao.scss'
-import * as proposalStyle from '../Scheme/SchemeProposals.scss'
-import { EveesBindings, EveesRemote, EveesHelpers, EveesModule } from '@uprtcl/evees'
-import { EveesEthereum } from '@uprtcl/evees-ethereum'
-import { EveesOrbitDB } from '@uprtcl/evees-orbitdb'
-
-import { ApolloClientModule } from '@uprtcl/graphql'
-import { ApolloClient } from 'apollo-boost'
-import { Wiki } from '@uprtcl/wikis'
-import { EthereumContract } from '@uprtcl/ethereum-provider'
-import { Action, GenericSchemeRegistry } from 'genericSchemeRegistry'
-import { createRef } from 'react'
 
 type IExternalProps = {
   daoState: IDAOState
@@ -89,12 +69,12 @@ class DaoWiki extends React.Component<IProps, IState> {
   schemes: Scheme[]
   proposals: Proposal[]
   defaultRemote: EveesRemote
+  officialRemote: EveesRemote
   wikiUpdateScheme: ISchemeState
-  eveesEthereum: EveesEthereum
-  eveesOrbitDb: EveesOrbitDB
+  
   homePerspectivesContract: EthereumContract
 
-  private container = createRef<HTMLDivElement>()
+  private container = React.createRef<HTMLDivElement>()
 
   constructor(props: IProps) {
     super(props)
@@ -112,27 +92,9 @@ class DaoWiki extends React.Component<IProps, IState> {
       EveesModule.bindings.Config
     ) as any).defaultRemote;
 
-    this.eveesEthereum = uprtcl.orchestrator.container
-      .getAll(EveesBindings.EveesRemote)
-      .find((provider: EveesRemote) =>
-        provider.id.startsWith('eth'),
-      ) as EveesEthereum
-
-    this.eveesOrbitDb = uprtcl.orchestrator.container
-      .getAll(EveesBindings.EveesRemote)
-      .find((provider: EveesRemote) =>
-        provider.id.startsWith('orbitdb'),
-      ) as EveesOrbitDB
-
-    this.homePerspectivesContract = new EthereumContract(
-      {
-        contract: {
-          abi: uprtclHomeDetails.abi,
-          networks: uprtclHomeDetails.networks,
-        },
-      },
-      this.eveesEthereum.ethConnection,
-    )
+    this.officialRemote = (uprtcl.orchestrator.container.get(
+      EveesModule.bindings.EveesRemote
+    ) as EveesRemote[]).find(remote => remote.id.includes('eth'));
   }
 
   componentWillMount() {
@@ -155,10 +117,6 @@ class DaoWiki extends React.Component<IProps, IState> {
 
   async load() {
     this.setState({ loading: true })
-
-    await this.eveesEthereum.ready()
-    await this.eveesOrbitDb.ready()
-    await this.homePerspectivesContract.ready()
 
     await Promise.all([this.checkIfWikiSchemeExists(), this.checkWiki()])
 
@@ -205,14 +163,6 @@ class DaoWiki extends React.Component<IProps, IState> {
       this.wikiUpdateScheme = states.find(hasWikiScheme)
       this.setState({ isActive: getSchemeIsActive(this.wikiUpdateScheme) })
       this.setState({ schemeAddress: this.wikiUpdateScheme.id })
-
-      const checkProposals = (proposal: Proposal) => {
-        const state = proposal.staticState as IProposalState
-        return state.title === 'Set home perspective'
-      }
-
-      const homeProposalExists = this.proposals.some(checkProposals)
-      console.log(homeProposalExists)
     }
   }
 
@@ -260,58 +210,18 @@ class DaoWiki extends React.Component<IProps, IState> {
   }
 
   async checkWiki() {
-    const wikiId = await getHomePerspective(
-      this.homePerspectivesContract.contractInstance,
-      this.props.daoState.address,
-    )
+    
+    const object: Perspective = {
+      creatorId: this.props.daoState.address,
+      remote: this.officialRemote.id,
+      path: this.props.daoState.address,
+      timestamp: 0,
+      context: 'home'
+    };
+
+    const { id: wikiId } = await deriveSecured<Perspective>(object, this.officialRemote.store.cidConfig);
+    
     this.setState({ wikiId: wikiId })
-  }
-
-  async createWiki() {
-    await this.eveesEthereum.login()
-
-    const client = uprtcl.orchestrator.container.get(
-      ApolloClientModule.bindings.Client,
-    ) as ApolloClient<any>
-
-    const wiki: Wiki = {
-      title: `${this.props.daoState.name} Wiki`,
-      pages: [],
-    }
-
-    const dataId = await EveesHelpers.createEntity(
-      client,
-      this.eveesEthereum.store,
-      wiki,
-    )
-    const headId = await EveesHelpers.createCommit(
-      client,
-      this.eveesEthereum.store,
-      {
-        dataId,
-      },
-    )
-
-    const randint = 0 + Math.floor((1000000000 - 0) * Math.random())
-
-    const wikiId = await EveesHelpers.createPerspective(
-      client,
-      this.eveesEthereum,
-      {
-        headId,
-        context: `${this.props.daoState.name}-wiki-${randint}`,
-        canWrite: this.props.daoState.address,
-      },
-    )
-
-    const proposalValues = {
-      methodName: 'setHomePerspective',
-      methodParams: [wikiId],
-    }
-
-    await this.createProposal(proposalValues)
-
-    this.load()
   }
 
   async createProposal(proposalOptions: IGenericSchemeProposal) {
@@ -366,23 +276,6 @@ class DaoWiki extends React.Component<IProps, IState> {
     )
   }
 
-  renderInitializeWiki() {
-    return (
-      <div className="container">
-        <div className="header">
-          The Wiki for this DAO has not yet been created
-        </div>
-        <a
-          href="javascript:void(0)"
-          className="blueButton"
-          onClick={() => this.createWiki()}
-        >
-          Create
-        </a>
-      </div>
-    )
-  }
-
   renderWiki() {
     return (
       <div
@@ -413,8 +306,6 @@ class DaoWiki extends React.Component<IProps, IState> {
       content = <h1>Loading</h1>
     } else if (!this.state.hasWikiScheme) {
       content = this.renderNoWikiScheme()
-    } else if (this.state.wikiId === undefined || this.state.wikiId === '') {
-      content = this.renderInitializeWiki()
     } else {
       content = this.renderWiki()
     }
