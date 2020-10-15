@@ -1,7 +1,7 @@
 import { Address, IPluginState, ReputationFromTokenPlugin, Token } from "@daostack/arc.js";
 import axios from "axios";
 import { getArcSettings } from "arc";
-import { SigningKey } from "ethers/utils";
+import { utils } from "ethers";
 import { soliditySHA3 } from "ethereumjs-abi";
 import { parse } from "query-string";
 import { RouteComponentProps } from "react-router-dom";
@@ -74,7 +74,7 @@ class ReputationFromToken extends React.Component<IProps, IState> {
         pk = `0x${pk}`;
       }
       try {
-        redeemerAddress = new SigningKey(pk).address;
+        redeemerAddress = new utils.SigningKey(pk).publicKey;
       } catch (err) {
         throw Error(`Invalide private key: ${pk}`);
       }

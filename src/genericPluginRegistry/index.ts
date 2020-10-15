@@ -1,7 +1,7 @@
 // tslint:disable:max-classes-per-file
 import BN = require("bn.js");
 import { Networks, targetedNetwork, toWei } from "lib/util";
-import { keccak256, hexlify, Interface } from "ethers/utils";
+import { utils } from "ethers";
 
 const namehash = require("eth-ens-namehash");
 const dutchXInfo = require("./plugins/DutchX.json");
@@ -120,7 +120,7 @@ export class ActionField {
         return namehash.hash(userValue);
       }
       case "keccak256": {
-        return keccak256(hexlify(userValue.toString()));
+        return utils.keccak256(utils.hexlify(userValue.toString()));
       }
       case "toWei": {
         return toWei(Number(userValue)).toString();
@@ -209,8 +209,8 @@ export class GenericPluginInfo {
     return;
   }
   public encodeABI(action: IActionSpec, values: any[]): string {
-    const abi = new Interface([action.abi]);
-    return abi.functions[action.abi.name].encode(values);
+    const abi = new utils.Interface([action.abi]);
+    return abi.encodeFunctionData(action.abi.name, values);
   }
 
   /*
@@ -220,10 +220,10 @@ export class GenericPluginInfo {
    */
   public decodeCallData(callData: string): { action: IActionSpec; values: any[]} {
     let action: undefined|IActionSpec;
-    let actionAbi: Interface;
+    let actionAbi: utils.Interface;
     for (const act of this.actions()) {
-      const abi = new Interface([act.abi]);
-      const encodedFunctionSignature = abi.functions[act.abi.name].sighash;
+      const abi = new utils.Interface([act.abi]);
+      const encodedFunctionSignature = abi.getSighash(act.abi.name);
       if (callData.startsWith(encodedFunctionSignature)) {
         action = act;
         actionAbi = abi;
@@ -234,7 +234,8 @@ export class GenericPluginInfo {
       throw Error("No action matching these callData could be found");
     }
     // we've found our function, now we can decode the parameters
-    const decodedParams = actionAbi.functions[action.abi.name].decode(
+    const decodedParams = actionAbi.decodeFunctionData(
+      action.abi.name,
       "0x" + callData.slice(2 + 8)
     );
 

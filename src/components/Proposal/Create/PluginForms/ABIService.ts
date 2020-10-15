@@ -1,5 +1,5 @@
 import { AbiItem } from "web3-utils";
-import { Interface, isHexString } from "ethers/utils";
+import { utils } from "ethers";
 import { SortService } from "lib/sortService";
 const Web3 = require("web3");
 import axios from "axios";
@@ -90,7 +90,7 @@ export const validateABIInputs = (data: Array<any>): boolean => {
         }
         break;
       case "bytes":
-        if (!isHexString(input.value)) {
+        if (!utils.isHexString(input.value)) {
           return false;
         }
         break;
@@ -131,14 +131,14 @@ export const getABIByContract = async (contractAddress: string): Promise<Array<a
  * @returns {string} The encoded data
  */
 export const encodeABI = (abi: Array<any>, name: string, data: any[]): string => {
-  const interfaceABI = new Interface(abi);
+  const interfaceABI = new utils.Interface(abi);
 
   if (validateABIInputs(data)) {
     const values = [];
     for (const input of data) {
       values.push(input.value);
     }
-    return interfaceABI.functions[name].encode(values);
+    return interfaceABI.encodeFunctionData(name, values);
   }
 
   return "";
