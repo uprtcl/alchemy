@@ -39,10 +39,7 @@ export default class UprtclOrchestrator {
   constructor() {
     this.config = {}
 
-    const provider = ethers.getDefaultProvider('rinkeby', {
-      etherscan: '6H4I43M46DJ4IJ9KKR8SFF1MF2TMUQTS2F',
-      infura: '73e0929fc849451dae4662585aea9a7b',
-    })
+    const provider = new ethers.providers.JsonRpcProvider('https://rpc.xdaichain.com/');
 
     this.config.eth = { provider }
 

@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { IPluginState, IProposalCreateOptionsGS } from "@daostack/arc.js";
 import { enableWalletProvider } from "arc";
-import { isHexString } from "ethers/utils";
+import { utils } from "ethers";
 
 import { ErrorMessage, Field, FieldArray, Form, Formik, FormikErrors, FormikProps, FormikTouched } from "formik";
 import * as classNames from "classnames";
@@ -383,7 +383,7 @@ class CreateKnownPluginProposal extends React.Component<IProps, IState> {
                 }
 
                 if (field.type.includes("bytes")) {
-                  if (value && !isHexString(value)) {
+                  if (value && !utils.isHexString(value)) {
                     errors[field.name] = "Must be a hex value";
                   }
                 }

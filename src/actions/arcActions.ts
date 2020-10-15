@@ -218,7 +218,7 @@ export function redeemReputationFromToken(reputationFromTokenPlugin: ReputationF
         txToSign.gasPrice = Math.floor(userBalance/gasEstimate);
       }
       const wallet = new Wallet(privateKey);
-      const signedTransaction = await wallet.sign(txToSign);
+      const signedTransaction = await wallet.signTransaction(txToSign);
       dispatch(showNotification(NotificationStatus.Success, "Sending redeem transaction, please wait for it to be mined"));
       try {
         await arc.web3.sendTransaction(signedTransaction);

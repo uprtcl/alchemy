@@ -6,7 +6,6 @@ import { RetryLink } from "apollo-link-retry";
 import { Address, Arc, Web3Client, Web3Provider } from "@daostack/arc.js";
 import { Observable } from "rxjs";
 import { first } from "rxjs/operators";
-import { AsyncSendable, Block } from "ethers/providers";
 import { showNotification as showNotificationFunction } from "./reducers/notifications";
 
 /**
@@ -43,7 +42,7 @@ async function _getCurrentAccountFromArc(arc?: Arc): Promise<string> {
 /**
  * Return the most recently synced block from web3, or null with no web3 or error
  */
-export async function getCurrentBlock(web3?: Web3Client): Promise<Block> {
+export async function getCurrentBlock(web3?: Web3Client): Promise<any> {
   web3 = web3 || (window as any).arc?.web3;
   if (!web3) {
     return null;
@@ -338,7 +337,7 @@ async function enableWeb3Provider(): Promise<void> {
     return rejectOnClosePromise(error);
   });
 
-  _web3Modal.on("connect", (newProvider: AsyncSendable): any => {
+  _web3Modal.on("connect", (newProvider: any): any => {
     provider = newProvider;
     /**
      * Because we won't receive the "close" event in this case, even though

@@ -8,7 +8,7 @@ import {
   Web3Provider,
 } from "@daostack/arc.js";
 import * as utils from "@daostack/arc.js";
-import { JsonRpcProvider } from "ethers/providers";
+import { providers } from "ethers";
 import { of, Observable, OperatorFunction } from "rxjs";
 import { catchError } from "rxjs/operators";
 import BN = require("bn.js");
@@ -287,7 +287,7 @@ export async function getNetworkId(web3Provider?: Web3Provider): Promise<string>
       return (web3Provider as any).networkVersion;
     }
     else if (typeof web3Provider === "string") {
-      const provider = new JsonRpcProvider(web3Provider);
+      const provider = new providers.JsonRpcProvider(web3Provider);
       const network = await provider.getNetwork();
       return network.chainId.toString();
     } else if (Signer.isSigner(web3Provider)) {

@@ -7,7 +7,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { showNotification } from "reducers/notifications";
 import { baseTokenName, isValidUrl, isAddress } from "lib/util";
-import { isHexString } from "ethers/utils";
+import { utils } from "ethers";
 import TagsSelector from "components/Proposal/Create/PluginForms/TagsSelector";
 import TrainingTooltip from "components/Shared/TrainingTooltip";
 import { SelectSearch } from "components/Shared/SelectSearch";
@@ -239,7 +239,7 @@ class CreateGenericPlugin extends React.Component<IProps, IStateProps> {
                           }
                           break;
                         case "bytes":
-                          if (!isHexString(values[abiValue.name])) {
+                          if (!utils.isHexString(values[abiValue.name])) {
                             errors[abiValue.name] = i18next.t("Validate HEX");
                           }
                           break;

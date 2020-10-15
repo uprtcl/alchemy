@@ -19,14 +19,14 @@ import withSubscription, {
 
 import * as daoStyle from './Dao.scss'
 
-import { EveesRemote, EveesModule, Perspective, deriveSecured } from '@uprtcl/evees'
+import { EveesRemote, EveesModule, Perspective, deriveSecured, EveesConfig } from '@uprtcl/evees'
 import { EthereumContract } from '@uprtcl/ethereum-provider'
 
 import { combineLatest, Observable, of } from 'rxjs'
 import { getArc } from 'arc'
 import { mergeMap } from 'rxjs/operators'
-import { GRAPH_POLL_INTERVAL } from 'settings'
 
+import { GRAPH_POLL_INTERVAL } from "../../settings";
 import { uprtcl } from '../../index'
 
 type IExternalProps = {
@@ -72,13 +72,21 @@ class DaoWikiPage extends React.Component<IProps, IState> {
       schemeAddress: '',
     }
 
-    this.defaultRemote = (uprtcl.orchestrator.container.get(
+    const config = (uprtcl.orchestrator.container.get(
       EveesModule.bindings.Config
-    ) as any).defaultRemote;
+    ) as EveesConfig);
+    
+    this.defaultRemote = config.defaultRemote;
 
-    this.officialRemote = (uprtcl.orchestrator.container.get(
+    this.officialRemote = (uprtcl.orchestrator.container.getAll(
       EveesModule.bindings.EveesRemote
     ) as EveesRemote[]).find(remote => remote.id.includes('eth'));
+
+    //** locally changing the evees config to fit this DAO */
+    config.emitIf = {
+      owner: this.props.daoState.address,
+      remote: this.officialRemote.id
+    }
   }
 
   componentWillMount() {
@@ -89,8 +97,9 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     if (this.container.current == null) return
 
     this.container.current.addEventListener(
-      'evees-proposal-created',
+      'evees-proposal',
       async (e: any) => {
+        console.log('Event received', e)
         // this.createProposal({
         //   methodName: 'authorizeProposal',
         //   methodParams: [e.detail.proposalId, '1', true],
@@ -114,9 +123,10 @@ class DaoWikiPage extends React.Component<IProps, IState> {
       context: 'home'
     };
 
-    const { id: wikiId } = await deriveSecured<Perspective>(object, this.officialRemote.store.cidConfig);
+    const secured = await deriveSecured<Perspective>(object, this.officialRemote.store.cidConfig);
+    await this.officialRemote.store.create(secured.object);
     
-    this.setState({ wikiId: wikiId })
+    this.setState({ wikiId: secured.id })
   }
 
   renderWiki() {
@@ -128,6 +138,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
+          whiteSpace: 'normal'
         }}
       >
         <module-container
