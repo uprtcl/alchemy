@@ -21,6 +21,7 @@ import { combineLatest, Subscription } from "rxjs";
 import DaoPluginsPage from "./DaoPluginsPage";
 import DaoHistoryPage from "./DaoHistoryPage";
 import DaoMembersPage from "./DaoMembersPage";
+import DaoWikiPage from "./DaoWikiPage";
 import * as css from "./Dao.scss";
 import DaoLandingPage from "components/Dao/DaoLandingPage";
 import i18next from "i18next";
@@ -66,6 +67,7 @@ class DaoContainer extends React.Component<IProps, null> {
 
   private daoHistoryRoute = (routeProps: any) => <DaoHistoryPage {...routeProps} daoState={this.props.data[0]} currentAccountAddress={this.props.currentAccountAddress} />;
   private daoMembersRoute = (routeProps: any) => <DaoMembersPage {...routeProps} daoState={this.props.data[0]} />;
+  private daoWikiRoute = (routeProps: any) => <DaoWikiPage {...routeProps} daoState={this.props.data[0]} currentAccountAddress={this.props.currentAccountAddress}/>;
   private daoProposalRoute = (routeProps: any) =>
     <ProposalDetailsPage {...routeProps}
       currentAccountAddress={this.props.currentAccountAddress}
@@ -114,6 +116,8 @@ class DaoContainer extends React.Component<IProps, null> {
               render={this.daoHistoryRoute} />
             <Route exact path="/dao/:daoAvatarAddress/members"
               render={this.daoMembersRoute} />
+            <Route exact path="/dao/:daoAvatarAddress/wiki"
+              render={this.daoWikiRoute} />
 
             <Route exact path="/dao/:daoAvatarAddress/proposal/:proposalId"
               render={this.daoProposalRoute}

@@ -165,6 +165,21 @@ class SidebarMenu extends React.Component<IProps, IStateProps> {
               </TrainingTooltip>
             </li>
             <li>
+              <TrainingTooltip placement="right" overlay={i18next.t("Members Tooltip")}>
+                <Link to={"/dao/" + dao.address + "/wiki/"} onClick={this.handleCloseMenu}>
+                  <span className={css.menuDot} />
+                  <span className={
+                    classNames({
+                      [css.notification]: true,
+                      [css.holdersNotification]: true,
+                    })
+                  }></span>
+                  <img src="/assets/images/Icon/Draft-white.svg" />
+                  Wiki
+                </Link>
+              </TrainingTooltip>
+            </li>
+            <li>
               <Link to={"/dao/" + dao.address + "/history/"} onClick={this.handleCloseMenu}>
                 <span className={css.menuDot} />
                 <span className={
