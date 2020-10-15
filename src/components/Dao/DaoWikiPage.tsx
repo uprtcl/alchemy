@@ -13,7 +13,7 @@ import Loading from 'components/Shared/Loading'
 
 import { RouteComponentProps } from 'react-router-dom'
 import * as arcActions from 'actions/arcActions'
-import { NotificationStatus, showNotification } from 'reducers/notifications'
+import { showNotification } from 'reducers/notifications'
 import withSubscription, {
   ISubscriptionProps,
 } from 'components/Shared/withSubscription'
@@ -24,25 +24,23 @@ import { EveesRemote, EveesModule, Perspective, deriveSecured, EveesConfig, Prop
 import { EthereumContract } from '@uprtcl/ethereum-provider'
 
 import { combineLatest, Observable, of } from 'rxjs'
-import { enableWalletProvider, getArc } from 'arc'
+import { getArc } from 'arc'
 import { mergeMap } from 'rxjs/operators'
 
 import { GRAPH_POLL_INTERVAL } from "../../settings";
 import { uprtcl } from '../../index'
 import { EveesBlockchainCached } from '@uprtcl/evees-blockchain'
 import { ProposalCreatedEvent } from '@uprtcl/evees/dist/types/types'
-import { GenericPluginRegistry } from 'genericPluginRegistry'
-import { getPluginIsActive, pluginName } from 'lib/pluginUtils'
+import { encodeABI } from 'components/Proposal/Create/PluginForms/ABIService'
+import { abi as uprtclRootAbi } from './UprtclRoot.min.json';
+import { cidToHex32 } from '@uprtcl/ipfs-provider'
+
+const ZERO_ADDRESS = '0x' + new Array(40).fill(0).join('');
 
 type IExternalProps = {
   daoState: IDAOState
   currentAccountAddress: string
 } & RouteComponentProps<any>
-
-interface IGenericSchemeProposal {
-  methodName: string
-  methodParams: Array<string | number>
-}
 
 const mapDispatchToProps = {
   createProposal: arcActions.createProposal,
@@ -58,10 +56,8 @@ interface IDispatchProps {
 type IProps = IExternalProps & ISubscriptionProps<[AnyPlugin[], IPluginState]> & IDispatchProps;
 type IState = {
   loading: boolean
-  hasWikiScheme: boolean
   wikiId: string | undefined
-  isActive: boolean
-  schemeAddress: string
+  wikiPlugin: GenericPlugin
 }
 
 class DaoWikiPage extends React.Component<IProps, IState> {
@@ -78,10 +74,8 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     super(props)
     this.state = {
       loading: true,
-      hasWikiScheme: false,
-      wikiId: undefined,
-      isActive: false,
-      schemeAddress: '',
+      wikiPlugin: null,
+      wikiId: undefined
     }
 
     const config = (uprtcl.orchestrator.container.get(
@@ -120,35 +114,18 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
    // Check Wiki Scheme
   async checkWikiScheme() {
-    this.wikiPlugin = this.plugins.filter(
+    const wikiPlugin = this.plugins.find(
       (plugin: any) => {
         return plugin.coreState.name === 'GenericScheme' && 
           plugin.coreState.pluginParams.contractToCall !== undefined && 
           plugin.coreState.pluginParams.contractToCall === '0x6a781148eedd06350159bf05d37e059d8974294e'
       }
     )
-    this.setState({ hasWikiScheme: wikiPlugin !== undefined })
-
-    if (wikiPlugin !== undefined) {
-      if (
-        !(await enableWalletProvider({
-          showNotification: this.props.showNotification,
-        }))
-      ) {
-        this.props.showNotification(
-          NotificationStatus.Failure,
-          'You must be logged in to use Wiki!',
-        )
-        return
-      }
-      this.wikiUpdateScheme = states.find(hasWikiScheme)
-      this.setState({ isActive: getPluginIsActive(this.wikiUpdateScheme) })
-      this.setState({ schemeAddress: this.wikiUpdateScheme.id })
-    }
+    this.setState({ wikiPlugin: wikiPlugin as GenericPlugin })
   }
 
   async proposeUpdate(details: ProposalDetails) {
-    const eveesData = await this.officialRemote.getEveesDataOf(this.officialRemote.userId);
+    const eveesData = await this.officialRemote.getEveesDataOf(this.props.daoState.address);
 
     details.newPerspectives.map(newPerspective => {
       eveesData[newPerspective.perspective.id] = { headId: newPerspective.details.headId };
@@ -158,35 +135,28 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     });
 
     const newEveesDetailsHash = await this.officialRemote.store.create(eveesData);
+    const headCidParts = cidToHex32(newEveesDetailsHash);
 
-    console.log({eveesData, newEveesDetailsHash});
+    const dataEncoded = encodeABI(uprtclRootAbi, 'updateHead(bytes32,bytes32,address)', [
+      { value: headCidParts[0] },
+      { value: headCidParts[1] },
+      { value: ZERO_ADDRESS }
+    ]);
+
+    this.createUpdateProposal(dataEncoded)
   }
 
-  async createProposal(proposalOptions: IGenericSchemeProposal) {
-    const genericPluginRegistry = new GenericPluginRegistry()
-    const genericPluginInfo = genericPluginRegistry.getPluginInfo(
-      (this.wikiUpdateScheme as any).contractToCall,
-    )
-    const availableActions = genericPluginInfo.actions()
-    const actionCalled = availableActions.find(
-      (action: any) => action.id === proposalOptions.methodName,
-    )
-    const dataEncoded = genericPluginInfo.encodeABI(
-      actionCalled,
-      proposalOptions.methodParams,
-    )
-
+  async createUpdateProposal(dataEncoded: string) {
     console.log(dataEncoded);
-    // const proposalOptionsDetailed = {
-    //   dao: this.wikiUpdateScheme.dao,
-    //   scheme: this.wikiUpdateScheme.address,
-    //   type: IProposalType.GenericScheme,
-    //   value: 0, // amount of eth to send with the call
-    //   title: actionCalled.label,
-    //   description: actionCalled.description,
-    //   callData: dataEncoded,
-    // }
-    // arcActions.createProposal(proposalOptionsDetailed)
+    const proposalOptionsDetailed = {
+      dao: this.state.wikiPlugin.coreState.dao.id,
+      title: 'Update _Prtcl Evees',
+      description: 'Update _Prtcl content owned by this DAO',
+      plugin: this.state.wikiPlugin.coreState.address,
+      callData: dataEncoded,
+      value: 0
+    }
+    this.props.createProposal(proposalOptionsDetailed)
   }
 
   async load() {
