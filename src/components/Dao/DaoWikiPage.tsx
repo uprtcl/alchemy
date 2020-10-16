@@ -32,7 +32,7 @@ import { uprtcl } from '../../index'
 import { EveesBlockchainCached } from '@uprtcl/evees-blockchain'
 import { ProposalCreatedEvent } from '@uprtcl/evees/dist/types/types'
 import { encodeABI } from 'components/Proposal/Create/PluginForms/ABIService'
-import { abi as uprtclRootAbi } from './UprtclRoot.min.json';
+import { abi as uprtclRootAbi } from './../../UprtclRoot.min.json';
 import { cidToHex32 } from '@uprtcl/ipfs-provider'
 
 const ZERO_ADDRESS = '0x' + new Array(40).fill(0).join('');

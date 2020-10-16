@@ -5,6 +5,8 @@ import * as React from "react";
 import { IProfileState } from "reducers/profilesReducer";
 import * as css from "./ProposalSummary.scss";
 
+import ProposalSummaryWiki from "./ProposalSummaryWiki";
+
 interface IProps {
   beneficiaryProfile?: IProfileState;
   detailView?: boolean;
@@ -31,6 +33,11 @@ export default class ProposalSummary extends React.Component<IProps, IState> {
       [css.proposalSummary]: true,
       [css.withDetails]: true,
     });
+
+    if (proposalState.contractToCall.toLocaleLowerCase() === '0x6a781148eEdd06350159Bf05d37E059d8974294e'.toLocaleLowerCase()) {
+      return <ProposalSummaryWiki {...this.props} />;
+    }
+
     return (
       <div className={proposalSummaryClass}>
         <span className={css.summaryTitle}>
