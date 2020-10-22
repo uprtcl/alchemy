@@ -35,6 +35,7 @@ import { encodeABI } from 'components/Proposal/Create/PluginForms/ABIService'
 import { abi as uprtclRootAbi } from './../../UprtclRoot.min.json';
 import { cidToHex32 } from '@uprtcl/ipfs-provider'
 
+const ZERO_HEX_32 = '0x' + new Array(64).fill(0).join('');
 const ZERO_ADDRESS = '0x' + new Array(40).fill(0).join('');
 
 type IExternalProps = {
@@ -113,7 +114,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
   }
 
    // Check Wiki Scheme
-  async checkWikiScheme() {
+  async checkWikiPlugin() {
     const wikiPlugin = this.plugins.find(
       (plugin: any) => {
         return plugin.coreState.name === 'GenericScheme' && 
@@ -122,6 +123,19 @@ class DaoWikiPage extends React.Component<IProps, IState> {
       }
     )
     this.setState({ wikiPlugin: wikiPlugin as GenericPlugin })
+  }
+
+  async registerWikiScheme() {
+    // proposalOptions.add.pluginInitParams = {
+    //   daoId: daoId,
+    //   votingMachine: votingMachine,
+    //   votingParams: gpFormValuesToVotingParams(values.GenericScheme.votingParams),
+    //   voteOnBehalf: values.GenericScheme.votingParams.voteOnBehalf,
+    //   voteParamsHash: values.GenericScheme.votingParams.voteParamsHash,
+    //   contractToCall: uprtclRootNetworks[NETWORK_ID].address
+    // };
+
+    // this.props.createProposal(proposalOptionsDetailed)
   }
 
   async proposeUpdate(details: ProposalDetails) {
@@ -146,6 +160,16 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     this.createUpdateProposal(dataEncoded)
   }
 
+  async resetWiki() {
+    const dataEncoded = encodeABI(uprtclRootAbi, 'updateHead(bytes32,bytes32,address)', [
+      { value: ZERO_HEX_32 },
+      { value: ZERO_HEX_32 },
+      { value: ZERO_ADDRESS }
+    ]);
+
+    this.createUpdateProposal(dataEncoded)
+  }
+
   async createUpdateProposal(dataEncoded: string) {
     console.log(dataEncoded);
     const proposalOptionsDetailed = {
@@ -161,7 +185,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
   async load() {
     this.setState({ loading: true })
-    await Promise.all([this.setWikiId(), this.checkWikiScheme()])
+    await Promise.all([this.setWikiId(), this.checkWikiPlugin()])
     this.setState({ loading: false })
   }
 
@@ -171,7 +195,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
       remote: this.officialRemote.id,
       path: this.props.daoState.address,
       timestamp: 0,
-      context: 'home'
+      context: `${this.props.daoState.address}.home`
     };
 
     const secured = await deriveSecured<Perspective>(object, this.officialRemote.store.cidConfig);
@@ -192,6 +216,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
           whiteSpace: 'normal'
         }}
       >
+        <button onClick={() => this.resetWiki()}>reset</button>
         <module-container
           style={{ flexGrow: '1', flexDirection: 'column', display: 'flex' }}
         >
