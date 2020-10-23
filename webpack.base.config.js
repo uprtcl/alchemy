@@ -31,7 +31,8 @@ module.exports = {
       pages: resolve("src/pages"),
       reducers: resolve("src/reducers"),
       selectors: resolve("src/selectors"),
-      src: resolve("src")
+      src: resolve("src"),
+      cids: path.resolve('./node_modules/cids'), /** cids older than 1.0.2 used by 3box and some daostack-test-environment are not compatible with cids 1.0.2. */
     }
   },
 

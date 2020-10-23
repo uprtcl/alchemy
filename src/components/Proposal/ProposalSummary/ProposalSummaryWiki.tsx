@@ -7,6 +7,7 @@ import { bytes32ToCid } from '@uprtcl/ipfs-provider'
 
 import { abi as uprtclRootAbi } from './../../../UprtclRoot.min.json';
 import { uprtcl } from '../../../index'
+import { EveesBlockchainCached } from '@uprtcl/evees-blockchain';
 
 interface IProps {
   proposalState: IGenericPluginProposalState;
@@ -16,7 +17,9 @@ interface IProps {
 
 interface IState {
   newHash: string;
+  currentHash: string;
   remote: string;
+  loading: boolean;
 }
 
 export default class ProposalSummaryWiki extends React.Component<
@@ -29,7 +32,9 @@ export default class ProposalSummaryWiki extends React.Component<
     super(props)
     this.state = {
       newHash: '',
-      remote: ''
+      currentHash: '',
+      remote: '',
+      loading: true
     }
   }
 
@@ -37,7 +42,11 @@ export default class ProposalSummaryWiki extends React.Component<
     const {
       proposalState
     } = this.props
-    
+
+    this.setState({ 
+      loading: true
+    })
+
     const abi = new utils.Interface(uprtclRootAbi);
     const decodedCallData = abi.decodeFunctionData('updateHead(bytes32,bytes32,address)', proposalState.callData);
 
@@ -45,14 +54,20 @@ export default class ProposalSummaryWiki extends React.Component<
       .getAll(EveesBindings.EveesRemote)
       .find((provider: EveesRemote) =>
         provider.id.startsWith('eth'),
-      ) as EveesRemote
+      ) as EveesBlockchainCached
 
+    const currentHash = await eveesEthereum.getEveesHeadOf(this.props.proposalState.dao.id);
     const newHash = bytes32ToCid([decodedCallData[0], decodedCallData[1]]);
-    this.setState({ 
-      ...this.state, 
-      newHash, 
-      remote: eveesEthereum.id 
-    });
+
+    const newState = { 
+      newHash,
+      currentHash,
+      remote: eveesEthereum.id,
+      loading: false
+    }
+    console.log('[Uprtcl] set diff', newState);
+
+    this.setState(newState);
   }
 
   public render(): RenderOutput {
@@ -60,11 +75,15 @@ export default class ProposalSummaryWiki extends React.Component<
       ? { maxHeight: '300px', overflowY: 'auto', whiteSpace: 'normal' }
       : { whiteSpace: 'normal' }
 
+    if (this.state.loading) {
+      return (<span>loading...</span>)
+    }
+
     return (
       <div style={style}>
         <module-container>
           <evees-blockchain-update-diff
-            owner={ this.props.proposalState.dao.id } 
+            current-hash={this.state.currentHash } 
             new-hash={this.state.newHash}
             remote={this.state.remote}
           ></evees-blockchain-update-diff>
