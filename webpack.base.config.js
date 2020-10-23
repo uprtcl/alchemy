@@ -31,12 +31,7 @@ module.exports = {
       pages: resolve("src/pages"),
       reducers: resolve("src/reducers"),
       selectors: resolve("src/selectors"),
-      src: resolve("src"),
-      "ipfs-api": "ipfs-api/dist",
-      "bn.js": "bn.js/lib/bn.js"
-    //   'lit-element': path.resolve('./node_modules/lit-element'),
-    //   'lit-html': path.resolve('./node_modules/lit-html'),
-    //   'graphql': path.resolve('./node_modules/graphql')
+      src: resolve("src")
     }
   },
 

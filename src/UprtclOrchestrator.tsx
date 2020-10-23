@@ -63,7 +63,7 @@ export default class UprtclOrchestrator {
       pinner: {
         url: "http://localhost:3100",
         multiaddr:
-          "/ip4/127.0.0.1/tcp/4003/ws/p2p/QmbPRx4kDxojHwoDrxXdpJyf4yN9jdEm9UrYquHpEhmQAT",
+          "/ip4/127.0.0.1/tcp/4003/ws/p2p/QmVPfFXZep8ZFUjM5G2QmvMuvNrkNLnBiT3joDUYafrMQi",
       },
     };
 
@@ -88,7 +88,7 @@ export default class UprtclOrchestrator {
             ],
           },
           Bootstrap: [
-            "/ip4/192.168.1.13/tcp/4003/ws/p2p/QmbPRx4kDxojHwoDrxXdpJyf4yN9jdEm9UrYquHpEhmQAT",
+            "/ip4/192.168.0.113/tcp/4003/ws/p2p/QmVPfFXZep8ZFUjM5G2QmvMuvNrkNLnBiT3joDUYafrMQi",
             ,
           ],
         },

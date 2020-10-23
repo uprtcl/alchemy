@@ -34,6 +34,7 @@ import { ProposalCreatedEvent } from '@uprtcl/evees/dist/types/types'
 import { encodeABI } from 'components/Proposal/Create/PluginForms/ABIService'
 import { abi as uprtclRootAbi } from './../../UprtclRoot.min.json';
 import { cidToHex32 } from '@uprtcl/ipfs-provider'
+import { EveesOrbitDBEntities } from '@uprtcl/evees-orbitdb'
 
 const ZERO_HEX_32 = '0x' + new Array(64).fill(0).join('');
 const ZERO_ADDRESS = '0x' + new Array(40).fill(0).join('');
@@ -160,14 +161,32 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     this.createUpdateProposal(dataEncoded)
   }
 
-  async resetWiki() {
-    const dataEncoded = encodeABI(uprtclRootAbi, 'updateHead(bytes32,bytes32,address)', [
-      { value: ZERO_HEX_32 },
-      { value: ZERO_HEX_32 },
-      { value: ZERO_ADDRESS }
-    ]);
+  async resetDaoEvees() {
+    const perspectiveIds = await this.officialRemote.getContextPerspectives(
+      this.wikiContext()
+    );
 
-    this.createUpdateProposal(dataEncoded)
+    /** make sure the wikiId is part of the context store  */
+    const wikiId = await this.getWikiId();
+    if (!perspectiveIds.includes(wikiId)) {
+      const contextStore = await (this.officialRemote as any).orbitdbcustom.getStore(
+        EveesOrbitDBEntities.Context,
+        {
+          context: this.wikiContext(),
+        },
+        true
+      );
+      await contextStore.add(wikiId);
+    }
+
+    /** reset evees data of the DAO */
+    const dataEncoded = encodeABI(
+      uprtclRootAbi,
+      "updateHead(bytes32,bytes32,address)",
+      [{ value: ZERO_HEX_32 }, { value: ZERO_HEX_32 }, { value: ZERO_ADDRESS }]
+    );
+
+    this.createUpdateProposal(dataEncoded);
   }
 
   async createUpdateProposal(dataEncoded: string) {
@@ -185,23 +204,27 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
   async load() {
     this.setState({ loading: true })
-    await Promise.all([this.setWikiId(), this.checkWikiPlugin()])
+    const wikiId = await this.getWikiId();
+    this.setState({ wikiId })
+    await this.checkWikiPlugin()
     this.setState({ loading: false })
   }
 
-  async setWikiId() {
+  wikiContext() {
+    return `${this.props.daoState.address}.home`;
+  }
+
+  async getWikiId(): Promise<string> {
     const object: Perspective = {
       creatorId: this.props.daoState.address,
       remote: this.officialRemote.id,
       path: this.props.daoState.address,
       timestamp: 0,
-      context: `${this.props.daoState.address}.home`
+      context: this.wikiContext()
     };
 
     const secured = await deriveSecured<Perspective>(object, this.officialRemote.store.cidConfig);
-    await this.officialRemote.store.create(secured.object);
-    
-    this.setState({ wikiId: secured.id })
+    return this.officialRemote.store.create(secured.object);
   }
 
   renderWiki() {
@@ -216,7 +239,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
           whiteSpace: 'normal'
         }}
       >
-        <button onClick={() => this.resetWiki()}>reset</button>
+        <button onClick={() => this.resetDaoEvees()}>reset</button>
         <module-container
           style={{ flexGrow: '1', flexDirection: 'column', display: 'flex' }}
         >
