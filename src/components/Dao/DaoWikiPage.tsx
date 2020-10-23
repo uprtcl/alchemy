@@ -5,26 +5,31 @@ import {
   GenericPlugin,
   IDAOState,
   IPluginState,
+  IProposalCreateOptionsPM,
+  LATEST_ARC_VERSION,
   Plugin
 } from '@daostack/arc.js'
 
 import { connect } from 'react-redux'
 import Loading from 'components/Shared/Loading'
 
-import { RouteComponentProps } from 'react-router-dom'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import classNames from 'classnames'
+
 import * as arcActions from 'actions/arcActions'
 import { showNotification } from 'reducers/notifications'
 import withSubscription, {
   ISubscriptionProps,
 } from 'components/Shared/withSubscription'
 
+import * as proposalStyle from '../Plugin/PluginProposals.scss'
 import * as daoStyle from './Dao.scss'
 
 import { EveesRemote, EveesModule, Perspective, deriveSecured, EveesConfig, ProposalDetails } from '@uprtcl/evees'
 import { EthereumContract } from '@uprtcl/ethereum-provider'
 
 import { combineLatest, Observable, of } from 'rxjs'
-import { getArc } from 'arc'
+import { enableWalletProvider, getArc } from 'arc'
 import { mergeMap } from 'rxjs/operators'
 
 import { GRAPH_POLL_INTERVAL } from "../../settings";
@@ -58,7 +63,7 @@ interface IDispatchProps {
 type IProps = IExternalProps & ISubscriptionProps<[AnyPlugin[], IPluginState]> & IDispatchProps;
 type IState = {
   loading: boolean
-  wikiId: string | undefined
+  wikiId: string | undefined,
   wikiPlugin: GenericPlugin
 }
 
@@ -126,17 +131,34 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     this.setState({ wikiPlugin: wikiPlugin as GenericPlugin })
   }
 
-  async registerWikiScheme() {
-    // proposalOptions.add.pluginInitParams = {
-    //   daoId: daoId,
-    //   votingMachine: votingMachine,
-    //   votingParams: gpFormValuesToVotingParams(values.GenericScheme.votingParams),
-    //   voteOnBehalf: values.GenericScheme.votingParams.voteOnBehalf,
-    //   voteParamsHash: values.GenericScheme.votingParams.voteParamsHash,
-    //   contractToCall: uprtclRootNetworks[NETWORK_ID].address
-    // };
+  async registerWikiPlugin() {
+    if (!await enableWalletProvider({ showNotification: this.props.showNotification })) { return; }
 
-    // this.props.createProposal(proposalOptionsDetailed)
+    const arc = getArc();
+    const votingMachine = arc.getContractInfoByName("GenesisProtocol", LATEST_ARC_VERSION).address;
+    const pluginManagerAddress = this.plugins.find(p => p.coreState.name === "SchemeFactory").coreState.address;
+
+    const proposalOptions: IProposalCreateOptionsPM = {
+      add: {
+        permissions: '0x00000011',
+        pluginInitParams: {
+          contractToCall: '0x6a781148eEdd06350159Bf05d37E059d8974294e',
+          daoId: this.props.daoState.address,
+          voteOnBehalf: "0x0000000000000000000000000000000000000000",
+          voteParamsHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
+          votingMachine: votingMachine,
+          votingParams: [50, 2592000, 345600, 86400, 1200, 172800, 50, 4, 150, 10, 1603554900]
+        },
+        pluginName: "GenericScheme",
+      },
+      dao: this.props.daoState.address,
+      description: 'Adds a _Prtcl-powered Wiki plugin to this DAO.',
+      plugin: pluginManagerAddress,
+      tags: ["wiki"],
+      title: 'Register Wiki Plugin',
+      url: ''
+    }
+    await this.props.createProposal(proposalOptions)
   }
 
   async proposeUpdate(details: ProposalDetails) {
@@ -157,6 +179,19 @@ class DaoWikiPage extends React.Component<IProps, IState> {
       { value: headCidParts[1] },
       { value: ZERO_ADDRESS }
     ]);
+
+    /* need to add the new perspectives to their context stores here because I can't do it
+    once the proposal has passed. */
+    await Promise.all(details.newPerspectives.map(async (newPerspective) => {
+      const contextStore = await (this.officialRemote as any).orbitdbcustom.getStore(
+        EveesOrbitDBEntities.Context,
+        {
+          context: newPerspective.perspective.object.payload.context,
+        },
+        true
+      );
+      await contextStore.add(newPerspective.perspective.id);
+    }));
 
     this.createUpdateProposal(dataEncoded)
   }
@@ -252,13 +287,43 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     )
   }
 
+  renderNoWikiScheme() {
+    return (
+      <div className={proposalStyle.noDecisions}>
+        <img className={proposalStyle.relax} src="/assets/images/yogaman.svg" />
+        <div className={proposalStyle.proposalsHeader}>
+          You need to register a plugin to use the Wiki 
+        </div>
+        <div className={proposalStyle.cta}>
+          <Link to={'/dao/' + this.props.daoState.address}>
+            <img className={proposalStyle.relax} src="/assets/images/lt.svg" />{' '}
+            Back 
+          </Link>
+          <a
+            className={classNames({
+              [proposalStyle.blueButton]: true,
+            })}
+            onClick={() => this.registerWikiPlugin()}
+            data-test-id="createProposal"
+          >
+            + Register wiki plugin
+          </a>
+        </div>
+      </div>
+    )
+  }
+
   public render() {
     let content: any
 
     if (this.state.loading) {
       content = <h1>Loading</h1>
     } else {
-      content = this.renderWiki()
+      if (this.state.wikiPlugin != null) {
+        content = this.renderWiki()
+      } else {
+        content = this.renderNoWikiScheme()
+      }
     }
 
     return (
