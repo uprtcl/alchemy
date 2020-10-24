@@ -45,7 +45,7 @@
         color: white;
 
         &:hover {
-          background-color: rgba(3, 118, 255, 1);
+          background-color: $accent-1;
           cursor: pointer;
         }
       }
@@ -78,7 +78,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    color: green;
+    color: $accent-3;
     font-size: 1.3rem;
 
     .message {
