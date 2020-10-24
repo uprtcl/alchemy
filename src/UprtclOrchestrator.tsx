@@ -145,8 +145,7 @@ export default class UprtclOrchestrator {
       ethEveesConnection,
       orbitDBCustom,
       ipfsStore,
-      proposals,
-      "ethereum-evees-cache"
+      proposals
     );
     await ethEvees.ready();
 
