@@ -23,7 +23,7 @@ import withSubscription, {
 } from "components/Shared/withSubscription";
 
 import * as proposalStyle from "../Plugin/PluginProposals.scss";
-import * as css from "./DaoLandingPage.scss";
+import * as wikiStyle from "./DaoWikiPage.scss";
 
 import {
   EveesRemote,
@@ -193,6 +193,20 @@ class DaoWikiPage extends React.Component<IProps, IState> {
       url: "",
     };
     await this.props.createProposal(proposalOptions);
+
+    /** we need to create the contextStore and add the wikiId already
+     * as we don't know how to react to the proposal having passed
+     */
+    const contextStore = await (this
+      .officialRemote as any).orbitdbcustom.getStore(
+      EveesOrbitDBEntities.Context,
+      {
+        context: this.wikiContext(),
+      },
+      true
+    );
+    const wikiId = await this.getWikiId();
+    await contextStore.add(wikiId);
   }
 
   async proposeUpdate(details: ProposalDetails) {
@@ -315,17 +329,8 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
   renderWiki() {
     return (
-      <div
-        style={{
-          marginTop: "-31px",
-          minHeight: "calc(100vh - 241px)",
-          display: "flex",
-          flexDirection: "column",
-          position: "relative",
-          whiteSpace: "normal",
-        }}
-      >
-        <button onClick={() => this.resetDaoEvees()}>reset</button>
+      <div className={wikiStyle.wikiContainer}>
+        {/* <button onClick={() => this.resetDaoEvees()}>reset</button> */}
         <module-container
           style={{ flexGrow: "1", flexDirection: "column", display: "flex" }}
         >
@@ -379,7 +384,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
     return (
       <div>
-        <div className={css.headerText}>Wiki</div>
+        <div className={wikiStyle.wikiHeader}>Wiki</div>
         <div ref={this.container}>{content}</div>
       </div>
     );

@@ -1,0 +1,15 @@
+.wikiHeader {
+  display: flex;
+  border-bottom: 1px solid #c3d4e7;
+  color: #689bd6;
+  font-size: 28px;
+  flex-grow: 2;
+}
+
+.wikiContainer {
+  min-height: calc(100vh - 241px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  white-space: normal;
+}

@@ -103,21 +103,27 @@ export default class UprtclOrchestrator {
 
     console.log("connecting to pinner peer");
     await ipfs.swarm.connect(this.config.orbitdb.pinner.multiaddr);
-    console.log("connected!!!");
+    console.log(`connected to ${this.config.orbitdb.pinner.multiaddr}`);
 
+    console.log("loading ipfs");
     const ipfsStore = new IpfsStore(
       this.config.ipfs.cid,
       ipfs,
       this.config.orbitdb.pinner.url
     );
     await ipfsStore.ready();
+    console.log("ipfs ready");
 
+    console.log("loading ethereum connection");
     const ethConnection = new EthereumConnection({
       provider: this.config.eth.provider,
     });
     await ethConnection.ready();
+    console.log("ethereum connection ready");
+
     const identity = new EthereumOrbitDBIdentity(ethConnection);
 
+    console.log("loading orbitdb");
     const orbitDBCustom = new OrbitDBCustom(
       [
         PerspectiveStore,
@@ -135,6 +141,7 @@ export default class UprtclOrchestrator {
 
     const orbitdbEvees = new EveesOrbitDB(orbitDBCustom, ipfsStore);
     await orbitdbEvees.connect();
+    console.log("orbitdb ready");
 
     const proposals = new ProposalsOrbitDB(orbitDBCustom, ipfsStore);
 
