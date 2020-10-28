@@ -15,5 +15,6 @@ abis/
 schema.graphql
 subgraph.yaml
 build/
+stage/
 *.scss.d.ts
 *.css.d.ts

@@ -94,10 +94,10 @@ plugins: [
     }),
 
     new webpack.EnvironmentPlugin({
-      NETWORK: "main",
+      NETWORK: "xdai",
       NODE_ENV: "production",
-      SHOW_ALL_DAOS: "false",
-      BASE_URL: "https://alchemy.daostack.io",
+      SHOW_ALL_DAOS: "true",
+      BASE_URL: "https://alchemy.intercreativity.io",
       ARC_GRAPHQLHTTPPROVIDER: "",
       ARC_GRAPHQLWSPROVIDER : "",
       ARC_WEB3PROVIDER : "",
