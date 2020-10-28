@@ -174,7 +174,7 @@ class SidebarMenu extends React.Component<IProps, IStateProps> {
                       [css.holdersNotification]: true,
                     })
                   }></span>
-                  <img src="/assets/images/Icon/Draft-white.svg" />
+                  <img src="/assets/images/Icon/menu/wiki.svg" />
                   Wiki
                 </Link>
               </TrainingTooltip>

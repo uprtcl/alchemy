@@ -14,12 +14,6 @@ import { EveesModule } from "@uprtcl/evees";
 import { IpfsStore } from "@uprtcl/ipfs-provider";
 
 import {
-  EveesOrbitDB,
-  EveesOrbitDBModule,
-  ProposalsOrbitDB,
-} from "@uprtcl/evees-orbitdb";
-import { OrbitDBCustom } from "@uprtcl/orbitdb-provider";
-import {
   EveesEthereumConnection,
   EthereumOrbitDBIdentity,
 } from "@uprtcl/evees-ethereum";
@@ -33,14 +27,18 @@ import { EthereumConnection } from "@uprtcl/ethereum-provider";
 import { ApolloClientModule } from "@uprtcl/graphql";
 import { DiscoveryModule } from "@uprtcl/multiplatform";
 
-import {
+import { 
+  EveesOrbitDB,
+  EveesOrbitDBModule,
+  ProposalsOrbitDB,
   PerspectiveStore,
   ContextStore,
   ProposalStore,
   ProposalsToPerspectiveStore,
-  ContextAccessController,
-  ProposalsAccessController,
+  getContextAcl,
+  getProposalsAcl
 } from "@uprtcl/evees-orbitdb";
+import { OrbitDBCustom, AddressMapping } from "@uprtcl/orbitdb-provider";
 
 type version = 1 | 0;
 
@@ -53,17 +51,23 @@ export default class UprtclOrchestrator {
   constructor() {
     this.config = {};
 
+    // const provider = new ethers.providers.JsonRpcProvider(
+    //   "https://rpc.xdaichain.com/"
+    // );
+
     const provider = new ethers.providers.JsonRpcProvider(
-      "https://rpc.xdaichain.com/"
+      "https://xdai.poanetwork.dev/"
     );
+    const peerPath = `/dns4/ec2-3-89-205-204.compute-1.amazonaws.com/tcp/4003/ws/p2p`;
+    const peerId = 'QmetdpjRspEHdfQKR8sFGTf54NHFHbpAMWz3wBhzjSDaF5';
 
     this.config.eth = { provider };
 
     this.config.orbitdb = {
       pinner: {
-        url: "http://localhost:3100",
+        url: "http://ec2-3-89-205-204.compute-1.amazonaws.com:3000",
         multiaddr:
-          "/ip4/127.0.0.1/tcp/4003/ws/p2p/QmVPfFXZep8ZFUjM5G2QmvMuvNrkNLnBiT3joDUYafrMQi",
+        `${peerPath}/${peerId}`,
       },
     };
 
@@ -82,13 +86,11 @@ export default class UprtclOrchestrator {
         config: {
           Addresses: {
             Swarm: [
-              "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
-              "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
-              "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/",
+              "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/"
             ],
           },
           Bootstrap: [
-            "/ip4/192.168.0.113/tcp/4003/ws/p2p/QmVPfFXZep8ZFUjM5G2QmvMuvNrkNLnBiT3joDUYafrMQi",
+            `${peerPath}/${peerId}`,
             ,
           ],
         },
@@ -122,16 +124,20 @@ export default class UprtclOrchestrator {
     console.log("ethereum connection ready");
 
     const identity = new EthereumOrbitDBIdentity(ethConnection);
+    const identitySources = [identity];
 
     console.log("loading orbitdb");
+    const customStores = [
+      PerspectiveStore,
+      ContextStore,
+      ProposalStore,
+      ProposalsToPerspectiveStore,
+      AddressMapping
+    ];
+
     const orbitDBCustom = new OrbitDBCustom(
-      [
-        PerspectiveStore,
-        ContextStore,
-        ProposalStore,
-        ProposalsToPerspectiveStore,
-      ],
-      [ContextAccessController, ProposalsAccessController],
+      customStores,
+      [getContextAcl(identitySources), getProposalsAcl(identitySources)],
       identity,
       this.config.orbitdb.pinner.url,
       this.config.orbitdb.pinner.multiaddr,

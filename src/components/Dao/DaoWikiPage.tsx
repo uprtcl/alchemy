@@ -287,7 +287,14 @@ class DaoWikiPage extends React.Component<IProps, IState> {
   }
 
   async createUpdateProposal(dataEncoded: string) {
-    console.log(dataEncoded);
+    if (
+      !(await enableWalletProvider({
+        showNotification: this.props.showNotification,
+      }))
+    ) {
+      return;
+    }
+
     const proposalOptionsDetailed = {
       dao: this.state.wikiPlugin.coreState.dao.id,
       title: "Update _Prtcl Evees",
