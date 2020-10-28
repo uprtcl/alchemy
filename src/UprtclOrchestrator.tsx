@@ -58,7 +58,7 @@ export default class UprtclOrchestrator {
     const provider = new ethers.providers.JsonRpcProvider(
       "https://xdai.poanetwork.dev/"
     );
-    const peerPath = `/dns4/ec2-3-89-205-204.compute-1.amazonaws.com/tcp/4003/ws/p2p`;
+    const peerPath = `/dns4/ec2-3-89-205-204.compute-1.amazonaws.com/tcp/4003/wss/p2p`;
     const peerId = 'QmetdpjRspEHdfQKR8sFGTf54NHFHbpAMWz3wBhzjSDaF5';
 
     this.config.eth = { provider };
