@@ -103,9 +103,9 @@ export default class UprtclOrchestrator {
 
     const ipfs = await IPFS.create(this.config.ipfs.jsIpfs);
 
-    console.log("connecting to pinner peer");
+    console.log(`${this.config.orbitdb.pinner.multiaddr} connecting...`);
     await ipfs.swarm.connect(this.config.orbitdb.pinner.multiaddr);
-    console.log(`connected to ${this.config.orbitdb.pinner.multiaddr}`);
+    console.log(`${this.config.orbitdb.pinner.multiaddr} connected`);
 
     console.log("loading ipfs");
     const ipfsStore = new IpfsStore(
