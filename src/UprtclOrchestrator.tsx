@@ -58,14 +58,14 @@ export default class UprtclOrchestrator {
     const provider = new ethers.providers.JsonRpcProvider(
       "https://xdai.poanetwork.dev/"
     );
-    const peerPath = `/dns4/ec2-3-89-205-204.compute-1.amazonaws.com/tcp/4003/wss/p2p`;
+    const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
     const peerId = 'QmetdpjRspEHdfQKR8sFGTf54NHFHbpAMWz3wBhzjSDaF5';
 
     this.config.eth = { provider };
 
     this.config.orbitdb = {
       pinner: {
-        url: "http://ec2-3-89-205-204.compute-1.amazonaws.com:3000",
+        url: "https://apps.intercreativity.io:3000",
         multiaddr:
         `${peerPath}/${peerId}`,
       },
@@ -85,9 +85,7 @@ export default class UprtclOrchestrator {
         EXPERIMENTAL: { pubsub: true },
         config: {
           Addresses: {
-            Swarm: [
-              "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/"
-            ],
+            Swarm: [],
           },
           Bootstrap: [
             `${peerPath}/${peerId}`,
