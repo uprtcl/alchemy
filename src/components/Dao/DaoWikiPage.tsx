@@ -343,7 +343,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
         >
           <wiki-drawer
             uref={this.state.wikiId}
-            default-remote={this.defaultRemote.id}
+            check-owner
           ></wiki-drawer>
         </module-container>
       </div>
