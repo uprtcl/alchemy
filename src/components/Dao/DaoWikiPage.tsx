@@ -337,7 +337,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
   renderWiki() {
     return (
       <div className={wikiStyle.wikiContainer}>
-        <button onClick={() => this.resetDaoEvees()}>reset</button>
+        {/* <button onClick={() => this.resetDaoEvees()}>reset</button> */}
         <module-container
           style={{ flexGrow: "1", flexDirection: "column", display: "flex" }}
         >
