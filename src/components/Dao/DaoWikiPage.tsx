@@ -172,7 +172,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
           votingParams: [
             '50',
             '2592000',
-            '86400',
+            '172800',
             '86400',
             '1200',
             '172800',
