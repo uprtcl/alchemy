@@ -2,7 +2,7 @@ import * as React from 'react'
 import { IGenericPluginProposalState } from '@daostack/arc.js'
 import { utils } from "ethers";
 
-import { EveesBindings, EveesRemote } from '@uprtcl/evees'
+import { deriveSecured, EveesBindings, EveesRemote, Perspective } from '@uprtcl/evees'
 import { bytes32ToCid } from '@uprtcl/ipfs-provider'
 
 import { abi as uprtclRootAbi } from './../../../UprtclRoot.min.json';
@@ -18,6 +18,7 @@ interface IProps {
 interface IState {
   newHash: string;
   currentHash: string;
+  rootPerspective: string;
   remote: string;
   loading: boolean;
 }
@@ -33,6 +34,7 @@ export default class ProposalSummaryWiki extends React.Component<
     this.state = {
       newHash: '',
       currentHash: '',
+      rootPerspective: '',
       remote: '',
       loading: true
     }
@@ -47,6 +49,8 @@ export default class ProposalSummaryWiki extends React.Component<
       loading: true
     })
 
+    const daoAddress = this.props.proposalState.dao.id;
+
     const abi = new utils.Interface(uprtclRootAbi);
     const decodedCallData = abi.decodeFunctionData('updateHead(bytes32,bytes32,address)', proposalState.callData);
 
@@ -56,12 +60,29 @@ export default class ProposalSummaryWiki extends React.Component<
         provider.id.startsWith('eth'),
       ) as EveesBlockchainCached
 
-    const currentHash = await eveesEthereum.getEveesHeadOf(this.props.proposalState.dao.id);
+    const currentHash = await eveesEthereum.getEveesHeadOf(daoAddress);
     const newHash = bytes32ToCid([decodedCallData[0], decodedCallData[1]]);
+
+    /** Root perspective is used to show the changes for the first update where there is no updates */
+    const object: Perspective = {
+      creatorId: daoAddress,
+      remote: eveesEthereum.id,
+      path: daoAddress,
+      timestamp: 0,
+      context: `${daoAddress}.home`,
+    };
+
+    const secured = await deriveSecured<Perspective>(
+      object,
+      eveesEthereum.store.cidConfig
+    );
+
+    const rootPerspective = secured.id
 
     const newState = { 
       newHash,
       currentHash,
+      rootPerspective,
       remote: eveesEthereum.id,
       loading: false
     }
@@ -85,6 +106,7 @@ export default class ProposalSummaryWiki extends React.Component<
           <evees-blockchain-update-diff
             current-hash={this.state.currentHash } 
             new-hash={this.state.newHash}
+            root-perspective={this.state.rootPerspective}
             remote={this.state.remote}
           ></evees-blockchain-update-diff>
         </module-container>
