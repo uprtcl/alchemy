@@ -170,17 +170,17 @@ class DaoWikiPage extends React.Component<IProps, IState> {
             "0x0000000000000000000000000000000000000000000000000000000000000000",
           votingMachine: votingMachine,
           votingParams: [
-            50,
-            2592000,
-            345600,
-            86400,
-            1200,
-            172800,
-            50,
-            4,
-            150,
-            10,
-            1603554900,
+            '50',
+            '2592000',
+            '172800',
+            '86400',
+            '1200',
+            '172800',
+            '50',
+            '4',
+            '150',
+            '10',
+            '1603554900',
           ],
         },
         pluginName: "GenericScheme",
@@ -192,6 +192,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
       title: "Register Wiki Plugin",
       url: "",
     };
+    
     await this.props.createProposal(proposalOptions);
 
     /** we need to create the contextStore and add the wikiId already
