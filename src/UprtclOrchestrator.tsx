@@ -59,7 +59,7 @@ export default class UprtclOrchestrator {
       "https://xdai.poanetwork.dev/"
     );
     const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
-    const peerId = 'QmetdpjRspEHdfQKR8sFGTf54NHFHbpAMWz3wBhzjSDaF5';
+    const peerId = 'QmVD8LC6vjAHaDgsLySc86BVbnb256LuRZqsWtK5toABsc';
 
     this.config.eth = { provider };
 
