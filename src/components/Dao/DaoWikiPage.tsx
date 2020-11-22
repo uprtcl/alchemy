@@ -32,6 +32,7 @@ import {
   deriveSecured,
   EveesConfig,
   ProposalDetails,
+  EveesInfoConfig,
 } from "@uprtcl/evees";
 import { EthereumContract } from "@uprtcl/ethereum-provider";
 
@@ -170,17 +171,17 @@ class DaoWikiPage extends React.Component<IProps, IState> {
             "0x0000000000000000000000000000000000000000000000000000000000000000",
           votingMachine: votingMachine,
           votingParams: [
-            '50',
-            '2592000',
-            '172800',
-            '86400',
-            '1200',
-            '172800',
-            '50',
-            '4',
-            '150',
-            '10',
-            '1603554900',
+            "50",
+            "2592000",
+            "172800",
+            "86400",
+            "1200",
+            "172800",
+            "50",
+            "4",
+            "150",
+            "10",
+            "1603554900",
           ],
         },
         pluginName: "GenericScheme",
@@ -192,7 +193,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
       title: "Register Wiki Plugin",
       url: "",
     };
-    
+
     await this.props.createProposal(proposalOptions);
 
     /** we need to create the contextStore and add the wikiId already
@@ -336,16 +337,27 @@ class DaoWikiPage extends React.Component<IProps, IState> {
   }
 
   renderWiki() {
+    const debug = window.location.href.split("debug=")[1] === "true";
+    const eveesInfoConfig: EveesInfoConfig = {
+      showDraftControl: true,
+      showInfo: true,
+      showIcon: true,
+      checkOwner: true,
+    };
     return (
       <div className={wikiStyle.wikiContainer}>
         {/* <button onClick={() => this.resetDaoEvees()}>reset</button> */}
         <module-container
           style={{ flexGrow: "1", flexDirection: "column", display: "flex" }}
         >
-          <wiki-drawer
-            uref={this.state.wikiId}
-            check-owner
-          ></wiki-drawer>
+          {debug ? (
+            <evees-orbitdb-set-debugger></evees-orbitdb-set-debugger>
+          ) : (
+            <wiki-drawer
+              uref={this.state.wikiId}
+              eveesInfoConfig={JSON.stringify(eveesInfoConfig)}
+            ></wiki-drawer>
+          )}
         </module-container>
       </div>
     );

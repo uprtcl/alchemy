@@ -2,11 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
-    "lib": [
-      "es2017",
-      "dom",
-      "esnext.asynciterable"
-    ],
+    "lib": ["es2017", "dom", "esnext.asynciterable"],
     "sourceMap": true,
     "noImplicitAny": true,
     "resolveJsonModule": true,
@@ -14,16 +10,13 @@
     "target": "es6",
     "jsx": "react",
     "baseUrl": "src",
-    "rootDirs": [
-      "src",
-      "stories"
-    ],
+    "rootDirs": ["src", "stories"],
     "skipLibCheck": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "paths": {
+      "lit-element": ["node_modules/lit-element"],
+      "lit-html": ["node_modules/lit-html"]
+    }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "typings/**/*.d.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/**/*.d.ts"]
 }

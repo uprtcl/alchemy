@@ -16,10 +16,12 @@ import { IpfsStore } from "@uprtcl/ipfs-provider";
 import {
   EveesEthereumConnection,
   EthereumOrbitDBIdentity,
+  EveesEthereumModule,
 } from "@uprtcl/evees-ethereum";
 import {
   EveesBlockchainCached,
   EveesBlockchainModule,
+  EveesOrbitDBDebugger,
 } from "@uprtcl/evees-blockchain";
 
 import { EthereumConnection } from "@uprtcl/ethereum-provider";
@@ -27,7 +29,7 @@ import { EthereumConnection } from "@uprtcl/ethereum-provider";
 import { ApolloClientModule } from "@uprtcl/graphql";
 import { DiscoveryModule } from "@uprtcl/multiplatform";
 
-import { 
+import {
   EveesOrbitDB,
   EveesOrbitDBModule,
   ProposalsOrbitDB,
@@ -36,7 +38,7 @@ import {
   ProposalStore,
   ProposalsToPerspectiveStore,
   getContextAcl,
-  getProposalsAcl
+  getProposalsAcl,
 } from "@uprtcl/evees-orbitdb";
 import { OrbitDBCustom, AddressMapping } from "@uprtcl/orbitdb-provider";
 
@@ -59,15 +61,14 @@ export default class UprtclOrchestrator {
       "https://xdai.poanetwork.dev/"
     );
     const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
-    const peerId = 'QmVD8LC6vjAHaDgsLySc86BVbnb256LuRZqsWtK5toABsc';
+    const peerId = "QmVD8LC6vjAHaDgsLySc86BVbnb256LuRZqsWtK5toABsc";
 
     this.config.eth = { provider };
 
     this.config.orbitdb = {
       pinner: {
         url: "https://apps.intercreativity.io:3000",
-        multiaddr:
-        `${peerPath}/${peerId}`,
+        multiaddr: `${peerPath}/${peerId}`,
       },
     };
 
@@ -87,10 +88,7 @@ export default class UprtclOrchestrator {
           Addresses: {
             Swarm: [],
           },
-          Bootstrap: [
-            `${peerPath}/${peerId}`,
-            ,
-          ],
+          Bootstrap: [`${peerPath}/${peerId}`, ,],
         },
       },
     };
@@ -130,7 +128,7 @@ export default class UprtclOrchestrator {
       ContextStore,
       ProposalStore,
       ProposalsToPerspectiveStore,
-      AddressMapping
+      AddressMapping,
     ];
 
     const orbitDBCustom = new OrbitDBCustom(
@@ -173,10 +171,13 @@ export default class UprtclOrchestrator {
       new LensesModule(),
       new EveesBlockchainModule(),
       new EveesOrbitDBModule(),
+      new EveesEthereumModule(),
       evees,
       documents,
       wikis,
     ];
+
+    customElements.define("evees-orbitdb-set-debugger", EveesOrbitDBDebugger);
 
     try {
       await this.orchestrator.loadModules(modules);
