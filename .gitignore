@@ -18,3 +18,4 @@ build/
 stage/
 *.scss.d.ts
 *.css.d.ts
+.idea
