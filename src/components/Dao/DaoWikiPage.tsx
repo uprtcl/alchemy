@@ -351,7 +351,10 @@ class DaoWikiPage extends React.Component<IProps, IState> {
           style={{ flexGrow: "1", flexDirection: "column", display: "flex" }}
         >
           {debug ? (
-            <evees-orbitdb-set-debugger></evees-orbitdb-set-debugger>
+            <div>
+              <button onClick={() => this.resetDaoEvees()}>reset</button>
+              <evees-orbitdb-set-debugger></evees-orbitdb-set-debugger>
+            </div>
           ) : (
             <wiki-drawer
               uref={this.state.wikiId}
