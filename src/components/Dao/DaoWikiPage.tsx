@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   AnyPlugin,
   DAO,
@@ -8,22 +8,22 @@ import {
   IProposalCreateOptionsPM,
   LATEST_ARC_VERSION,
   Plugin,
-} from "@daostack/arc.js";
+} from '@daostack/arc.js';
 
-import { connect } from "react-redux";
-import Loading from "components/Shared/Loading";
+import { connect } from 'react-redux';
+import Loading from 'components/Shared/Loading';
 
-import { Link, RouteComponentProps } from "react-router-dom";
-import classNames from "classnames";
+import { Link, RouteComponentProps } from 'react-router-dom';
+import classNames from 'classnames';
 
-import * as arcActions from "actions/arcActions";
-import { showNotification } from "reducers/notifications";
+import * as arcActions from 'actions/arcActions';
+import { showNotification } from 'reducers/notifications';
 import withSubscription, {
   ISubscriptionProps,
-} from "components/Shared/withSubscription";
+} from 'components/Shared/withSubscription';
 
-import * as proposalStyle from "../Plugin/PluginProposals.scss";
-import * as wikiStyle from "./DaoWikiPage.scss";
+import * as proposalStyle from '../Plugin/PluginProposals.scss';
+import * as wikiStyle from './DaoWikiPage.scss';
 
 import {
   EveesRemote,
@@ -33,24 +33,24 @@ import {
   EveesConfig,
   ProposalDetails,
   EveesInfoConfig,
-} from "@uprtcl/evees";
-import { EthereumContract } from "@uprtcl/ethereum-provider";
+} from '@uprtcl/evees';
+import { EthereumContract } from '@uprtcl/ethereum-provider';
 
-import { combineLatest, Observable, of } from "rxjs";
-import { enableWalletProvider, getArc } from "arc";
-import { mergeMap } from "rxjs/operators";
+import { combineLatest, Observable, of } from 'rxjs';
+import { enableWalletProvider, getArc } from 'arc';
+import { mergeMap } from 'rxjs/operators';
 
-import { GRAPH_POLL_INTERVAL } from "../../settings";
-import { uprtcl } from "../../index";
-import { EveesBlockchainCached } from "@uprtcl/evees-blockchain";
-import { ProposalCreatedEvent } from "@uprtcl/evees/dist/types/types";
-import { encodeABI } from "components/Proposal/Create/PluginForms/ABIService";
-import { abi as uprtclRootAbi } from "./../../UprtclRoot.min.json";
-import { cidToHex32 } from "@uprtcl/ipfs-provider";
-import { EveesOrbitDBEntities } from "@uprtcl/evees-orbitdb";
+import { GRAPH_POLL_INTERVAL } from '../../settings';
+import { uprtcl } from '../../index';
+import { EveesBlockchainCached } from '@uprtcl/evees-blockchain';
+import { ProposalCreatedEvent } from '@uprtcl/evees/dist/types/types';
+import { encodeABI } from 'components/Proposal/Create/PluginForms/ABIService';
+import { abi as uprtclRootAbi } from './../../UprtclRoot.min.json';
+import { cidToHex32 } from '@uprtcl/ipfs-provider';
+import { EveesOrbitDBEntities } from '@uprtcl/evees-orbitdb';
 
-const ZERO_HEX_32 = "0x" + new Array(64).fill(0).join("");
-const ZERO_ADDRESS = "0x" + new Array(40).fill(0).join("");
+const ZERO_HEX_32 = '0x' + new Array(64).fill(0).join('');
+const ZERO_ADDRESS = '0x' + new Array(40).fill(0).join('');
 
 type IExternalProps = {
   daoState: IDAOState;
@@ -103,7 +103,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
     this.officialRemote = (uprtcl.orchestrator.container.getAll(
       EveesModule.bindings.EveesRemote
-    ) as EveesBlockchainCached[]).find((remote) => remote.id.includes("eth"));
+    ) as EveesBlockchainCached[]).find((remote) => remote.id.includes('eth'));
 
     //** locally changing the evees config to fit this DAO */
     config.emitIf = {
@@ -122,7 +122,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     if (this.container.current == null) return;
 
     this.container.current.addEventListener(
-      "evees-proposal",
+      'evees-proposal',
       async (e: ProposalCreatedEvent) => {
         this.proposeUpdate(e.detail.proposalDetails);
       }
@@ -133,10 +133,10 @@ class DaoWikiPage extends React.Component<IProps, IState> {
   async checkWikiPlugin() {
     const wikiPlugin = this.plugins.find((plugin: any) => {
       return (
-        plugin.coreState.name === "GenericScheme" &&
+        plugin.coreState.name === 'GenericScheme' &&
         plugin.coreState.pluginParams.contractToCall !== undefined &&
         plugin.coreState.pluginParams.contractToCall ===
-          "0x6a781148eedd06350159bf05d37e059d8974294e"
+          '0x6a781148eedd06350159bf05d37e059d8974294e'
       );
     });
     this.setState({ wikiPlugin: wikiPlugin as GenericPlugin });
@@ -153,45 +153,45 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
     const arc = getArc();
     const votingMachine = arc.getContractInfoByName(
-      "GenesisProtocol",
+      'GenesisProtocol',
       LATEST_ARC_VERSION
     ).address;
     const pluginManagerAddress = this.plugins.find(
-      (p) => p.coreState.name === "SchemeFactory"
+      (p) => p.coreState.name === 'SchemeFactory'
     ).coreState.address;
 
     const proposalOptions: IProposalCreateOptionsPM = {
       add: {
-        permissions: "0x00000011",
+        permissions: '0x00000011',
         pluginInitParams: {
-          contractToCall: "0x6a781148eEdd06350159Bf05d37E059d8974294e",
+          contractToCall: '0x6a781148eEdd06350159Bf05d37E059d8974294e',
           daoId: this.props.daoState.address,
-          voteOnBehalf: "0x0000000000000000000000000000000000000000",
+          voteOnBehalf: '0x0000000000000000000000000000000000000000',
           voteParamsHash:
-            "0x0000000000000000000000000000000000000000000000000000000000000000",
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
           votingMachine: votingMachine,
           votingParams: [
-            "50",
-            "2592000",
-            "172800",
-            "86400",
-            "1200",
-            "172800",
-            "50",
-            "4",
-            "150",
-            "10",
-            "1603554900",
+            '50',
+            '2592000',
+            '172800',
+            '86400',
+            '1200',
+            '172800',
+            '50',
+            '4',
+            '150',
+            '10',
+            '1603554900',
           ],
         },
-        pluginName: "GenericScheme",
+        pluginName: 'GenericScheme',
       },
       dao: this.props.daoState.address,
-      description: "Adds a _Prtcl-powered Wiki plugin to this DAO.",
+      description: 'Adds a _Prtcl-powered Wiki plugin to this DAO.',
       plugin: pluginManagerAddress,
-      tags: ["wiki"],
-      title: "Register Wiki Plugin",
-      url: "",
+      tags: ['wiki'],
+      title: 'Register Wiki Plugin',
+      url: '',
     };
 
     await this.props.createProposal(proposalOptions);
@@ -232,7 +232,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
     const dataEncoded = encodeABI(
       uprtclRootAbi,
-      "updateHead(bytes32,bytes32,address)",
+      'updateHead(bytes32,bytes32,address)',
       [
         { value: headCidParts[0] },
         { value: headCidParts[1] },
@@ -281,7 +281,7 @@ class DaoWikiPage extends React.Component<IProps, IState> {
     /** reset evees data of the DAO */
     const dataEncoded = encodeABI(
       uprtclRootAbi,
-      "updateHead(bytes32,bytes32,address)",
+      'updateHead(bytes32,bytes32,address)',
       [{ value: ZERO_HEX_32 }, { value: ZERO_HEX_32 }, { value: ZERO_ADDRESS }]
     );
 
@@ -299,8 +299,8 @@ class DaoWikiPage extends React.Component<IProps, IState> {
 
     const proposalOptionsDetailed = {
       dao: this.state.wikiPlugin.coreState.dao.id,
-      title: "Update _Prtcl Evees",
-      description: "Update _Prtcl content owned by this DAO",
+      title: 'Update _Prtcl Evees',
+      description: 'Update _Prtcl content owned by this DAO',
       plugin: this.state.wikiPlugin.coreState.address,
       callData: dataEncoded,
       value: 0,
@@ -337,18 +337,19 @@ class DaoWikiPage extends React.Component<IProps, IState> {
   }
 
   renderWiki() {
-    const debug = window.location.href.split("debug=")[1] === "true";
+    const debug = window.location.href.split('debug=')[1] === 'true';
     const eveesInfoConfig: EveesInfoConfig = {
       showDraftControl: true,
       showInfo: true,
       showIcon: true,
       checkOwner: true,
+      showAcl: true,
     };
     return (
       <div className={wikiStyle.wikiContainer}>
         {/* <button onClick={() => this.resetDaoEvees()}>reset</button> */}
         <module-container
-          style={{ flexGrow: "1", flexDirection: "column", display: "flex" }}
+          style={{ flexGrow: '1', flexDirection: 'column', display: 'flex' }}
         >
           {debug ? (
             <div>
@@ -374,8 +375,8 @@ class DaoWikiPage extends React.Component<IProps, IState> {
           You need to register a plugin to use the Wiki
         </div>
         <div className={proposalStyle.cta}>
-          <Link to={"/dao/" + this.props.daoState.address}>
-            <img className={proposalStyle.relax} src="/assets/images/lt.svg" />{" "}
+          <Link to={'/dao/' + this.props.daoState.address}>
+            <img className={proposalStyle.relax} src="/assets/images/lt.svg" />{' '}
             Back
           </Link>
           <a
@@ -430,7 +431,7 @@ const SubscribedDaoWiki = withSubscription({
       ),
       // Find the SchemeFactory plugin if this dao has one
       Plugin.search(arc, {
-        where: { dao: dao.id, name: "SchemeFactory" },
+        where: { dao: dao.id, name: 'SchemeFactory' },
       }).pipe(
         mergeMap(
           (plugin: Array<AnyPlugin>): Observable<IPluginState> =>
