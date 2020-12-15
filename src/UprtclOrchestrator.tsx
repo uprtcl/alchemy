@@ -1,46 +1,47 @@
-import { ethers } from "ethers";
-import * as IPFS from "ipfs";
+import { ethers } from 'ethers';
+import * as IPFS from 'ipfs';
 
 import {
   MicroOrchestrator,
-  i18nextBaseModule,
-} from "@uprtcl/micro-orchestrator";
-import { LensesModule } from "@uprtcl/lenses";
-import { DocumentsModule } from "@uprtcl/documents";
-import { WikisModule } from "@uprtcl/wikis";
+  i18nextBaseModule
+} from '@uprtcl/micro-orchestrator';
+import { LensesModule } from '@uprtcl/lenses';
+import { DocumentsModule } from '@uprtcl/documents';
+import { WikisModule } from '@uprtcl/wikis';
 
-import { CortexModule } from "@uprtcl/cortex";
-import { EveesModule } from "@uprtcl/evees";
-import { IpfsStore } from "@uprtcl/ipfs-provider";
+import { CortexModule } from '@uprtcl/cortex';
+import { EveesModule } from '@uprtcl/evees';
+import { IpfsStore } from '@uprtcl/ipfs-provider';
 
 import {
   EveesEthereumConnection,
   EthereumOrbitDBIdentity,
-  EveesEthereumModule,
-} from "@uprtcl/evees-ethereum";
+  EveesEthereumModule
+} from '@uprtcl/evees-ethereum';
 import {
   EveesBlockchainCached,
   EveesBlockchainModule,
-  EveesOrbitDBDebugger,
-} from "@uprtcl/evees-blockchain";
+  EveesOrbitDBDebugger
+} from '@uprtcl/evees-blockchain';
 
-import { EthereumConnection } from "@uprtcl/ethereum-provider";
+import { HttpEthAuthProvider, HttpStore } from '@uprtcl/http-provider';
+import { EveesHttp, EveesHttpModule } from '@uprtcl/evees-http';
 
-import { ApolloClientModule } from "@uprtcl/graphql";
-import { DiscoveryModule } from "@uprtcl/multiplatform";
+import { EthereumConnection } from '@uprtcl/ethereum-provider';
+
+import { ApolloClientModule } from '@uprtcl/graphql';
+import { DiscoveryModule } from '@uprtcl/multiplatform';
 
 import {
-  EveesOrbitDB,
   EveesOrbitDBModule,
   ProposalsOrbitDB,
-  PerspectiveStore,
   ContextStore,
   ProposalStore,
   ProposalsToPerspectiveStore,
   getContextAcl,
-  getProposalsAcl,
-} from "@uprtcl/evees-orbitdb";
-import { OrbitDBCustom, AddressMapping } from "@uprtcl/orbitdb-provider";
+  getProposalsAcl
+} from '@uprtcl/evees-orbitdb';
+import { OrbitDBCustom, AddressMapping } from '@uprtcl/orbitdb-provider';
 
 type version = 1 | 0;
 
@@ -58,27 +59,34 @@ export default class UprtclOrchestrator {
     // );
 
     const provider = new ethers.providers.JsonRpcProvider(
-      "https://xdai.poanetwork.dev/"
+      'https://xdai.poanetwork.dev/'
     );
-    const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
-    const peerId = "QmVD8LC6vjAHaDgsLySc86BVbnb256LuRZqsWtK5toABsc";
+
+    const host = 'http://localhost:3100/uprtcl/1';
+
+    // const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
+    const peerPath = `/dns4/localhost/tcp/4003/ws/p2p`;
+    const peerId = 'QmVD8LC6vjAHaDgsLySc86BVbnb256LuRZqsWtK5toABsc';
 
     this.config.eth = { provider };
 
+    this.config.http = { host };
+
     this.config.orbitdb = {
       pinner: {
-        url: "https://apps.intercreativity.io:3000",
-        multiaddr: `${peerPath}/${peerId}`,
-      },
+        // url: 'https://apps.intercreativity.io:3000',
+        url: 'http://localhost:3200',
+        multiaddr: `${peerPath}/${peerId}`
+      }
     };
 
     // this.config.ipfs.http = { host: 'localhost', port: 5001, protocol: 'http' };
     this.config.ipfs = {
       cid: {
         version: 1 as version,
-        type: "sha2-256",
-        codec: "raw",
-        base: "base58btc",
+        type: 'sha2-256',
+        codec: 'raw',
+        base: 'base58btc'
       },
       jsIpfs: {
         preload: { enabled: false },
@@ -86,11 +94,11 @@ export default class UprtclOrchestrator {
         EXPERIMENTAL: { pubsub: true },
         config: {
           Addresses: {
-            Swarm: [],
+            Swarm: []
           },
-          Bootstrap: [`${peerPath}/${peerId}`, ,],
-        },
-      },
+          Bootstrap: [`${peerPath}/${peerId}`, ,]
+        }
+      }
     };
   }
 
@@ -103,32 +111,31 @@ export default class UprtclOrchestrator {
     await ipfs.swarm.connect(this.config.orbitdb.pinner.multiaddr);
     console.log(`${this.config.orbitdb.pinner.multiaddr} connected`);
 
-    console.log("loading ipfs");
+    console.log('loading ipfs');
     const ipfsStore = new IpfsStore(
       this.config.ipfs.cid,
       ipfs,
       this.config.orbitdb.pinner.url
     );
     await ipfsStore.ready();
-    console.log("ipfs ready");
+    console.log('ipfs ready');
 
-    console.log("loading ethereum connection");
+    console.log('loading ethereum connection');
     const ethConnection = new EthereumConnection({
-      provider: this.config.eth.provider,
+      provider: this.config.eth.provider
     });
     await ethConnection.ready();
-    console.log("ethereum connection ready");
+    console.log('ethereum connection ready');
 
     const identity = new EthereumOrbitDBIdentity(ethConnection);
     const identitySources = [identity];
 
-    console.log("loading orbitdb");
+    console.log('loading orbitdb');
     const customStores = [
-      PerspectiveStore,
       ContextStore,
       ProposalStore,
       ProposalsToPerspectiveStore,
-      AddressMapping,
+      AddressMapping
     ];
 
     const orbitDBCustom = new OrbitDBCustom(
@@ -141,12 +148,7 @@ export default class UprtclOrchestrator {
     );
     await orbitDBCustom.ready();
 
-    const orbitdbEvees = new EveesOrbitDB(orbitDBCustom, ipfsStore);
-    await orbitdbEvees.connect();
-    console.log("orbitdb ready");
-
     const proposals = new ProposalsOrbitDB(orbitDBCustom, ipfsStore);
-
     const ethEveesConnection = new EveesEthereumConnection(ethConnection);
     await ethEveesConnection.ready();
 
@@ -158,7 +160,14 @@ export default class UprtclOrchestrator {
     );
     await ethEvees.ready();
 
-    const evees = new EveesModule([orbitdbEvees, ethEvees]);
+    const httpProvider = new HttpEthAuthProvider(
+      { host: this.config.http.host, apiId: 'evees-v1' },
+      ethConnection
+    );
+    const httpStore = new HttpStore(httpProvider, this.config.ipfs.cid);
+    const httpEvees = new EveesHttp(httpProvider, httpStore);
+
+    const evees = new EveesModule([httpEvees, ethEvees]);
 
     const documents = new DocumentsModule();
     const wikis = new WikisModule();
@@ -167,17 +176,18 @@ export default class UprtclOrchestrator {
       new i18nextBaseModule(),
       new ApolloClientModule(),
       new CortexModule(),
-      new DiscoveryModule([ipfsStore.casID]),
+      new DiscoveryModule([httpStore.casID]),
       new LensesModule(),
       new EveesBlockchainModule(),
       new EveesOrbitDBModule(),
       new EveesEthereumModule(),
+      new EveesHttpModule(),
       evees,
       documents,
-      wikis,
+      wikis
     ];
 
-    customElements.define("evees-orbitdb-set-debugger", EveesOrbitDBDebugger);
+    customElements.define('evees-orbitdb-set-debugger', EveesOrbitDBDebugger);
 
     try {
       await this.orchestrator.loadModules(modules);
