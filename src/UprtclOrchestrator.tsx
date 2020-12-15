@@ -11,7 +11,7 @@ import { WikisModule } from '@uprtcl/wikis';
 
 import { CortexModule } from '@uprtcl/cortex';
 import { EveesModule } from '@uprtcl/evees';
-import { IpfsStore } from '@uprtcl/ipfs-provider';
+import { IpfsStore, PinnerCached } from '@uprtcl/ipfs-provider';
 
 import {
   EveesEthereumConnection,
@@ -24,7 +24,7 @@ import {
   EveesOrbitDBDebugger
 } from '@uprtcl/evees-blockchain';
 
-import { HttpEthAuthProvider, HttpStore } from '@uprtcl/http-provider';
+import { HttpEthAuthProvider, HttpStoreCached } from '@uprtcl/http-provider';
 import { EveesHttp, EveesHttpModule } from '@uprtcl/evees-http';
 
 import { EthereumConnection } from '@uprtcl/ethereum-provider';
@@ -112,11 +112,8 @@ export default class UprtclOrchestrator {
     console.log(`${this.config.orbitdb.pinner.multiaddr} connected`);
 
     console.log('loading ipfs');
-    const ipfsStore = new IpfsStore(
-      this.config.ipfs.cid,
-      ipfs,
-      this.config.orbitdb.pinner.url
-    );
+    const pinner = new PinnerCached(this.config.orbitdb.pinner.url, 5000);
+    const ipfsStore = new IpfsStore(this.config.ipfs.cid, ipfs, pinner);
     await ipfsStore.ready();
     console.log('ipfs ready');
 
@@ -142,7 +139,7 @@ export default class UprtclOrchestrator {
       customStores,
       [getContextAcl(identitySources), getProposalsAcl(identitySources)],
       identity,
-      this.config.orbitdb.pinner.url,
+      pinner,
       this.config.orbitdb.pinner.multiaddr,
       ipfs
     );
@@ -164,7 +161,7 @@ export default class UprtclOrchestrator {
       { host: this.config.http.host, apiId: 'evees-v1' },
       ethConnection
     );
-    const httpStore = new HttpStore(httpProvider, this.config.ipfs.cid);
+    const httpStore = new HttpStoreCached(httpProvider, this.config.ipfs.cid);
     const httpEvees = new EveesHttp(httpProvider, httpStore);
 
     const evees = new EveesModule([httpEvees, ethEvees]);
