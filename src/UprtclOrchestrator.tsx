@@ -66,7 +66,7 @@ export default class UprtclOrchestrator {
 
     // const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
     const peerPath = `/dns4/localhost/tcp/4003/ws/p2p`;
-    const peerId = 'QmVD8LC6vjAHaDgsLySc86BVbnb256LuRZqsWtK5toABsc';
+    const peerId = 'QmcWvt62jXjz3EiF42WfRxkREz2JHSe71hrKjvPzgPN3ux';
 
     this.config.eth = { provider };
 
