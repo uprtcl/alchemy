@@ -62,7 +62,7 @@ export default class UprtclOrchestrator {
       'https://xdai.poanetwork.dev/'
     );
 
-    const host = 'http://localhost:3100/uprtcl/1';
+    const host = 'https://apps.intercreativity.io:3000';
 
     // const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
     const peerPath = `/dns4/localhost/tcp/4003/ws/p2p`;
