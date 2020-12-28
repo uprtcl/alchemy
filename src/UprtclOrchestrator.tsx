@@ -3,7 +3,7 @@ import * as IPFS from 'ipfs';
 
 import {
   MicroOrchestrator,
-  i18nextBaseModule
+  i18nextBaseModule,
 } from '@uprtcl/micro-orchestrator';
 import { LensesModule } from '@uprtcl/lenses';
 import { DocumentsModule } from '@uprtcl/documents';
@@ -16,12 +16,12 @@ import { IpfsStore, PinnerCached } from '@uprtcl/ipfs-provider';
 import {
   EveesEthereumConnection,
   EthereumOrbitDBIdentity,
-  EveesEthereumModule
+  EveesEthereumModule,
 } from '@uprtcl/evees-ethereum';
 import {
   EveesBlockchainCached,
   EveesBlockchainModule,
-  EveesOrbitDBDebugger
+  EveesOrbitDBDebugger,
 } from '@uprtcl/evees-blockchain';
 
 import { HttpEthAuthProvider, HttpStoreCached } from '@uprtcl/http-provider';
@@ -39,7 +39,7 @@ import {
   ProposalStore,
   ProposalsToPerspectiveStore,
   getContextAcl,
-  getProposalsAcl
+  getProposalsAcl,
 } from '@uprtcl/evees-orbitdb';
 import { OrbitDBCustom, AddressMapping } from '@uprtcl/orbitdb-provider';
 
@@ -62,11 +62,11 @@ export default class UprtclOrchestrator {
       'https://xdai.poanetwork.dev/'
     );
 
-    const host = 'https://apps.intercreativity.io:3000';
+    const host = 'https://api.intercreativity.io/uprtcl/1';
 
-    // const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
-    const peerPath = `/dns4/localhost/tcp/4003/ws/p2p`;
-    const peerId = 'QmcWvt62jXjz3EiF42WfRxkREz2JHSe71hrKjvPzgPN3ux';
+    const peerPath = `/dns4/pinner.intercreativity.io/tcp/4003/wss/p2p`;
+    // const peerPath = `/dns4/localhost/tcp/4003/ws/p2p`;
+    const peerId = 'QmZYVFpmDxv8V2pq8wfEeyZB5GCRz8St9iChjznbRoi4yA';
 
     this.config.eth = { provider };
 
@@ -74,10 +74,10 @@ export default class UprtclOrchestrator {
 
     this.config.orbitdb = {
       pinner: {
-        // url: 'https://apps.intercreativity.io:3000',
-        url: 'http://localhost:3200',
-        multiaddr: `${peerPath}/${peerId}`
-      }
+        url: 'https://apps.intercreativity.io:3000',
+        // url: 'http://localhost:3200',
+        multiaddr: `${peerPath}/${peerId}`,
+      },
     };
 
     // this.config.ipfs.http = { host: 'localhost', port: 5001, protocol: 'http' };
@@ -86,7 +86,7 @@ export default class UprtclOrchestrator {
         version: 1 as version,
         type: 'sha2-256',
         codec: 'raw',
-        base: 'base58btc'
+        base: 'base58btc',
       },
       jsIpfs: {
         preload: { enabled: false },
@@ -94,11 +94,11 @@ export default class UprtclOrchestrator {
         EXPERIMENTAL: { pubsub: true },
         config: {
           Addresses: {
-            Swarm: []
+            Swarm: [],
           },
-          Bootstrap: [`${peerPath}/${peerId}`, ,]
-        }
-      }
+          Bootstrap: [`${peerPath}/${peerId}`, ,],
+        },
+      },
     };
   }
 
@@ -119,7 +119,7 @@ export default class UprtclOrchestrator {
 
     console.log('loading ethereum connection');
     const ethConnection = new EthereumConnection({
-      provider: this.config.eth.provider
+      provider: this.config.eth.provider,
     });
     await ethConnection.ready();
     console.log('ethereum connection ready');
@@ -132,7 +132,7 @@ export default class UprtclOrchestrator {
       ContextStore,
       ProposalStore,
       ProposalsToPerspectiveStore,
-      AddressMapping
+      AddressMapping,
     ];
 
     const orbitDBCustom = new OrbitDBCustom(
@@ -181,7 +181,7 @@ export default class UprtclOrchestrator {
       new EveesHttpModule(),
       evees,
       documents,
-      wikis
+      wikis,
     ];
 
     customElements.define('evees-orbitdb-set-debugger', EveesOrbitDBDebugger);
